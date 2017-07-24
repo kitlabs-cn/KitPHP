@@ -1,0 +1,12 @@
+{% set menuItem = knp_menu_get('KitMenuBundle:AdminBuilder:mainMenu') %}
+<!-- 面包屑开始 -->
+<ul class="bread">
+    {% for breadcrumb_item in knp_menu_get_breadcrumbs_array(knp_menu_get_current_item(menuItem)) %}
+        {% if not loop.last %}
+            <li><a href="{{ breadcrumb_item.uri }}" class="icon-home">{{ breadcrumb_item.label }}</a></li>
+        {% else %}
+            <li>{{ breadcrumb_item.label }}</li>
+        {% endif %}
+    {% endfor %}
+</ul>
+<!-- /面包屑结束 -->

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block main_content %}
+<div class="line">
+    <div class="x6">
+    <h1>举报详情</h1>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>标题:</th>
+                <td>{{ item.title }}</td>
+            </tr>
+            <tr>
+                <th>举报人:</th>
+                <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+                <th>举报人电话:</th>
+                <td>{{ item.mobile }}</td>
+            </tr>
+            <tr>
+                <th>举报内容:</th>
+                <td>{{ item.content }}</td>
+            </tr>
+            <tr>
+                <th>举报时间:</th>
+                <td>{% if item.createAt %}{{ item.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('kit_admin_report') }}" class="button">返回</a>
+        </li>
+    </ul>
+    </div>
+</div>
+{% endblock %}

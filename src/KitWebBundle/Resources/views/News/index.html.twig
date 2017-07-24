@@ -1,0 +1,37 @@
+{% extends '@KitWeb/layout.html.twig' %}
+
+{% block content %}
+<div class="container">
+    <div class="line">
+        <div class="alert alert-green">
+		  <span class="close rotate-hover"></span><strong>恭喜：</strong>操作成功。
+		</div>
+    </div>
+	<div class="line">
+        <div class="waterfall" id="container">
+            <div class="waterfall-item">
+                <p><a href="">送到家第三节课都是借口大家思考，讲的是空间  </a></p>
+            </div>
+        </div>
+     </div>
+</div>
+{% verbatim %}
+<script type="text/x-handlebars-template" id="waterfall-tpl">
+    {{#result}}
+        <div class="waterfall-item">
+            <p><a href="">送到家第三节课都是借口大家思考，讲的是空间  </a></p>
+        </div>
+    {{/result}}
+</script>
+{% endverbatim %}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script>
+var JSON_URI = "{{ path('kit_web_news_data') }}";
+console.log(JSON_URI);
+</script>
+<script src="{{asset('public/waterfall/js/handlebars.js')}}"></script>
+<script src="{{asset('public/waterfall/js/waterfall.min.js')}}"></script>
+<script src="{{asset('static/js/news.js')}}"></script>
+{% endblock %}

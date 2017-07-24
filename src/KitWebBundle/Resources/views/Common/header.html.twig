@@ -1,0 +1,33 @@
+<!--顶部-->
+<div class="layout bg-header-nav bg-inverse">
+	<div class="container height-large">
+		<span class="float-right text-small text-gray hidden-l">
+		{% if  app.user.username is defined and app.user.username is not empty%}
+		    欢迎您, <a href="{{ path('kit_user_homepage') }}">{{ app.user.username }}</a><span> | </span>
+		    <a href="{{ path('kit_web_logout') }}">退出</a><span> | </span>
+		{% else %}
+        <a href="{{ path('kit_web_register') }}">注册</a><span> | </span>
+        <a href="{{ path('kit_web_login') }}">登录</a><span> | </span>
+        {% endif %}
+        <a href="">关于我们</a><span> | </span>
+        <a href="">联系我们</a>
+		</span>
+		欢迎访问
+	</div>
+	<div class="container" >
+    	<div class="line">
+    	   <div class="xl12 xs7 xm7 xb7">
+    			<button class="button icon-navicon float-right" data-target="#header-demo"></button>
+    			<a target="_blank" href="/"><img src="{{ asset('static/images/logo.png') }}" alt="水政执法监督平台" /></a>
+    		</div>
+    		<div class="xs4 xm4 xb4 padding-top" style="display: none">
+				<form>
+					<div class="input-group padding-little-top">
+						<input type="text" class="input border-main" name="keywords" size="30" placeholder="关键词" />
+						<span class="addbtn"><button type="button" class="button bg-main icon-search"></button></span>
+					</div>
+				</form>
+			</div>
+    	</div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+
+<!--导航-->
+<div class="demo-nav">
+	<div class="container">
+
+		<div class="line">
+			<div class=" xl12 xs12 xm12 xb12 nav-navicon" id="header-demo">
+				<div class="xs12 xm12 xb12">
+					<ul class="nav nav-menu nav-inline nav-big">
+
+						<li {% if nav is not defined or nav == 1 %}class="active" {% endif %}><a href="{{ path('kit_web_homepage') }}">首页</a></li>
+						<li {% if nav is defined and nav == 2 %}class="active" {% endif %}><a href="{{ path('kit_web_news_list', {id: 2}) }}">综合要闻</a></li>
+						<li {% if nav is defined and nav == 3 %}class="active" {% endif %}><a href="{{ path('kit_web_news_list', {id: 3}) }}">领导活动</a></li>
+						<li {% if nav is defined and nav == 4 %}class="active" {% endif %}><a href="{{ path('kit_web_news_list', {id: 4}) }}">立法工作</a></li>
+						<li {% if nav is defined and nav == 5 %}class="active" {% endif %}><a href="{{ path('kit_web_news_list', {id: 5}) }}">监督工作</a></li>
+						<li {% if nav is defined and nav == 6 %}class="active" {% endif %}><a href="{{ path('kit_web_news_list', {id: 6}) }}">公示公告</a></li>
+						<li {% if nav is defined and nav == 7 %}class="active" {% endif %}><a href="{{ path('kit_user_report') }}" class="menu">群众举报</a></li>
+						<li {% if nav is defined and nav == 8 %}class="active" {% endif %}><a href="{{ path('kit_user_homepage') }}" class="menu">个人中心</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

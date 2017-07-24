@@ -1,0 +1,12 @@
+/.git
+/.settings
+/.buildpath
+/.project
+!/var/cache
+/var/cache/*
+!/var/logs
+/var/logs/*
+!/var/sessions
+/var/sessions/*
+.idea/
+parameters.yml

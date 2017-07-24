@@ -1,0 +1,14 @@
+<div class="dialog">
+	<div class="dialog-head">
+		<span class="dialog-close close rotate-hover"></span><strong>{{ title }}</strong>
+	</div>
+	<div class="dialog-body">
+		{{ render(controller(controller, { 'id': id })) }}
+	</div>
+	<div class="dialog-foot">
+		<button class="dialog-close button">
+			取消</button>
+		<button class="button bg-green">
+			确认</button>
+	</div>
+</div>

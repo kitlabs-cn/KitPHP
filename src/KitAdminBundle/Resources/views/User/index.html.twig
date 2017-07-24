@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block main_content %}
+<form method="post">
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong>前台用户列表</strong>
+		</div>
+		{% if pagination is defined and pagination is not empty %}
+		<table class="table table-hover">
+			<tr>
+				<th width="45">选择</th>
+				<th width="220">用户昵称</th>
+				<th width="*">用户登录名(邮箱)</th>
+				<th width="360">公司名称</th>
+				<th width="100">状态</th>
+				<th width="200">操作</th>
+			</tr>
+			{% for item in pagination %}
+			<tr>
+				<td><input type="checkbox" name="id" value="1" /></td>
+				<td>{{ item.name }}</td>
+				<td>{{ item.email }}</td>
+				<td>{{ item.company }}</td>
+				<td>{% if item.status == 0 %}未申请{% elseif item.status == 1 %}待审核{% elseif item.status == 2 %}审核通过{% else%}已拒绝{% endif %}</td>
+				<td>
+				    <a class="button border-green button-little" href="{{ path('kit_admin_user_show', { 'id': item.id }) }}">查看</a>
+				    {% if item.status == 1 %}
+				        <a class="button border-yellow button-little" href="{{ path('kit_admin_user_check', { 'id': item.id }) }}">审批</a>
+				    {% endif %}
+				    
+				    </td>
+			</tr>
+			{% endfor %}
+		</table>
+		{{ knp_pagination_render(pagination,'pagination.html.twig') }}
+		{% endif %}
+	</div>
+</form>
+{% endblock %}

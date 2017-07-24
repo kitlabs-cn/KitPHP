@@ -1,0 +1,19 @@
+{% extends '@KitWeb/News/base.html.twig' %}
+
+{% block content_right %}
+    <ul class="margin text-big">
+    {% if pagination is defined and pagination is not empty %}
+		{% for item in pagination %}
+		<li class="height-big"><a
+				href="{{ path('kit_web_news_show', {id: item.id}) }}"
+				target="_self" title="{{ item.title }}">{{ item.title  | truncate(22, false, '...') }}
+			<span class="float-right">{{ item.createAt | date('Y-m-d') }}</span></a>
+		</li>
+		{% endfor %}
+		
+	  {{ knp_pagination_render(pagination,'pagination.html.twig') }}
+	{% else %}
+	<li style="text-align: center"><span >暂无内容</span></li>
+	{% endif %}
+	</ul>
+{% endblock %}

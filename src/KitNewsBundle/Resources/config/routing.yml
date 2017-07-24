@@ -1,0 +1,38 @@
+kit_news_list:
+    path:     /list/{page}
+    defaults: { _controller: KitNewsBundle:Default:index, page: 1 }
+    requirements:
+        page: '\d+'
+kit_news_add:
+    path:     /add
+    defaults: { _controller: KitNewsBundle:Default:add }
+kit_news_delete:
+    path:     /delete
+    defaults: { _controller: KitNewsBundle:Default:delete }
+kit_news_update:
+    path:     /{id}/update
+    defaults: { _controller: KitNewsBundle:Default:update, id: 0 }
+    requirements:
+        id: '\d+'
+    options:
+        expose: true
+kit_news_category:
+    path:     /category/{page}
+    defaults: { _controller: KitNewsBundle:Category:index, page: 1 }
+    requirements:
+        page: '\d+'
+    options:
+        expose: true
+kit_news_category_add:
+    path:     /category/add
+    defaults: { _controller: KitNewsBundle:Category:add }
+kit_news_category_update:
+    path:     /category/update/{id}
+    defaults: { _controller: KitNewsBundle:Category:update, id: 0 }
+    requirements:
+        id: '\d+'
+    options:
+        expose: true
+kit_news_category_delete:
+    path:     /category/delete
+    defaults: { _controller: KitNewsBundle:Category:delete }

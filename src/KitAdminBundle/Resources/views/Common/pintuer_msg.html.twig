@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block main_content %}
+    <blockquote class="border-{{ class }}">
+    	<strong>{{ title }}</strong>
+    	<p>{{ msg }} </p>
+    	<div class="txt-border radius-circle border-green">
+        	<div class="txt radius-circle bg-green">
+        		<span id="jumpTo"></span>
+        	</div>
+        </div>
+	</blockquote>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+    <script type="text/javascript">
+        function countDown(secs,surl){
+            secs = secs-1;
+            var jumpTo = document.getElementById('jumpTo');
+            jumpTo.innerHTML=secs+'s';
+            if(secs>0){
+                setTimeout("countDown("+secs+",'"+surl+"')",1000);
+            }
+            else{
+                location.href=surl;
+            }
+        }
+        countDown({{ timeout }},'{{ uri }}');
+    </script>
+{% endblock %}

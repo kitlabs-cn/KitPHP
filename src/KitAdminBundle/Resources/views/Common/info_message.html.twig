@@ -1,0 +1,25 @@
+{% extends '@KitAdmin/Common/layout.html.twig' %}
+{% block main_content %}
+    <div class="alert  alert-{{ typeclass }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>提示：</strong> {{ message }}<span id="jumpTo"></span>
+    </div>
+{% endblock %}
+{% block Js %}
+    <script type="text/javascript">
+        function countDown(secs,surl){
+            secs = secs-1;
+            var jumpTo = document.getElementById('jumpTo');
+            jumpTo.innerHTML=secs+'s';
+            if(secs>0){
+                setTimeout("countDown("+secs+",'"+surl+"')",1000);
+            }
+            else{
+                location.href=surl;
+            }
+        }
+        countDown({{ sec }},'{{ url }}');
+    </script>
+{% endblock %}

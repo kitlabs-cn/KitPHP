@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %} 
+{% form_theme update_form 'form_theme_pintuer.html.twig' %}
+
+    {% block main_content %}
+        {% for error in errors %}
+        <div class="alert alert-yellow">
+            <span class="close rotate-hover"></span><strong>提示：</strong>{{ error }}
+        </div>
+        {% endfor %}
+        <div class="line margin">
+            <h2>更新</h2>
+            <div class="x1-move x10">
+                {{ form(update_form, {'attr': {'novalidate': 'novalidate', 'class': 'form-x'}}) }}
+            </div>
+        </div>
+    {% endblock %}
+{# {% if update_result is defined and update_result != 0 %}#}
+{#     {% block javascripts %}#}
+{#     {{ parent() }}#}
+{#     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>#}
+{#     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>#}
+{#     <script type="text/javascript">#}
+{#     var index = parent.layer.getFrameIndex(window.name); //获取窗口索引#}
+{#     parent.location= Routing.generate('kit_news_category');#}
+{#     </script>#}
+{#     {% endblock %}#}
+{# {% endif %}#}

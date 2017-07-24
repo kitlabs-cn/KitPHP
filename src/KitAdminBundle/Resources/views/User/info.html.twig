@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+
+{% form_theme form 'form_theme_pintuer.html.twig' %}
+{% block main_content %}
+ <div class="line">
+        <div class="x6">
+            <h1>用户详细信息</h1>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>用户ID:</th>
+                <td>{{ item.id }}</td>
+            </tr>
+            <tr>
+                <th>用户名(邮箱):</th>
+                <td>{{ item.email }}</td>
+            </tr>
+            <tr>
+                <th>用户昵称:</th>
+                <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+                <th>用户头像:</th>
+                <td><img src="{{ item.avatar }}"/></td>
+            </tr>
+            <tr>
+                <th>{% if item.userType == 1 %}公司{% else %}部门{% endif %}名称:</th>
+                <td>{{ item.company }}</td>
+            </tr>
+            <tr>
+                <th>{% if item.userType == 1 %}公司法人{% else %}本人姓名{% endif %}:</th>
+                <td>{{ item.legal }}</td>
+            </tr>
+            <tr>
+                <th>{% if item.userType == 1 %}公司{% else %}部门{% endif %}电话:</th>
+                <td>{{ item.telephone }}</td>
+            </tr>
+            <tr>
+                <th>{% if item.userType == 1 %}公司营业执照{% else %}部门证明{% endif %}:</th>
+                <td><img src="{{ item.license }}"/></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <br>
+{% for error in errors %}
+<div class="alert alert-red margin">
+	<span class="close rotate-hover"></span> <span>{{ error }}</span>
+</div>
+{% endfor %}
+    {{ form(form, {'attr': {'novalidate': 'novalidate', 'class': 'form-x', 'id': 'form',  'enctype': "multipart/form-data"}}) }}
+</div>
+</div>
+    {% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{# {% form_theme form 'form_theme_pintuer.html.twig' %}#}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block main_content %}
+    
+    <div class="line">
+        <h2>执法流程图: </h2>
+		<div class="x10">
+		  <img alt="" src="{{ asset('asset/images/flow.jpg') }}">
+		</div>
+    </div>
+{% endblock %}

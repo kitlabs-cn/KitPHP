@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Notice</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ notice.id }}</td>
+            </tr>
+            <tr>
+                <th>Matter</th>
+                <td>{{ notice.matter }}</td>
+            </tr>
+            <tr>
+                <th>Company</th>
+                <td>{{ notice.company }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ notice.title }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ notice.content }}</td>
+            </tr>
+            <tr>
+                <th>Noticetype</th>
+                <td>{{ notice.noticeType }}</td>
+            </tr>
+            <tr>
+                <th>Createat</th>
+                <td>{% if notice.createAt %}{{ notice.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Editor</th>
+                <td>{{ notice.editor }}</td>
+            </tr>
+            <tr>
+                <th>Ip</th>
+                <td>{{ notice.ip }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('notice_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('notice_edit', { 'id': notice.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

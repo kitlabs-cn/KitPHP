@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block main_content %}
+<div class="line">
+    <div class="x6">
+    <h1>用户详细信息</h1>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>用户ID:</th>
+                <td>{{ item.id }}</td>
+            </tr>
+            <tr>
+                <th>用户名(邮箱):</th>
+                <td>{{ item.email }}</td>
+            </tr>
+            <tr>
+                <th>用户昵称:</th>
+                <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+                <th>用户头像:</th>
+                <td><img src="{{ item.avatar }}"/></td>
+            </tr>
+            <tr>
+                <th>公司名称:</th>
+                <td>{{ item.company }}</td>
+            </tr>
+            <tr>
+                <th>公司法人:</th>
+                <td>{{ item.legal }}</td>
+            </tr>
+            <tr>
+                <th>公司电话:</th>
+                <td>{{ item.telephone }}</td>
+            </tr>
+            <tr>
+                <th>公司营业执照:</th>
+                <td><img src="{{ item.license }}"/></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('kit_admin_user') }}" class="button">返回</a>
+        </li>
+    </ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+kit_rbac:
+    resource: "@KitRbacBundle/Resources/config/routing.yml"
+    prefix:   /admin/rbac
+
+kit_web:
+    resource: "@KitWebBundle/Resources/config/routing.yml"
+    prefix:   /
+
+kit_news:
+    resource: "@KitNewsBundle/Resources/config/routing.yml"
+    prefix:   /admin/news
+
+kit_admin:
+    resource: "@KitAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+kit_base:
+    resource: "@KitBaseBundle/Controller/"
+    type:     annotation
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+gregwar_captcha_routing:
+    resource: "@GregwarCaptchaBundle/Resources/config/routing/routing.yml"
+    prefix: /

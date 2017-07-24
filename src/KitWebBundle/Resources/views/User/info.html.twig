@@ -1,0 +1,10 @@
+{% extends '@KitWeb/User/base.html.twig' %} 
+{% form_theme form 'form_theme_pintuer.html.twig' %}
+{% block content_right %}
+{% for error in errors %}
+<div class="alert alert-red margin">
+	<span class="close rotate-hover"></span> <span>{{ error }}</span>
+</div>
+{% endfor %}
+    {{ form(form, {'attr': {'novalidate': 'novalidate', 'class': 'form-x', 'id': 'form',  'enctype': "multipart/form-data"}}) }}
+{% endblock %}

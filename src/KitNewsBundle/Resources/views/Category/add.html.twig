@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %} 
+{% form_theme form 'form_theme_pintuer.html.twig' %}
+{% block main_content %}
+
+    {% for error in errors %}
+    <div class="alert alert-yellow">
+        <span class="close rotate-hover"></span><strong>提示：</strong>{{ error }}
+    </div>
+    {% endfor %}
+    <div class="line">
+        <div class="x4">
+            {{ form(form, {'attr': {'novalidate': 'novalidate', 'class': 'form-x'}}) }}
+        </div>
+    </div> 
+{% endblock %}

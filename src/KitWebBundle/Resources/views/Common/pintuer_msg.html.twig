@@ -1,0 +1,36 @@
+{% extends '@KitWeb/layout.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="line margin-top">
+            <div class="xs4 xm4 xs4-move xm4-move">
+                <blockquote class="border-{{ class }}">
+                	<strong>{{ title }}</strong>
+                	<p>{{ msg }} </p>
+                	<div class="txt-border radius-circle border-green">
+                    	<div class="txt radius-circle bg-green">
+                    		<span id="jumpTo"></span>
+                    	</div>
+                    </div>
+            	</blockquote>
+        	</div>
+    	</div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+    <script type="text/javascript">
+        function countDown(secs,surl){
+            secs = secs-1;
+            var jumpTo = document.getElementById('jumpTo');
+            jumpTo.innerHTML=secs+'s';
+            if(secs > 1){
+                setTimeout("countDown("+secs+",'"+surl+"')",1000);
+            }
+            else{
+                location.href=surl;
+            }
+        }
+        countDown({{ timeout }},'{{ uri }}');
+    </script>
+{% endblock %}

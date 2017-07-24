@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block main_content %}
+<div class="line">
+    <div class="x6">
+    <h1>申诉详情</h1>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>申诉标题:</th>
+                <td>{{ item.title }}</td>
+            </tr>
+            <tr>
+                <th>申诉内容:</th>
+                <td>{{ item.content }}</td>
+            </tr>
+            <tr>
+                <th>添加时间:</th>
+                <td>{% if item.createAt %}{{ item.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('kit_admin_appeal') }}" class="button">返回</a>
+        </li>
+    </ul>
+    </div>
+</div>
+{% endblock %}

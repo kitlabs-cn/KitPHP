@@ -1,0 +1,19 @@
+{% if pageCount > 1 %}
+<div class="panel-foot text-center">
+    {% if previous is defined %}
+	<ul class="pagination">
+		<li><a href="{{ path(route, query|merge({(pageParameterName): previous})) }}">上一页</a></li>
+	</ul>
+	{% endif %}
+	<ul class="pagination pagination-group">
+	   {% for p in pagesInRange %}
+		<li {% if p == current  %}class="active" {% endif %}><a href="{{ path(route, query|merge({(pageParameterName): p})) }}">{{ p }}</a></li>
+	   {% endfor %}
+	</ul>
+	{% if next is defined %}
+	<ul class="pagination">
+		<li><a href="{{ path(route, query|merge({(pageParameterName): next})) }}">下一页</a></li>
+	</ul>
+	{% endif %}
+</div>
+{% endif %}

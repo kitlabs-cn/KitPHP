@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="renderer" content="webkit">
+		<title>{% block title %}水政执法监督平台{% endblock %}</title>
+		{% block stylesheets %}
+		  <link rel="stylesheet" href="{{ asset('public/pintuer2/css/pintuer.css') }}">
+		  <link rel="stylesheet" href="{{ asset('public/pintuer2/css/admin.css') }}">
+		{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+	</head>
+
+	<body>
+	   {% block body %}
+	       {% block nav_content %}
+    		<div class="lefter">
+    			<div class="logo">
+    				<a href="/admin" target="_blank"><img src="{{ asset('public/pintuer2/images/logo.png') }}" alt="后台管理系统" /></a>
+    			</div>
+    		</div>
+    		<div class="righter nav-navicon" id="admin-nav">
+    			<div class="mainer">
+    				<div class="admin-navbar">
+    					<span class="float-right">
+    	                    <a class="button button-little bg-main" href="{{ path('kit_web_homepage') }}" target="_blank">前台首页</a>
+    	                    <a class="button button-little bg-black" href="{{ path('kit_admin_user_password') }}">修改密码</a>
+    	                    <a class="button button-little bg-yellow" href="{{ path('kit_admin_logout') }}">注销登录</a>
+    	                </span>
+    	                {%set menuList = knp_menu_get('KitAdminBundle:AdminBuilder:mainMenu')%}
+    	                {% set currentMenu = knp_menu_get_current_item(menuList) %}
+{#     	                {{ dump(menuList.children) }}#}
+{#     	                {{ dump(currentMenu.name) }}#}
+{#     	                {{ dump(app.request.attributes.get('id')) }}#}
+    	                
+    	                {%if menuList.children is defined and menuList.children is not empty %}
+    					<ul class="nav nav-inline admin-nav">
+                           {%for v in menuList.children %}
+    						<li {% if app.request.attributes.get('_route') == v.name or (currentMenu.parent.name is defined and currentMenu.parent.name == v.name)%}class="active"{% endif %}>
+    						  <a href="{{ v.uri }}" class="{{ v.attributes.icon }}">&nbsp;{{ v.label }}</a>
+    						  {%if v.children is defined and v.children is not empty %}
+    						      <ul>
+    						          {%for vv in v.children %}
+								        <li {% if vv.attributes.show is defined and vv.attributes.show is not null and vv.attributes.show == 'off' %} style="display:none;" {% endif %} {% if app.request.attributes.get('_route') == vv.name %}class="active"{% endif %}><a href="{{ vv.uri }}">{{ vv.label }}</a></li>
+								      {% endfor %}
+								  </ul>
+    						  {% endif %}
+    						</li>
+    						{% endfor %}
+    					</ul>
+    					{% endif %}
+    					{# {{ dump(menuList.children) }}
+    					{{ dump(app.request) }} #}
+    				</div>
+    				<div class="admin-bread">
+    					<span>您好，
+    					{% if app.user %}
+                            {{ app.user.username }}
+                         {% else %}
+                            游客
+                         {% endif %}，欢迎您的光临。
+                          &nbsp;&nbsp;&nbsp;</span>
+    					<ul class="bread">
+    						<li><a href="index.html" class="icon-home"> 开始</a></li>
+    						<li>后台首页</li>
+    					</ul>
+    				</div>
+    			</div>
+    		</div>
+        {% endblock %}
+        <div class="admin">
+        {% block main_content %}
+		{% endblock %}
+		</div>
+	{% endblock %}
+	{% block javascripts %}
+	    <script src="{{ asset('public/pintuer2/js/jquery.js') }}"></script>
+		<script src="{{ asset('public/pintuer2/js/pintuer.js') }}"></script>
+		<script src="{{ asset('public/pintuer2/js/respond.min.js') }}"></script>
+		<script src="{{ asset('public/pintuer2/js/admin.js') }}"></script>
+		<script src="{{ asset('public/layer/layer.js') }}"></script>
+	{% endblock %}
+	</body>
+
+</html>

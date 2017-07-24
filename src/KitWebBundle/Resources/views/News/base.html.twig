@@ -1,0 +1,32 @@
+{% extends '@KitWeb/layout.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="line margin-top">
+            <div class="xs6 xm4 xb3">
+            {% block content_left %}
+                <ul class="list-group margin-top margin-right">
+                    <li class="bg-main bg-border text-white">{{ catename }}</li>
+                    {% for item in subclass %}
+                	<li>{{ item.name }}</li>
+                	{% endfor %}
+                </ul>
+                
+                <div class="panel margin-top margin-right">
+                	<div class="panel-head">最新新闻</div>
+                	<div class="panel-body">
+                	   {% for item in latest %}
+                	   <p><a href="{{ path('kit_web_news_show', {id: item.id}) }}">{{ item.title  | truncate(16, false, '...')  }}</a></p>
+                	   {% endfor %}
+                	</div>
+                </div>
+            {% endblock %}
+            </div>
+            <div class="xs6 xm8 xb9">
+            {% block content_right %}
+                
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

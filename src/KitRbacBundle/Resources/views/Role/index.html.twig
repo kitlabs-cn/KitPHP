@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %} 
+{% block main_content %}
+<form method="post">
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong>用户组列表</strong>
+		</div>
+		{% if pagination is defined and pagination is not empty %}
+		<div class="padding border-bottom">
+			<input type="button" class="button button-small checkall"
+				name="checkall" checkfor="id" value="全选" /> <a href="{{ path('kit_rbac_role_add') }}" type="button"
+				class="button button-small border-green">添加角色</a> 
+		</div>
+		<table class="table table-hover">
+			<tr>
+				<th width="45">选择</th>
+				<th width="120">角色名称</th>
+				<th width="*">角色备注</th>
+				<th width="100">状态</th>
+				<th width="100">操作</th>
+			</tr>
+			{% for item in pagination %}
+			<tr>
+				<td><input type="checkbox" name="id" value="1" /></td>
+				<td>{{ item.rolename }}</td>
+				<td>{{ item.note }}</td>
+				<td>{% if item.status == 1 %}启用{% else %}禁用{% endif %}</td>
+				<td><a class="button border-blue button-little" href="#">修改</a> <a
+					class="button border-yellow button-little" href="#" onclick="{
+					if(confirm('确认删除?')){return true;}returnfalse;}">删除</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+		{{ knp_pagination_render(pagination,'pagination.html.twig') }}
+		{% endif %}
+	</div>
+</form>
+{% endblock %}

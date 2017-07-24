@@ -1,0 +1,48 @@
+{% extends '@KitWeb/layout.html.twig' %} {% block content %}
+<div class="container">
+    <div class="line margin-top">
+        <div class="xl12 xs3 xm3 xb3">
+            {% block conctent_left %}
+            <div class="collapse">
+            	<div class="panel active border-main">
+            		<div class="panel-head border-main bg-main">
+            			<h4>个人信息设置</h4>
+            		</div>
+            		<div class="panel-body">
+            		      <h5><a href="{{ path('kit_user_info') }}">修改个人资料</a></h5>
+            		      <h5><a href="{{ path('kit_user_password') }}">修改密码</a></h5>
+            		</div>
+            	</div>
+            	<div class="panel active border-main">
+            		<div class="panel-head border-main bg-main">
+            			<h4>其他部门相关</h4>
+            		</div>
+            		<div class="panel-body">
+            		      <h5><a href="{{ path('kit_user_dept') }}">其他部门认证</a></h5>
+            		      <h5><a href="{{ path('kit_user_matter') }}">案件移交</a></h5>
+            		</div>
+            	</div>
+            	<div class="panel active border-main">
+            		<div class="panel-head border-main bg-main">
+            			<h4>企业相关</h4>
+            		</div>
+            		<div class="panel-body">
+            		      <h5><a href="{{ path('kit_user_company') }}">企业认证</a></h5>
+            		      <h5><a href="{{ path('kit_user_notice') }}">处罚通知</a></h5>
+            		</div>
+            	</div>
+            </div>
+            {% endblock %}
+        </div>
+        
+        <div class="xl12 xs9 xm9 xb9">
+            <div class="user-right">
+            {% block content_right %}
+                                欢迎您, {{ app.user.name }}
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+	
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+kit_admin_homepage:
+    path:     /
+    defaults: { _controller: KitAdminBundle:Default:index }
+kit_admin_upload:
+    path:     /upload
+    defaults: { _controller: KitAdminBundle:Default:upload }
+kit_admin_flow:
+    path:     /flow
+    defaults: { _controller: KitAdminBundle:Default:flow }
+kit_admin_login:
+    path:     /login
+    defaults: { _controller: KitAdminBundle:Login:login }
+kit_admin_login_check:
+    path:     /login_check
+    defaults: { _controller: KitAdminBundle:Login:loginCheck }
+kit_admin_logout:
+    path:     /logout
+    defaults: { _controller: KitAdminBundle:Login:logout }
+kit_admin_user:
+    path:     /user/{page}
+    defaults: { _controller: KitAdminBundle:User:index, page : 1 }
+kit_admin_user_show:
+    path:     /{id}/user
+    defaults: { _controller: KitAdminBundle:User:show, id: 0 }
+kit_admin_user_password:
+    path:     /password
+    defaults: { _controller: KitAdminBundle:User:password }
+kit_admin_user_check:
+    path:     /{id}/check
+    defaults: { _controller: KitAdminBundle:User:check, id: 0 }
+kit_admin_appeal:
+    path:     /appeal
+    defaults: { _controller: KitAdminBundle:Appeal:index }
+kit_admin_appeal_delete:
+    path:     /appeal/delete
+    defaults: { _controller: KitAdminBundle:Appeal:delete }
+kit_admin_appeal_show:
+    path:     /appeal/{id}/show
+    defaults: { _controller: KitAdminBundle:Appeal:show , id: 0}
+kit_admin_report:
+    path:     /webreport
+    defaults: { _controller: KitAdminBundle:Report:index }
+kit_admin_report_show:
+    path:     /webreport/{id}/show
+    defaults: { _controller: KitAdminBundle:Report:show,id: 0 }
+kit_admin_report_delete:
+    path:     /webreport/delete
+    defaults: { _controller: KitAdminBundle:Report:delete }

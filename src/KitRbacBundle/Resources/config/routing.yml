@@ -1,0 +1,27 @@
+kit_rbac_user:
+    path:     /user/{page}
+    defaults: { _controller: KitRbacBundle:Default:index, page: 1 }
+    requirements:
+        page: '\d+'
+kit_rbac_user_add:
+    path:     /add
+    defaults: { _controller: KitRbacBundle:Default:add }
+kit_rbac_user_delete:
+    path:     /del
+    defaults: { _controller: KitRbacBundle:Default:delete }
+kit_rbac_user_update:
+    path:     /update/{id}
+    defaults: { _controller: KitRbacBundle:Default:update, id: 1 }
+    requirements:
+        id: '\d+'
+kit_rbac_role:
+    path:     /role/{page}
+    defaults: { _controller: KitRbacBundle:Role:index, page: 1 }
+    requirements:
+        page: '\d+'
+kit_rbac_role_add:
+    path:     /role/add
+    defaults: { _controller: KitRbacBundle:Role:add }
+kit_rbac_role_del:
+    path:     /role/del
+    defaults: { _controller: KitRbacBundle:Role:del }

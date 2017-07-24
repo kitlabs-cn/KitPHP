@@ -1,0 +1,50 @@
+group:
+    edit:
+        submit: 'Muuda grupp'
+    show:
+        name: 'Grupi nimi'
+    new:
+        submit: 'Uus grupp'
+security:
+    login:
+        username: Kasutajanimi
+        password: Salasõna
+        remember_me: 'Jäta mind meelde'
+        submit: Sisene
+profile:
+    show:
+        username: Kasutajanimi
+        email: E-mail
+    edit:
+        submit: Uuenda
+change_password:
+    submit: 'Muuda salasõna'
+registration:
+    check_email: 'E-mail on saadetud aadressile %email%. Selles sisaldub viide, mis tuleb konto aktiveerimiseks avada.'
+    confirmed: 'Palju õnne %username%, Sinu konto on aktiveeritud.'
+    submit: Registreeri
+    email:
+        message: "Tere %username%!\n\nKonto valideerimise edukaks lõpetamiseks palun vajutage viitel %confirmationUrl%\n\nParimatega,\nTiim.\n"
+resetting:
+    check_email: 'E-mail on saadetud aadressile %email%. Selles sisaldub viide, mis tuleb salasõna muutmiseks avada.'
+    request:
+        username: Kasutajanimi
+        submit: 'Saada salasõna'
+    reset:
+        submit: 'Muuda salasõna'
+    email:
+        message: "Tere %username%!\n\nSalasõna muutmiseks palun vajutage viitel %confirmationUrl%\n\nParimatega,\nTiim.\n"
+layout:
+    logout: Välju
+    login: Sisene
+    register: Registreeri
+    logged_in_as: 'Sisse logitud: %username%'
+form:
+    group_name: 'Grupi nimi'
+    username: Kasutajanimi
+    email: E-mail
+    current_password: 'Vana salasõna'
+    password: Salasõna
+    password_confirmation: 'Salasõna uuesti'
+    new_password: 'Uus salasõna'
+    new_password_confirmation: 'Salasõna uuesti'

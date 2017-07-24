@@ -1,0 +1,22 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    kit.file_uploader:
+        class: KitBaseBundle\Service\FileUploader
+        arguments: ['%uploads_directory%']
+    kit_web.form_login_authenticator:
+        class: KitWebBundle\Security\FormLoginAuthenticator
+        arguments: ["@router", "@security.password_encoder"]
+    kit_admin.admin_form_login_authenticator:
+        class: KitAdminBundle\Security\AdminFormLoginAuthenticator
+        arguments: ["@router", "@security.password_encoder"]
+    twig.extension.text:
+           class: Twig_Extensions_Extension_Text
+           tags:
+               - { name: twig.extension }

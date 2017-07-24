@@ -1,0 +1,55 @@
+kit_web_homepage:
+    path:     /
+    defaults: { _controller: KitWebBundle:Default:index }
+kit_user_homepage:
+    path:     /user
+    defaults: { _controller: KitWebBundle:User:index }
+kit_user_report:
+    path:     /report
+    defaults: { _controller: KitWebBundle:User:report }
+kit_user_password:
+    path:     /user/password
+    defaults: { _controller: KitWebBundle:User:password }
+kit_user_info:
+    path:     /user/info
+    defaults: { _controller: KitWebBundle:User:info }
+kit_user_matter:
+    path:     /user/matter
+    defaults: { _controller: KitWebBundle:User:matter }
+kit_user_notice:
+    path:     /user/{page}/notice
+    defaults: { _controller: KitWebBundle:User:notice, page: 1 }
+kit_user_notice_show:
+    path:     /user/notice/{id}/show
+    defaults: { _controller: KitWebBundle:User:show, id: 0 }
+kit_user_company:
+    path:     /user/company
+    defaults: { _controller: KitWebBundle:User:company }
+kit_user_dept:
+    path:     /user/dept
+    defaults: { _controller: KitWebBundle:User:dept }
+kit_user_appeal:
+    path:     /user/appeal
+    defaults: { _controller: KitWebBundle:User:appeal }
+kit_web_news_list:
+    path:     /{id}/list/{page}
+    defaults: { _controller: KitWebBundle:News:list, page: 1}
+    requirements:
+        page: '\d+'
+kit_web_news_show:
+    path:     /{id}/show
+    defaults: { _controller: KitWebBundle:News:show, id: 1 }
+    requirements:
+        page: '\d+'
+kit_web_login:
+    path:     /login
+    defaults: { _controller: KitWebBundle:User:login }
+kit_web_login_check:
+    path:     /login_check
+    defaults: { _controller: KitWebBundle:User:login_check }
+kit_web_logout:
+    path:     /logout
+    defaults: { _controller: KitWebBundle:User:logout }
+kit_web_register:
+    path:     /register
+    defaults: { _controller: KitWebBundle:User:register }

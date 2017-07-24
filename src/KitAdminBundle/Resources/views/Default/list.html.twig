@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block main_content %}
+    <table class="table">
+    	<tr>
+    		<th>自动编号</th>
+    		<th>姓名</th>
+    		<th>警务编号</th>
+    		<th>性别</th>
+    		<th>身份证号</th>
+    		<th>手机号</th>
+    		<th>所属地市</th>
+    		<th>所属分局</th>
+    		<th>职务</th>
+    		<th>权限组</th>
+    		<th>状态</th>
+    	</tr>
+    	
+    	{% for admin in list %}
+    	<tr>
+    		<td>{{ admin.id }}</td>
+    		<td>{{ admin.username }}</td>
+    		<td>{{ admin.number }}</td>
+    		<td>
+        		{% if admin.gender == 1 %}
+        		  男
+        		{% else %}
+        		女
+        		{% endif %}
+    		</td>
+    		<td>{{ admin.cardid }}</td>
+    		<td>{{ admin.mobile }}</td>
+    		<td>{{ admin.cityId }}</td>
+    		<td>{{ admin.subofficeId }}</td>
+    		<td>{{ admin.jobTitle }}</td>
+    		<td>{{ admin.group.name }}</td>
+    		<td>2</td>
+    	</tr>
+    	{% endfor %}
+    	
+    </table>
+{% endblock %}

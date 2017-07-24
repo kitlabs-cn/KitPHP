@@ -1,0 +1,82 @@
+﻿﻿{% import '@KitAdmin/Common/macro_message.html.twig' as kit_macro %}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="renderer" content="webkit">
+
+		<title>
+			{% block title %}Welcome!{% endblock %}
+		</title>
+
+        {#公共CSS开始#}
+        {% block stylesheets %}
+            {% include '@KitAdmin/Common/stylesheet.html.twig' %}
+        {% endblock %}
+        {#公共CSS结束#}
+
+        {#自定义CSS开始#}
+		{% block css %}
+		{% endblock %}
+        {#自定义CSS结束#}
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+	</head>
+
+	<body>
+	   {% block body %}
+	       {% block nav_content %}
+    		<div class="lefter">
+    			<div class="logo">
+    				<a href="http://www.pintuer.com" target="_blank"><img src="{{ asset('public/pintuer2/images/logo.png') }}" alt="后台管理系统" /></a>
+    			</div>
+    		</div>
+    		<div class="righter nav-navicon" id="admin-nav">
+    			<div class="mainer">
+    				<div class="admin-navbar">
+    					<span class="float-right">
+    	                    <a class="button button-little bg-main" href="http://www.pintuer.com" target="_blank">前台首页</a>
+    	                    <a class="button button-little bg-yellow" href="login.html">注销登录</a>
+    	                </span>
+						<!--左侧导航开始-->
+                        {% block leftmenu %}
+                            {% include '@KitAdmin/Common/left_menu.html.twig' %}
+                        {% endblock %}
+						<!--左侧导航结束-->
+    				</div>
+    				<div class="admin-bread">
+    					<span>您好，admin，欢迎您的光临。</span>
+						<!--面包屑开始-->
+                        {% block breadcrumb %}
+                            {% include '@KitAdmin/Common/bread_crumb.html.twig' %}
+                        {% endblock %}
+						<!--面包屑结束-->
+    				</div>
+    			</div>
+    		</div>
+        {% endblock %}
+        <div class="admin">
+
+            {#右侧内容块开始#}
+			{% block main_content %}
+			{% endblock %}
+            {#右侧内容块结束#}
+		</div>
+	{% endblock %}
+
+   {#公共js开始#}
+   {% block javascripts %}
+	   {% include '@KitAdmin/Common/javascript.html.twig' %}
+   {% endblock %}
+   {#公共js结束#}
+
+   {#自定义js块开始#}
+   {% block js %}
+   {% endblock %}
+   {#自定义js块结束#}
+
+	</body>
+</html>

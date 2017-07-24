@@ -1,0 +1,52 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+{% block content %}
+    {% block fos_user_content %}
+		<div class="container">
+			<div class="line">
+				<div class="xs6 xm4 xs3-move xm4-move">
+					<br />
+					<br />
+					<div class="media media-y">
+						<a href="/" target="_blank"><img src="{{ asset('public/pintuer2/images/logo.png') }}" class="radius" alt="logo" /></a>
+					</div>
+					<br />
+					<br />
+					<form action="{{ path("fos_user_security_check") }}" method="post">
+						<div class="panel">
+							<div class="panel-head"><strong>管理系统登录</strong></div>
+							<div class="panel-body" style="padding:30px;">
+							     {% if error %}
+                                    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                {% endif %}
+                                 {% if csrf_token %}
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                                {% endif %}
+								<div class="form-group">
+									<div class="field field-icon-right">
+										<input type="text" class="input" id="username" name="_username" value="{{ last_username }}" placeholder="登录账号" data-validate="required:请填写账号,length#>=5:账号长度不符合要求" />
+										<span class="icon icon-user"></span>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="field field-icon-right">
+										<input type="password" class="input" id="password" name="_password" placeholder="登录密码" data-validate="required:请填写密码,length#>=8:密码长度不符合要求" />
+										<span class="icon icon-key"></span>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="field">
+										<input type="text" class="input" name="passcode" placeholder="填写右侧的验证码" data-validate="required:请填写右侧的验证码"/>
+										<img src="{{ asset('public/pintuer2/images/passcode.jpg') }}" width="80" height="32" class="passcode" />
+									</div>
+								</div>
+							</div>
+							<div class="panel-foot text-center">
+								<input type="submit" class="button button-block bg-main text-big" id="_submit" name="_submit" value="立即登录后台" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+    {% endblock %}
+{% endblock %}

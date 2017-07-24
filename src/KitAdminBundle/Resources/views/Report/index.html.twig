@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block main_content %}
+<form method="post">
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong>群众举报列表</strong>
+		</div>
+		{% if pagination is defined and pagination is not empty %}
+		<table class="table table-hover">
+			<tr>
+				<th width="45">选择</th>
+				<th width="320">举报标题</th>
+				<th width="*">手机号</th>
+				<th width="160">举报人</th>
+				<th width="160">添加时间</th>
+				<th width="200">操作</th>
+			</tr>
+			{% for item in pagination %}
+			<tr id="item_{{ item.id }}">
+				<td><input type="checkbox" name="id" value="1" /></td>
+				<td>{{ item.title }}</td>
+				<td>{{ item.mobile }}</td>
+				<td>{{ item.name }}</td>
+				<td>{% if item.createAt %}{{ item.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+				<td>
+				    <a class="button border-green button-little" href="{{ path('kit_admin_report_show', { 'id': item.id }) }}">查看</a>
+				    <a
+					class="button border-yellow button-little" href="#" onclick="{
+					if(confirm('确认删除?')){return delItem({{ item.id }});}returnfalse;}">删除</a>
+				    </td>
+			</tr>
+			{% endfor %}
+		</table>
+		{{ knp_pagination_render(pagination,'pagination.html.twig') }}
+		{% endif %}
+	</div>
+</form>
+{% endblock %}
+{% block javascripts %} {{ parent() }}
+<script>
+   function delItem(id){
+	   $.post("{{ path('kit_admin_report_delete') }}", { id: id },
+			   function(data){
+			     if(data.status == 1){
+				     $('#item_'+id).hide();
+				     alert(data.msg);
+				     }else{
+					     alert(data.msg);}
+			   }, "json");
+	}
+</script>
+{% endblock %}

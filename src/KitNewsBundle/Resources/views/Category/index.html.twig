@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %} 
+{% block main_content %}
+    <div class="panel admin-panel">
+		<div class="panel-head">
+			<strong>分类列表</strong>
+		</div>
+		{% if pagination is defined and pagination is not empty %}
+		<div class="padding border-bottom">
+			<input type="button" class="button button-small checkall"
+				name="checkall" checkfor="id" value="全选" /> <a href="{{ path('kit_news_category_add') }}" type="button"
+				class="button button-small border-green">添加分类</a>
+		</div>
+		<table class="table table-hover">
+			<tr>
+				<th width="45">选择</th>
+				<th width="120">分类名称</th>
+				<th width="*">修改时间</th>
+				<th width="100">状态</th>
+				<th width="100">操作</th>
+			</tr>
+			{% for item in pagination %}
+			<tr id="item_{{ item.id }}">
+				<td><input type="checkbox" name="id" value="1" /></td>
+				<td>{{ item.name }}</td>
+				<td>{{ item.updateAt | date('Y-m-d') }}</td>
+				<td>{% if item.status == 1 %}启用{% else %}禁用{% endif %}</td>
+				<td><a class="button border-blue button-little" href="{{ path('kit_news_category_update', {'id': item.id}) }}">修改</a> <a class="button border-yellow button-little" href="#" onclick="{
+					if(confirm('确认删除?')){return delItem({{ item.id }});}returnfalse;}">删除</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+		{{ knp_pagination_render(pagination,'pagination.html.twig') }}
+		{% endif %}
+	</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+   <script>
+   function delItem(id){
+	   $.post("{{ path('kit_news_category_delete') }}", { id: id },
+			   function(data){
+			     if(data.status == 1){
+				     $('#item_'+id).hide();
+				     alert(data.msg);
+				     }else{
+					     alert(data.msg);}
+			   }, "json");
+	}
+</script>
+{% endblock %}

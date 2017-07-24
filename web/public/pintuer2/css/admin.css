@@ -1,0 +1,389 @@
+body {
+	background-color: #f2f9fd;
+}
+.panel {
+	background: #fff;
+}
+form .form-group:last-child {
+	padding-bottom: 0;
+}
+.passcode {
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 32px;
+	margin: 1px;
+	border-left: solid 1px #ddd;
+	text-align: center;
+	line-height: 32px;
+	border-radius: 0 4px 4px 0;
+}
+.lefter {
+	position: relative;
+	float: left;
+	width: 180px;
+	margin-right: -180px;
+	background: #e6f2fb;
+	text-align: center;
+}
+.righter {
+	float: right;
+	width: 100%;
+	padding-top: 15px;
+	background: #e6f2fb;
+}
+.mainer {
+	margin-left: 180px;
+}
+.logo {
+	border-bottom: solid 1px #b5cfd9;
+	padding: 23px 10px;
+}
+.admin-navbar {
+	border-bottom: solid 5px #09c;
+	padding: 0 15px;
+}
+.admin-nav li {
+	display: inline-block;
+}
+.admin-nav ul {
+	display: none;
+}
+.admin-nav ul li {
+	float: none;
+	display: block;
+	height: 50px;
+	padding:10px 0;
+}
+.admin-nav ul ul li {
+	list-style: circle;
+	margin-left: 15px;
+}
+.admin-nav .active a {
+	background: #09c;
+	color: #fff;
+	border-radius: 4px 4px 0 0;
+}
+.admin-nav .active ul {
+	display: block;
+	position: fixed;
+	left: 0;
+	width: 180px;
+	margin-top: 61px;
+}
+.admin-nav .active ul a {
+	background: transparent;
+	color: #333;
+	border-radius: 0;
+}
+.admin-nav .active .active a {
+	background: #e6f2fb;
+	border-top: solid 1px #b5cfd9;
+	border-bottom: solid 1px #b5cfd9;
+}
+.admin-bread {
+	background: #f2f9fd;
+	border-left: solid 1px #b5cfd9;
+	border-bottom: solid 1px #b5cfd9;
+	line-height: 20px;
+}
+.admin-bread .bread {
+	margin-bottom: 0;
+}
+.admin-bread span {
+	float: right;
+	font-size: 12px;
+	color: #666;
+	line-height: 36px;
+}
+.admin {
+	padding: 30px;
+	background: #fff;
+	position: fixed;
+	border-left: solid 1px #b5cfd9;
+	right: 0;
+	bottom: 0;
+	top: 87px;
+	left: 180px;
+	overflow: auto;
+}
+.alert {
+	margin-bottom: 20px;
+}
+.admin-panel td {
+	line-height: 24px;
+}
+.admin-panel td .button {
+	line-height: 16px;
+}
+.admin-panel .pagination .active {
+	background: #fff;
+}
+/*--------鑷畾涔夐摼鎺ラ鑹�鍙�)--------*/
+
+a {
+	color: #333;
+	text-decoration: none;
+}
+/*閾炬帴-棰滆壊*/
+
+a:focus,
+a:hover {
+	color: #09c;
+}
+/*閾炬帴-鎮诞棰滆壊*/
+/*--------鑷畾涔夋枃鏈鑹�-------*/
+
+.text-main,
+a.text-main:link,
+a.text-main:visited,
+.button.border-main,
+blockquote.border-main strong,
+.pager.border-main a,
+.pager-prev.border-main,
+.pager-next.border-main,
+.nav a:hover,
+.nav-menu.nav-pills .active ul a:hover,
+.bg-inverse .nav-menu ul a:hover,
+.bg-inverse .nav.nav-menu.nav-tabs ul a:hover,
+.bg-inverse .nav.nav-menu.nav-tabs .active ul a:hover,
+.bg-inverse .nav.nav-menu.nav-pills ul a:hover,
+.bg-inverse .nav.nav-menu.nav-pills .active ul a:hover {
+	color: #09c;
+}
+/*鏂囨湰-涓昏壊*/
+
+.text-sub,
+a.text-sub:link,
+a.text-sub:visited,
+.button.border-sub,
+blockquote.border-sub strong,
+.pager.border-sub a,
+.pager-prev.border-sub,
+.pager-next.border-sub {
+	color: #2c7;
+}
+/*鏂囨湰-杈呰壊*/
+
+.text-back,
+a.text-back:link,
+a.text-back:visited,
+.button.border-back,
+blockquote.border-back,
+.pager.border-back a,
+.pager-prev.border-back,
+.pager-next.border-back {
+	color: #b5cfd9;
+}
+/*鏂囨湰-鑳屾櫙鑹�/
+
+.text-mix,
+a.text-mix:link,
+a.text-mix:visited,
+.button.border-mix,
+blockquote.border-mix,
+.pager.border-mix a,
+.pager-prev.border-mix,
+.pager-next.border-mix {
+	color: #5cd;
+}
+/*鏂囨湰-铻嶅悎鑹�/
+
+.text-dot,
+a.text-dot:link,
+a.text-dot:visited,
+.button.border-dot,
+blockquote.border-dot strong,
+.pager.border-dot a,
+.pager-prev.border-dot,
+.pager-next.border-dot {
+	color: #f60;
+}
+/*鏂囨湰-鐐圭紑鑹�/
+/*--------鑷畾涔夎儗鏅壊--------*/
+
+.bg-main,
+.border-main .button.active,
+.pointer.border-main .active,
+.nav-pills.border-main .active a,
+.nav-main.border-main .nav-head,
+.pagination.border-main .active {
+	background-color: #09c;
+}
+/*鑳屾櫙-涓昏壊*/
+
+.bg-sub,
+.border-sub .button.active,
+.pointer.border-sub .active,
+.nav-pills.border-sub .active a,
+.nav-main.border-sub .nav-head,
+.pagination.border-sub .active {
+	background-color: #2c7;
+}
+/*鑳屾櫙-杈呰壊*/
+
+.bg-back,
+.border-back .button.active,
+.pointer.border-back .active,
+.nav-pills.border-back .active a,
+.nav-main.border-back .nav-head,
+.pagination.border-back .active {
+	background-color: #f2f9fd;
+}
+/*鑳屾櫙-鑳屾櫙鑹�/
+
+.bg-mix,
+.border-mix .button.active,
+.pointer.border-mix .active,
+.nav-pills.border-mix .active a,
+.pagination.border-mix .active {
+	background-color: #5cd;
+}
+/*鑳屾櫙-铻嶅悎鑹�/
+
+.bg-dot,
+.border-dot .button.active,
+.pointer.border-dot .active,
+.nav-pills.border-dot .active a,
+.nav-main.border-dot .nav-head,
+.pagination.border-dot .active {
+	background-color: #f60;
+}
+/*鑳屾櫙-鐐圭紑鑹�/
+/*--------鑷畾涔夎竟妗嗚壊--------*/
+
+.border-main,
+.border-main .button,
+.border-main .tab-nav li a,
+.border-main .tab-body,
+.button.bg-main,
+.selected.border-main,
+.pointer.border-main li,
+.nav.border-main .active a,
+.nav.nav-tabs.border-main,
+.nav-main.border-main a,
+.nav-main.border-main .nav-head,
+.pagination.border-main li,
+.pager.border-main a {
+	border-color: #09c;
+}
+/*杈规-涓昏壊*/
+
+.border-sub,
+.border-sub .button,
+.border-sub .tab-nav li a,
+.border-sub .tab-body,
+.button.bg-sub,
+.selected.border-sub,
+.pointer.border-sub li,
+.nav.border-sub .active a,
+.nav.nav-tabs.border-sub,
+.nav-main.border-sub a,
+.nav-main.border-sub .nav-head,
+.pagination.border-sub li,
+.pager.border-sub a {
+	border-color: #2c7;
+}
+/*杈规-杈呰壊*/
+
+.border-back,
+.border-back .button,
+.border-back .tab-nav li a,
+.border-back .tab-body,
+.button.bg-back,
+.selected.border-back,
+.pointer.border-back li,
+.nav.border-back .active a,
+.nav.nav-tabs.border-back,
+.nav-main.border-back a,
+.nav-main.border-back .nav-head,
+.pagination.border-back li,
+.pager.border-back a {
+	border-color: #b5cfd9;
+}
+/*杈规-鑳屾櫙鑹�/
+
+.border-mix,
+.border-mix .button,
+.border-mix .tab-nav li a,
+.border-mix .tab-body,
+.button.bg-mix,
+.selected.border-mix,
+.pointer.border-mix li,
+.nav.border-mix .active a,
+.nav.nav-tabs.border-mix,
+.nav-main.border-mix a,
+.nav-main.border-mix .nav-head,
+.pagination.border-mix li,
+.pager.border-mix a {
+	border-color: #5cd;
+}
+/*杈规-铻嶅悎鑹�/
+
+.border-dot,
+.border-dot .button,
+.border-dot .tab-nav li a,
+.border-dot .tab-body,
+.button.bg-dot,
+.selected.border-dot,
+.pointer.border-dot li,
+.nav.border-dot .active a,
+.nav.nav-tabs.border-dot,
+.nav-main.border-dot a,
+.nav-main.border-dot .nav-head,
+.pagination.border-dot li,
+.pager.border-dot a {
+	border-color: #f60;
+}
+/*杈规-鐐圭紑鑹�/
+/*--------鑷畾涔夋寜閽偓娴枃鏈�杈规鍙婅儗鏅壊--------*/
+
+.button.border-main:hover,
+.button.border-main:focus,
+.button.bg-main:hover,
+.button.bg-main:focus {
+	color: #fff;
+	border-color: #0ae;
+	background-color: #0ae;
+}
+/*涓昏壊-鏂囨湰-杈规-鑳屾櫙*/
+
+.button.border-sub:hover,
+.button.border-sub:focus,
+.button.bg-sub:hover,
+.button.bg-sub:focus {
+	color: #fff;
+	border-color: #b5cfd9;
+	background-color: #b5cfd9;
+}
+/*閰嶈壊-鏂囨湰-杈规-鑳屾櫙*/
+
+.button.border-back:hover,
+.button.border-back:focus,
+.button.bg-back:hover,
+.button.bg-back:focus {
+	color: #333;
+	border-color: #def;
+	background-color: #def;
+}
+/*鑳屾櫙鑹�鏂囨湰-杈规-鑳屾櫙*/
+
+.button.border-mix:hover,
+.button.border-mix:focus,
+.button.bg-mix:hover,
+.button.bg-mix:focus {
+	color: #333;
+	border-color: #3bc;
+	background-color: #3bc;
+}
+/*铻嶅悎-鏂囨湰鑹�杈规-鑳屾櫙*/
+
+.button.border-dot:hover,
+.button.border-dot:focus,
+.button.bg-dot:hover,
+.button.bg-dot:focus {
+	color: #fff;
+	border-color: #f00;
+	background-color: #f00;
+}
+/*鐐圭紑鑹�鏂囨湰-杈规-鑳屾櫙*/

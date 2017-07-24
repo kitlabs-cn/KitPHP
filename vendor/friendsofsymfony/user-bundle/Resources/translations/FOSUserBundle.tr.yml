@@ -1,0 +1,65 @@
+group:
+    edit:
+        submit: 'Grubu Güncelle'
+    show:
+        name: 'Grup Adı'
+    new:
+        submit: 'Grup Yarat'
+    flash:
+        updated: 'Grup Güncellendi.'
+        created: 'Grup Yaratıldı.'
+        deleted: 'Grup Silindi.'
+security:
+    login:
+        username: 'Kullanıcı adı'
+        password: Parola
+        remember_me: 'Beni hatırla'
+        submit: Giriş
+profile:
+    show:
+        username: 'Kullanıcı adı'
+        email: 'E-posta adresi'
+    edit:
+        submit: Güncelle
+    flash:
+        updated: 'Profil Güncellendi.'
+change_password:
+    submit: 'Parolayı Değiştir'
+    flash:
+        success: 'Parola değiştirildi.'
+registration:
+    check_email: '%email% adresine hesabınızı aktive etmek için kullanacağınız aktivasyon linkini barındıran bir e-posta gönderildi.'
+    confirmed: 'Tebrikler %username%. Hesabınız şu anda aktifleştirildi.'
+    back: 'Asıl sayfaya geri dön.'
+    submit: 'Kayıt ol'
+    flash:
+        user_created: 'Kullanıcı başarıyla yaratıldı.'
+    email:
+        subject: 'Hoşgeldin %username%!'
+        message: "Hoşgeldiniz %username%!\n\nHesabınızın aktivasyonunu tamamlamak için lütfen  %confirmationUrl%\nadresini ziyaret ediniz.\n\nTeşekkürler,\nWeb Takımı.\n"
+resetting:
+    check_email: '%email% adresine parolanızı sıfırlama adresi bulunan bir e-posta gönderildi.'
+    request:
+        username: 'Kullanıcı adı ya da e-posta adresi'
+        submit: 'Parolayı Sıfırla'
+    reset:
+        submit: 'Parolayı değiştir'
+    flash:
+        success: 'Parola başarıyla değiştirildi.'
+    email:
+        subject: 'Parola Yenileme'
+        message: "Merhaba  %username%!\n\nParolanızı yenilemek için  %confirmationUrl%\nadresini ziyaret ediniz.\n\nTeşekkürler,\nWeb Takımı.\n"
+layout:
+    logout: Çıkış
+    login: Giriş
+    register: 'Kayıt ol'
+    logged_in_as: '%username% olarak giriş yapıldı'
+form:
+    group_name: 'Gurup Adı'
+    username: 'Kullanıcı adı'
+    email: 'E-posta adresi'
+    current_password: 'Geçerli Parola'
+    password: Parola
+    password_confirmation: Onay
+    new_password: 'Yeni Parola'
+    new_password_confirmation: Onay

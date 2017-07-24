@@ -1,0 +1,32 @@
+{% extends '@KitWeb/User/base.html.twig' %} 
+{% block content_right %}
+    <h3>通知公告</h3>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>案件编号:</th>
+                <td>{{ item.matter }}</td>
+            </tr>
+            <tr>
+                <th>公司名称:</th>
+                <td>{{ item.company }}</td>
+            </tr>
+            <tr>
+                <th>通知标题:</th>
+                <td>{{ item.title }}</td>
+            </tr>
+            <tr>
+                <th>通知内容:</th>
+                <td>{{ item.content }}</td>
+            </tr>
+            <tr>
+                <th>添加时间:</th>
+                <td>{% if item.createAt %}{{ item.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <a class="button border-main button" href="{{ path('kit_user_appeal', { 'id': item.id }) }}">申诉陈辩</a>
+{% endblock %}

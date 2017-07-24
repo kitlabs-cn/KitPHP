@@ -1,0 +1,37 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
+
+matrix:
+  include:
+    - php: 5.6
+      env: SYMFONY_VERSION='2.3.*'
+    - php: 5.6
+      env: SYMFONY_VERSION='2.5.*'
+    - php: 5.6
+      env: SYMFONY_VERSION='3.0.*'
+
+sudo: false
+
+cache:
+  directory:
+    - $HOME/.composer/cache
+
+before_install:
+  - sh -c 'if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;'
+
+install:
+  - composer install
+
+script:
+  - phpunit --coverage-text
+  - phantomjs Resources/js/run_jsunit.js Resources/js/router_test.html
+
+notifications:
+  email:
+    - friendsofsymfony-dev@googlegroups.com

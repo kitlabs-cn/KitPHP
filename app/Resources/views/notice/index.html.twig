@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Notices list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Matter</th>
+                <th>Company</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Noticetype</th>
+                <th>Createat</th>
+                <th>Editor</th>
+                <th>Ip</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for notice in notices %}
+            <tr>
+                <td><a href="{{ path('notice_show', { 'id': notice.id }) }}">{{ notice.id }}</a></td>
+                <td>{{ notice.matter }}</td>
+                <td>{{ notice.company }}</td>
+                <td>{{ notice.title }}</td>
+                <td>{{ notice.content }}</td>
+                <td>{{ notice.noticeType }}</td>
+                <td>{% if notice.createAt %}{{ notice.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ notice.editor }}</td>
+                <td>{{ notice.ip }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('notice_show', { 'id': notice.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('notice_edit', { 'id': notice.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('notice_new') }}">Create a new notice</a>
+        </li>
+    </ul>
+{% endblock %}

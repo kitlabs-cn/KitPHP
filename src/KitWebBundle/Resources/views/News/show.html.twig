@@ -1,0 +1,30 @@
+{% extends '@KitWeb/News/base.html.twig' %}
+
+{% block content_right %}
+			<div class="doc-right">
+				<div class="panel">
+					<div class="panel-body">
+						<br />
+						<h1 align="center">{{ news.title }}</h1>
+						<p class="text-center text-small">
+							发布日期：{{ news.createAt | date('Y-m-d') }} &nbsp;&nbsp;浏览量：<span>{{ news.hits }}</span>
+						</p>
+						<hr />
+						<p>
+						  {{ news.content | raw }}
+						</p>
+
+					</div>
+					{% if prev%}
+					 &laquo; <a
+						href="{{ path('kit_web_news_show', {id: prev.id}) }}">{{ prev.title }}</a>
+						{% else %} 没有了 {% endif %} | 
+					{% if next%}
+					<a
+						href="{{ path('kit_web_news_show', {id: next.id}) }}">{{ next.title }}</a>&raquo;
+					{% else %} 没有了 {% endif %}
+					<hr>
+					
+				</div>
+			</div>
+{% endblock %}

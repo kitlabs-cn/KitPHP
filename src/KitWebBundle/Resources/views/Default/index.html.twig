@@ -1,0 +1,140 @@
+{% extends '@KitWeb/layout.html.twig' %} {% block carousel %} {# {%
+include '@KitWeb/Common/carousel.html.twig' %}#} {% endblock %} {% block
+content %}
+<!--内容-->
+<div class="container">
+	<div class="line-small margin-top">
+		<div class="xl12 xs8 xm8 xb8">
+		    <div class="panel toutiao-panel">
+            	<div class="panel-body toutiao">
+            		<div class="float-left"><img alt="" src="{{ asset('asset/images/top_news_tit.gif') }}"></div>
+            		<div class="toutiao-body">
+            		  {% if toutiao %}
+            		      <a href="{{ path('kit_web_news_show', {id: toutiao.id}) }}"><h3>{{ toutiao.title | truncate(20, false, '...') }}</h3>
+            		      <p>{{ toutiao.introduction | truncate(38, false, '...') }}</p></a>
+            		  {% endif %}
+            		</div>
+                </div>
+            </div>
+{# 			<div class="tab border-main">#}
+{# 				<div class="tab-head">#}
+{# 					<strong>新闻</strong> <span class="tab-more"><a href="#">更多</a></span>#}
+{# 					<ul class="tab-nav">#}
+{# 						<li class="active"><a href="#tab-start5">综合要闻</a></li>#}
+{# 						<li class=""><a href="#tab-css5">领导活动</a></li>#}
+{# 					</ul>#}
+{# 				</div>#}
+{# 				<div class="tab-body">#}
+{# 					<div class="tab-panel active" id="tab-start5">#}
+{# 					   {% for item in top1 %}#}
+{# 					   <p> <a href="{{ path('kit_web_news_show', {id: item.id}) }}">{{ item.title | truncate(22, false, '...') }}</a> <span class="float-right">{{ item.createAt|date('Y/m/d') }}</span> </p>#}
+{# 					   {% endfor %}#}
+{# 					</div>#}
+{# 					<div class="tab-panel" id="tab-css5">#}
+{# 					   {% for item in top2 %}#}
+{# 					   <p> <a href="{{ path('kit_web_news_show', {id: item.id}) }}">{{ item.title | truncate(22, false, '...') }}</a> <span class="float-right">{{ item.createAt|date('Y/m/d') }}</span> </p>#}
+{# 					   {% endfor %}	#}
+{# 					</div>#}
+{# 				</div>#}
+{# 			</div>#}
+            <div class="xl12 xs6 xm6 xb6">
+                <div class="panel panel-new">
+    				<div class="panel-head panel-head-new">
+    					<strong>综合要闻</strong>
+    					<a href="{{ path('kit_web_news_list', {id: 4}) }}"><span class="float-right">更多</span></a>
+    				</div>
+    				<div class="panel-body panel-body-new">
+    				    {% for item in top1 %}
+    					   <p> <a href="{{ path('kit_web_news_show', {id: item.id}) }}">{{ item.title | truncate(16, false, '...') }}</a> <span class="float-right">{{ item.createAt|date('Y/m/d') }}</span> </p>
+    					   {% endfor %}	
+    				</div>
+    			</div>
+	        </div>
+	        <div class="xl12 xs6 xm6 xb6">
+    			<div class="panel panel-new">
+    				<div class="panel-head panel-head-new">
+    					<strong>领导活动</strong>
+    					<a href="{{ path('kit_web_news_list', {id: 5}) }}"><span class="float-right">更多</span></a>
+    				</div>
+    				<div class="panel-body panel-body-new">
+    				{% for item in top2 %}
+    					<p> <a href="{{ path('kit_web_news_show', {id: item.id}) }}">{{ item.title | truncate(16, false, '...') }}</a> <span class="float-right">{{ item.createAt|date('Y/m/d') }}</span> </p>
+    			    {% endfor %}	
+    			     </div>
+    			</div>
+			 </div>
+		</div>
+		<div class="xl12 xs4 xm4 xb4">
+		    <div class="notice-header">
+		      <h5 class="text-main padding">公示公告</h5>
+		    </div>
+			<div class="padding-big bg notice-body">
+				<ul class="list-media list-underline">
+				    {% for item in notice %}
+				    <li>
+						<div class="media media-x">
+							<div class="media-body">
+								<strong></strong>{{ item.title | truncate(15, false, '...') }} <a
+									class="button button-little border-main swing-hover float-right"
+									href="{{ path('kit_web_news_show', {id: item.id}) }}">查看详情</a>
+							</div>
+						</div>
+					</li>
+					{% endfor %}	
+				</ul>
+			</div>
+			<br />
+		</div>
+	</div>
+	<br />
+	<div class="line line-img border-main">
+		<blockquote class="border-main">
+			<strong>图片新闻</strong>
+		</blockquote>
+        <div class="banner" data-pointer="1" data-interval="6" data-item="2"
+				data-small="3" data-middle="4" data-big="5" data-style="border-main">
+				<ul class="carousel">
+				    {% for item in images %}
+					<li class="item">
+						<div class="doc-carousel">
+						  <a href="{{ path('kit_web_news_show', {id: item.id}) }}"><img src="/uploads/{{ item.thumb }}"/> </a>
+						</div>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+
+	</div>
+	<div class="line-small margin-top">
+		<div class="xl12 xs6 xm6 xb6">
+			<div class="panel panel-new">
+				<div class="panel-head panel-head-new">
+					<strong>立法工作</strong>
+					<a href="{{ path('kit_web_news_list', {id: 4}) }}"><span class="float-right">更多</span></a>
+				</div>
+				<div class="panel-body panel-body-new">
+				    {% for item in bottom1 %}
+					   <p> <a href="{{ path('kit_web_news_show', {id: item.id}) }}">{{ item.title | truncate(28, false, '...') }}</a> <span class="float-right">{{ item.createAt|date('Y/m/d') }}</span> </p>
+					   {% endfor %}	
+				</div>
+			</div>
+
+		</div>
+		<div class="xl12 xs6 xm6 xb6">
+			<div class="panel panel-new">
+				<div class="panel-head panel-head-new">
+					<strong>监督工作</strong>
+					<a href="{{ path('kit_web_news_list', {id: 5}) }}"><span class="float-right">更多</span></a>
+				</div>
+				<div class="panel-body panel-body-new">
+				{% for item in bottom2 %}
+					<p> <a href="{{ path('kit_web_news_show', {id: item.id}) }}">{{ item.title | truncate(28, false, '...') }}</a> <span class="float-right">{{ item.createAt|date('Y/m/d') }}</span> </p>
+			    {% endfor %}	
+			     </div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<br />
+{% endblock %}

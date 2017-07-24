@@ -1,0 +1,8 @@
+{% extends '@KitWeb/User/base.html.twig' %}
+
+{% block content_right %}
+   {{ parent() }}
+   <div class="line margin-top">
+        <img src="{{ app.user.avatar }}" width="128" height="128" class="img-border radius-big" />
+   </div>
+{% endblock %}

@@ -1,0 +1,65 @@
+group:
+    edit:
+        submit: 'تحديث المجموعة'
+    show:
+        name: 'إسم المجموعة'
+    new:
+        submit: 'إنشاء مجموعة'
+    flash:
+        updated: 'تم تحديث المجموعة'
+        created: 'تم إنشاء المجموعة'
+        deleted: 'تم حـذف المجموعة'
+security:
+    login:
+        username: 'إسم المستخدم'
+        password: 'كلمة المرور'
+        remember_me: 'حفظ البيانات'
+        submit: 'تسجيل دخول'
+profile:
+    show:
+        username: 'إسم المستخدم'
+        email: 'بريد إلكتروني'
+    edit:
+        submit: تحديث
+    flash:
+        updated: 'تم تحديث الملف الشخصي'
+change_password:
+    submit: 'تغيير كلمة المرور'
+    flash:
+        success: 'تم تغيير كلمة المرور'
+registration:
+    check_email: 'لقد تم إرسال رسالة إلكترونية إلى %email% تحتوي على رابط يجب إتباعه لتفعيل حسابك الشخصي.'
+    confirmed: 'تهانينا %username%، لقد تم تفعيل حسابك.'
+    back: 'عودة إلى الصفحة الرئيسية'
+    submit: تسجيل
+    flash:
+        user_created: 'تم إنشاء حسابك بنجاح'
+    email:
+        subject: '%username%! مرحبا'
+        message: "مرحبا %username%!\n\n\n لتفعيل حسابك يرجى إتباع الرابط التالي %confirmationUrl%\n\nشكرا،\nفريق العمل.\n"
+resetting:
+    check_email: 'لقد تم إرسال رسالة إلكترونية إلى %email%  يحتوي على رابط يجب إتباعه لإعادة تعيين كلمة المرور الخاصة بك.'
+    request:
+        username: 'إسم المستخدم او البريد الالكتروني'
+        submit: 'إعادة ضبط كلمة المرور'
+    reset:
+        submit: 'تغيير كلمة المرور'
+    flash:
+        success: 'تم إعادة ضبط كلمة المرور بنجاح'
+    email:
+        subject: 'إعادة ضبط كلمة المرور'
+        message: "مرحبا %username%!\n\nلإعادة ضبط كلمة المرور يرجى إتباع الرابط التالي %confirmationUrl%\n\nشكرا،\nفريق العمل.\n"
+layout:
+    logout: خروج
+    login: دخول
+    register: تسجيل
+    logged_in_as: 'تم الدخول بإسم %username%'
+form:
+    group_name: 'إسم المجموعة'
+    username: 'إسم المستخدم'
+    email: 'البريد الإلكتروني'
+    current_password: 'كلمة المرور الحالية'
+    password: 'كلمة المرور'
+    password_confirmation: تأكيد
+    new_password: 'كلمة المرور الجديدة'
+    new_password_confirmation: 'تأكيد كلمة المرور'
