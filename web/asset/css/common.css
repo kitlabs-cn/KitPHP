@@ -9,7 +9,7 @@
 }
 .demo-nav{
 	color: #fff;
-	background: #F9F9F9 url(../images/top-bg.jpg) repeat-x top center;
+	background:#1E8449;
 	font-size: 14px;
 	height: 45px;
 }
@@ -31,7 +31,7 @@
 	text-align:center;
 }
 .demo-nav li.active{
-	background: #F9F9F9 url(../images/nav_on.jpg) no-repeat center;
+	background: #239B56;
     cursor: pointer;
 }
 blockquote{
@@ -82,7 +82,7 @@ blockquote strong{
  	padding: 0 10px;
  }
  .bg-black{
-	background-color: #1f8ace;
+	background-color: #1E8449;
  }
  .panel-new{
 	margin: 20px 10px 10px 0px;
