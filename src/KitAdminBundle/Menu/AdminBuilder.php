@@ -10,7 +10,7 @@ namespace KitAdminBundle\Menu;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AdminBuilder implements ContainerAwareInterface
 {
@@ -22,7 +22,13 @@ class AdminBuilder implements ContainerAwareInterface
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         //$em = $this->container->get('doctrine')->getManager();
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+            return new RedirectResponse('kit_admin_login');
+        }
+        
+        if (!is_object($user = $token->getUser())) {
+            return new RedirectResponse('kit_admin_login');
+        }
         $menu = $factory->createItem('root', [
             'label' => '主菜单'
         ]);
