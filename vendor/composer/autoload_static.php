@@ -10,12 +10,12 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         '92c8763cd6170fce6fcfe7e26b4e8c10' => __DIR__ . '/..' . '/symfony/phpunit-bridge/bootstrap.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        'ce89ac35a6c330c55f4710717db9ff78' => __DIR__ . '/..' . '/kriswallsmith/assetic/src/functions.php',
         '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
         '32dcc8afd4335739640db7d200c1971d' => __DIR__ . '/..' . '/symfony/polyfill-apcu/bootstrap.php',
-        'ce89ac35a6c330c55f4710717db9ff78' => __DIR__ . '/..' . '/kriswallsmith/assetic/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -49,6 +49,10 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
             'Psr\\Log\\' => 8,
             'Psr\\Cache\\' => 10,
         ),
+        'O' => 
+        array (
+            'OSS\\' => 4,
+        ),
         'N' => 
         array (
             'Negotiation\\' => 12,
@@ -57,11 +61,17 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         array (
             'Monolog\\' => 8,
         ),
+        'L' => 
+        array (
+            'Liip\\ThemeBundle\\' => 17,
+            'Liip\\ImagineBundle\\' => 19,
+        ),
         'K' => 
         array (
             'Knp\\Menu\\' => 9,
             'Knp\\Bundle\\PaginatorBundle\\' => 27,
             'Knp\\Bundle\\MenuBundle\\' => 22,
+            'Kit\\Bundle\\OssBundle\\' => 21,
         ),
         'I' => 
         array (
@@ -76,6 +86,7 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         array (
             'FOS\\UserBundle\\' => 15,
             'FOS\\RestBundle\\' => 15,
+            'FOS\\JsRoutingBundle\\' => 20,
         ),
         'D' => 
         array (
@@ -172,6 +183,10 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
+        'OSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
+        ),
         'Negotiation\\' => 
         array (
             0 => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation',
@@ -179,6 +194,14 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'Liip\\ThemeBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/liip/theme-bundle',
+        ),
+        'Liip\\ImagineBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/liip/imagine-bundle',
         ),
         'Knp\\Menu\\' => 
         array (
@@ -191,6 +214,10 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         'Knp\\Bundle\\MenuBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/knplabs/knp-menu-bundle',
+        ),
+        'Kit\\Bundle\\OssBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kitlabs/kit-oss-bundle',
         ),
         'Incenteev\\ParameterHandler\\' => 
         array (
@@ -211,6 +238,10 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         'FOS\\RestBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/friendsofsymfony/rest-bundle',
+        ),
+        'FOS\\JsRoutingBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/friendsofsymfony/jsrouting-bundle',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
@@ -241,6 +272,10 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
     public static $prefixesPsr0 = array (
         'T' => 
         array (
+            'Twig_Extensions_' => 
+            array (
+                0 => __DIR__ . '/..' . '/twig/extensions/lib',
+            ),
             'Twig_' => 
             array (
                 0 => __DIR__ . '/..' . '/twig/twig/lib',
@@ -279,6 +314,13 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
             'JsonpCallbackValidator' => 
             array (
                 0 => __DIR__ . '/..' . '/willdurand/jsonp-callback-validator/src',
+            ),
+        ),
+        'I' => 
+        array (
+            'Imagine' => 
+            array (
+                0 => __DIR__ . '/..' . '/imagine/imagine/lib',
             ),
         ),
         'D' => 

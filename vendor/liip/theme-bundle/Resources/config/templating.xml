@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="liip_theme.templating_locator.class">Liip\ThemeBundle\Locator\TemplateLocator</parameter>
+        <parameter key="liip_theme.file_locator.class">Liip\ThemeBundle\Locator\FileLocator</parameter>
+        <parameter key="liip_theme.filesystem_loader.class">Liip\ThemeBundle\Twig\Loader\FilesystemLoader</parameter>
+        <parameter key="liip_theme.active_theme.class">Liip\ThemeBundle\ActiveTheme</parameter>
+        <parameter key="liip_theme.cache_warmer.class">Liip\ThemeBundle\CacheWarmer\TemplatePathsCacheWarmer</parameter>
+        <parameter key="liip_theme.theme_auto_detect.class">Liip\ThemeBundle\Helper\DeviceDetection</parameter>
+        <parameter key="templating.finder.class">Liip\ThemeBundle\CacheWarmer\TemplateFinder</parameter>
+    </parameters>
+
+    <services>
+
+        <service id="liip_theme.templating.cache_warmer.template_paths" class="%liip_theme.cache_warmer.class%" public="false">
+            <argument type="service" id="templating.finder" />
+            <argument type="service" id="liip_theme.templating_locator" />
+            <argument type="service" id="liip_theme.active_theme" />
+        </service>
+
+        <service id="templating.finder" class="%templating.finder.class%" public="false">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="templating.filename_parser" />
+            <argument>%kernel.root_dir%/Resources</argument>
+            <argument type="service" id="liip_theme.active_theme"/>
+        </service>
+
+        <service id="liip_theme.templating_locator" class="%liip_theme.templating_locator.class%" public="false">
+            <argument type="service" id="liip_theme.file_locator" />
+            <argument>%kernel.cache_dir%</argument>
+            <argument type="service" id="liip_theme.active_theme" />
+        </service>
+
+        <service id="liip_theme.file_locator" class="%liip_theme.file_locator.class%" public="false">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="liip_theme.active_theme" />
+            <argument>%kernel.root_dir%/Resources</argument>
+            <argument type="collection" />
+            <argument>%liip_theme.path_patterns%</argument>
+        </service>
+
+        <service id="liip_theme.theme_auto_detect" class="%liip_theme.theme_auto_detect.class%" />
+
+        <service id="liip_theme.active_theme" class="%liip_theme.active_theme.class%">
+            <argument>%liip_theme.active_theme%</argument>
+            <argument>%liip_theme.themes%</argument>
+            <argument type="service" id="liip_theme.theme_auto_detect" />
+        </service>
+
+    </services>
+</container>

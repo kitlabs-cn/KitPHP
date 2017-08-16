@@ -6,6 +6,7 @@ imports:
     - { resource: "@KitNewsBundle/Resources/config/services.yml" }
     - { resource: "@KitWebBundle/Resources/config/services.yml" }
     - { resource: "@KitRbacBundle/Resources/config/services.yml" }
+    - { resource: "@KitOssBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -91,3 +92,10 @@ assetic:
     use_controller: '%kernel.debug%'
     filters:
         cssrewrite: ~
+kit_oss:
+    access_key_id: LTAIKjOgRbnw7pCv
+    access_key_secret: kcs9INppGVqqtEo8ywhOkwminGY8Mm
+    endpoint: oss-cn-beijing.aliyuncs.com
+liip_theme:
+    themes: ['standardTheme', 'winter_theme', 'weekend']
+    active_theme: 'standardTheme'

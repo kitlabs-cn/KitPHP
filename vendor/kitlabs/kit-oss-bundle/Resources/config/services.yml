@@ -1,0 +1,10 @@
+services:
+    kit_oss.client_service:
+        class: Kit\Bundle\OssBundle\Service\ClientService
+        arguments: ["%kit_oss.access_key_id%", "%kit_oss.access_key_secret%", "%kit_oss.endpoint%"]
+    kit_oss.bucket_service:
+        class: Kit\Bundle\OssBundle\Service\BucketService
+        parent: "kit_oss.client_service"
+    kit_oss.images_service:
+        class: Kit\Bundle\OssBundle\Service\ImageService
+        parent: "kit_oss.client_service"

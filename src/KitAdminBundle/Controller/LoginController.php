@@ -15,6 +15,8 @@ class LoginController extends Controller
 
     public function loginAction(Request $request)
     {
+        $service = $this->get('kit_oss.bucket_service');
+        dump($service->list());
         $helper = $this->get('security.authentication_utils');
         
         return $this->render('KitAdminBundle:Login:login.html.twig', array(
