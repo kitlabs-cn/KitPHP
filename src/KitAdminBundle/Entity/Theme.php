@@ -41,7 +41,14 @@ class Theme
      * @ORM\Column(name="preview", type="string", length=255)
      */
     private $preview;
-
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="status", type="smallint", options={"comment": "状态，0禁用，1启用"})
+     */
+    private $status;
+    
     /**
      * @var \DateTime
      *
@@ -115,6 +122,29 @@ class Theme
         return $this->path;
     }
 
+    /**
+     * Set status
+     *
+     * @param integer $status
+     *
+     * @return Theme
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        
+        return $this;
+    }
+    
+    /**
+     * Get status
+     *
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
     /**
      * Set preview
      *

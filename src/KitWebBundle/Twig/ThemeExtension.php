@@ -15,7 +15,7 @@ class ThemeExtension extends \Twig_Extension implements \Twig_Extension_GlobalsI
     public function getGlobals()
     {
         return array(
-            'theme_name' => 'myThemeName'
+            'theme_name' => $this->getThemeName()
         );
     }
     public function getFilters()
@@ -35,11 +35,20 @@ class ThemeExtension extends \Twig_Extension implements \Twig_Extension_GlobalsI
     public function themeFilter($resource, $default = 'Default')
     {
         
-        return 'theme/'.$resource;
+        return 'theme/'. $this->getThemeName($default) . '/' . $resource;
     }
     
     public function themeFunction($resource, $default = 'Default')
     {
-        return 'theme/'.$resource;
+        return 'theme/'. $this->getThemeName($default) . '/' . $resource;
+    }
+    
+    private function getThemeName($default = 'Default')
+    {
+        /**
+         * @var \KitAdminBundle\Service\ThemeService $themeService
+         */
+        $themeService = $this->container->get('kit_admin.theme_service');
+        return $themeService->get($default);
     }
 }
