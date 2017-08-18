@@ -29,6 +29,7 @@ class AppKernel extends Kernel
             new KitRbacBundle\KitRbacBundle(),
             new Kit\Bundle\OssBundle\KitOssBundle(),
             new Liip\ThemeBundle\LiipThemeBundle(),
+            new Kit\Bundle\KitPayBundle\KitPayBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
