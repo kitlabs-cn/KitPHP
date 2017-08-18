@@ -9,9 +9,9 @@ Aliyun OSS Bundle for Symfony3
 Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
  
-```console
-$ composer require kitlabs/kit-oss-bundle "~0.1"
-```
+	
+	$ composer require kitlabs/kit-oss-bundle "~0.1"
+
  
 This command requires you to have Composer installed globally, as explained
 in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
@@ -22,40 +22,41 @@ of the Composer documentation.
  
 Then, enable the bundle by adding it to the list of registered bundles
 in the `app/AppKernel.php` file of your project:
- 
-```php
-<?php
-// app/AppKernel.php
- 
-// ...
-class AppKernel extends Kernel
-{
-    public function registerBundles()
-    {
-        $bundles = array(
-            // ...
- 
-            new Kit\Bundle\OssBundle\KitOssBundle(),
-        );
- 
-        // ...
-    }
- 
-    // ...
-}
-```
-## Usage
-```php
 
-/**
- *
- * @var $ossService \Kit\Bundle\OssBundle\Service\ossClientService
- */
-$ossService = $this->get('kit_oss.oss_client_service');
-$ossClient = $ossService->getClient($accessKeyId, $accessKeySecret, $endpoint);
-$bucketListInfo = $ossClient->listBuckets();
-$bucketList = $bucketListInfo->getBucketList();
-foreach($bucketList as $bucket) {
-    dump($bucket->getLocation() . "\t" . $bucket->getName() . "\t" . $bucket->getCreatedate() . "\n");
-}
-```
+	<?php
+	// app/AppKernel.php
+	 
+	// ...
+	class AppKernel extends Kernel
+	{
+	    public function registerBundles()
+	    {
+	        $bundles = array(
+	            // ...
+	 
+	            new Kit\Bundle\OssBundle\KitOssBundle(),
+	        );
+	 
+	        // ...
+	    }
+	 
+	    // ...
+	}
+
+### Step 3: Configuration 
+
+	# config.yml
+	kit_oss:
+	    access_key_id: ************
+	    access_key_secret: ************
+	    endpoint: oss-cn-beijing.aliyuncs.com
+## Usage
+- bucket
+
+		/**
+		 * @var $bucketService \Kit\Bundle\OssBundle\Service\ossClientService
+		 */
+		$bucketService = $this->get('kit_oss.bucket_service');
+		$bucketService->create($bucket);
+		$bucketService->list();
+		$bucketService->checkExist($bucket);

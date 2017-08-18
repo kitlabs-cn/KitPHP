@@ -3370,54 +3370,6 @@
         "homepage": "http://www.aliyun.com/product/oss/"
     },
     {
-        "name": "kitlabs/kit-oss-bundle",
-        "version": "v0.1.3",
-        "version_normalized": "0.1.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kitlabs-cn/KitOssBundle.git",
-            "reference": "833ab922a76e99e2fb1260a5fb6272ebc9b41705"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://files.phpcomposer.com/files/kitlabs-cn/KitOssBundle/833ab922a76e99e2fb1260a5fb6272ebc9b41705.zip",
-            "reference": "833ab922a76e99e2fb1260a5fb6272ebc9b41705",
-            "shasum": ""
-        },
-        "require": {
-            "aliyuncs/oss-sdk-php": "~2.0",
-            "php": ">=5.5.9"
-        },
-        "time": "2017-07-23T11:02:31+00:00",
-        "type": "symfony-bundle",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Kit\\Bundle\\OssBundle\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "lcp0578",
-                "email": "lcp0578@gmail.com",
-                "homepage": "https://github.com/lcp0578"
-            },
-            {
-                "name": "The contributors",
-                "homepage": "https://github.com/kitlabs-cn/KitOssBundle/contributors"
-            }
-        ],
-        "description": "Easily use aliyun oss in Symfony",
-        "homepage": "https://github.com/kitlabs-cn/KitOssBundle",
-        "keywords": [
-            "Aliyun OSS"
-        ]
-    },
-    {
         "name": "liip/theme-bundle",
         "version": "1.4.6",
         "version_normalized": "1.4.6.0",
@@ -3478,6 +3430,54 @@
         "keywords": [
             "themes",
             "theming"
+        ]
+    },
+    {
+        "name": "kitlabs/kit-oss-bundle",
+        "version": "v0.1.5",
+        "version_normalized": "0.1.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kitlabs-cn/KitOssBundle.git",
+            "reference": "51004ac8e7bbeaae4b2f69c33dcbdbb7bc8c12c5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/kitlabs-cn/KitOssBundle/51004ac8e7bbeaae4b2f69c33dcbdbb7bc8c12c5.zip",
+            "reference": "51004ac8e7bbeaae4b2f69c33dcbdbb7bc8c12c5",
+            "shasum": ""
+        },
+        "require": {
+            "aliyuncs/oss-sdk-php": "~2.0",
+            "php": ">=5.5.9"
+        },
+        "time": "2017-08-13T03:41:10+00:00",
+        "type": "symfony-bundle",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Kit\\Bundle\\OssBundle\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "lcp0578",
+                "email": "lcp0578@gmail.com",
+                "homepage": "https://github.com/lcp0578"
+            },
+            {
+                "name": "The contributors",
+                "homepage": "https://github.com/kitlabs-cn/KitOssBundle/contributors"
+            }
+        ],
+        "description": "Easily use aliyun oss in Symfony",
+        "homepage": "https://github.com/kitlabs-cn/KitOssBundle",
+        "keywords": [
+            "Aliyun OSS"
         ]
     }
 ]
