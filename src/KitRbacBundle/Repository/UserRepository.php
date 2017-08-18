@@ -20,7 +20,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->createQueryBuilder('u')
             ->select('u.id', 'u.username', 'u.createAt', 'u.updateAt', 'r.rolename')
-            ->join('u.roles', 'r')
+            ->join('u.group', 'r')
             //->where('u.status = ?0')
             //->setParameter(0, 1) // key, The parameter position or name
             ->where('u.status = :status')

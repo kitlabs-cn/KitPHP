@@ -74,8 +74,8 @@ class Role implements RoleInterface
      */
     private $ip;
 
-    /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="role")
+     /**
+     * @ORM\OneToMany(targetEntity="User", mappedBy="group", cascade={"remove"})
      */
     private $users;
 

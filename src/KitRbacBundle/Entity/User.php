@@ -99,10 +99,10 @@ class User implements UserInterface
     private $status;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Role", inversedBy="user")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Role", inversedBy="users")
+     * @ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $roles;
+    private $group;
 
     /**
      * Get id
@@ -295,10 +295,14 @@ class User implements UserInterface
      * @param Roles $role
      * @return User
      */
-    public function setRoles(Role $role = null)
+    public function setGroup(Role $role = null)
     {
-        $this->roles = $role;
+        $this->group = $role;
         return $this;
+    }
+    public function getGroup()
+    {
+        return $this->group;
     }
     
     /**
