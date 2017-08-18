@@ -1,8 +1,23 @@
 <?php
 namespace KitWebBundle\Twig;
 
-class ThemeExtension extends \Twig_Extension
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+class ThemeExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
+    private $container;
+    
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+    
+    public function getGlobals()
+    {
+        return array(
+            'theme_name' => 'myThemeName'
+        );
+    }
     public function getFilters()
     {
         return array(
@@ -10,11 +25,21 @@ class ThemeExtension extends \Twig_Extension
         );
     }
     
-    public function themeFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
+    public function getFunctions()
     {
-        $price = number_format($number, $decimals, $decPoint, $thousandsSep);
-        $price = '$'.$price;
+        return array(
+            new \Twig_SimpleFunction('theme', array($this, 'themeFunction')),
+        );
+    }
+    
+    public function themeFilter($resource, $default = 'Default')
+    {
         
-        return $price;
+        return 'theme/'.$resource;
+    }
+    
+    public function themeFunction($resource, $default = 'Default')
+    {
+        return 'theme/'.$resource;
     }
 }
