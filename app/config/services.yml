@@ -25,3 +25,6 @@ services:
         arguments: ["@service_container"]
         tags:
             - { name: twig.extension }
+    kit_admin.theme_service:
+        class: KitAdminBundle\Service\ThemeService
+        arguments: ["@doctrine"]
