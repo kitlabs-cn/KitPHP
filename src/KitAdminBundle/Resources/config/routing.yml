@@ -1,3 +1,7 @@
+kit_admin_theme:
+    resource: "@KitAdminBundle/Resources/config/routing/theme.yml"
+    prefix:   /theme
+
 kit_admin_homepage:
     path:     /
     defaults: { _controller: KitAdminBundle:Default:index }

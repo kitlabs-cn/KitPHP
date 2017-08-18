@@ -1,0 +1,24 @@
+theme_index:
+    path:     /
+    defaults: { _controller: "KitAdminBundle:Theme:index" }
+    methods:  GET
+
+theme_show:
+    path:     /{id}/show
+    defaults: { _controller: "KitAdminBundle:Theme:show" }
+    methods:  GET
+
+theme_new:
+    path:     /new
+    defaults: { _controller: "KitAdminBundle:Theme:new" }
+    methods:  [GET, POST]
+
+theme_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "KitAdminBundle:Theme:edit" }
+    methods:  [GET, POST]
+
+theme_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "KitAdminBundle:Theme:delete" }
+    methods:  DELETE
