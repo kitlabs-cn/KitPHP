@@ -19,7 +19,35 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('kit_pay');
-
+        $rootNode->children()
+            ->arrayNode('config')->children()
+                ->arrayNode('alipay')->children()
+                    ->booleanNode('use_sandbox')->cannotBeEmpty()->end()
+                    ->scalarNode('partner')->cannotBeEmpty()->end()
+                    ->scalarNode('app_id')->cannotBeEmpty()->end()
+                    ->enumNode('sign_type')->values(['RSA', 'RSA2'])->defaultValue('RAS')->end()
+                    ->scalarNode('ali_public_key')->cannotBeEmpty()->end()
+                    ->scalarNode('rsa_private_key')->cannotBeEmpty()->end()
+                    ->arrayNode('limit_pay')->prototype('scalar')->end()
+                    ->scalarNode('notify_url')->cannotBeEmpty()->end()
+                    ->scalarNode('return_url')->cannotBeEmpty()->end()
+                    ->booleanNode('return_raw')->cannotBeEmpty()->end()
+                 ->end()
+                 ->arrayNode('weipay')->children()
+                    ->booleanNode('use_sandbox')->cannotBeEmpty()->end()
+                    ->scalarNode('partner')->cannotBeEmpty()->end()
+                    ->scalarNode('app_id')->cannotBeEmpty()->end()
+                    ->enumNode('sign_type')->values(['RSA', 'RSA2'])->defaultValue('RAS')->end()
+                    ->scalarNode('ali_public_key')->cannotBeEmpty()->end()
+                    ->scalarNode('rsa_private_key')->cannotBeEmpty()->end()
+                    ->arrayNode('limit_pay')->prototype('scalar')->end()
+                    ->scalarNode('notify_url')->cannotBeEmpty()->end()
+                    ->scalarNode('return_url')->cannotBeEmpty()->end()
+                    ->booleanNode('return_raw')->cannotBeEmpty()->end()
+                 ->end()
+            ->end()
+         ->end();
+                    
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
