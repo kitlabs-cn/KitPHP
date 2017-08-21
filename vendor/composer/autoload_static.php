@@ -48,6 +48,7 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Cache\\' => 10,
+            'Payment\\' => 8,
         ),
         'O' => 
         array (
@@ -182,6 +183,10 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'Payment\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/riverslei/payment/src',
         ),
         'OSS\\' => 
         array (

@@ -99,3 +99,29 @@ kit_oss:
 liip_theme:
     themes: ['standardTheme', 'winter_theme', 'weekend']
     active_theme: 'standardTheme'
+kit_pay:
+    config:
+        alipay:
+            use_sandbox: true
+            partner: 20888xxxxxx
+            app_id: xxxxxxx
+            sign_type: RSA2 # RSA or RSA2
+            ali_public_key: /path # path or content
+            rsa_private_key: /path # path or content
+            limit_pay: ['creditCard']
+            notify_url: http://kitlabs.cn/notify
+            return_url: http://kitlabs.cn/return
+            return_raw: true # 异步回调是否显示原始数据
+        weipay:
+            use_sandbox: true
+            app_id: xxxxxx
+            mch_id: xxxxxx
+            md5_key: xxxxxx
+            app_cert_pem: /path
+            app_key_pem: /path
+            sign_type: MD5  # MD5 or HMAC-SHA256
+            limit_pay: ['no_credit']
+            fee_type: CNY
+            notify_url: http://kitlabs.cn/notify
+            redirect_url: http://kitlabs.cn/return
+            return_raw: true # 异步回调是否显示原始数据
