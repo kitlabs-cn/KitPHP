@@ -3533,5 +3533,56 @@
             "支付宝支付",
             "集成支付接口SDK"
         ]
+    },
+    {
+        "name": "kitlabs/kit-pay-bundle",
+        "version": "v0.1.3",
+        "version_normalized": "0.1.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kitlabs-cn/KitPayBundle.git",
+            "reference": "20217f5203c190ace5640c5a5283c3e1f75bfee4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/kitlabs-cn/KitPayBundle/20217f5203c190ace5640c5a5283c3e1f75bfee4.zip",
+            "reference": "20217f5203c190ace5640c5a5283c3e1f75bfee4",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.6",
+            "riverslei/payment": ">=4.0"
+        },
+        "time": "2017-08-21T08:16:09+00:00",
+        "type": "symfony-bundle",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Kit\\Bundle\\KitPayBundle\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "lcp0578",
+                "email": "lcp0578@gmail.com",
+                "homepage": "https://github.com/lcp0578"
+            },
+            {
+                "name": "The contributors",
+                "homepage": "https://github.com/kitlabs-cn/KitPayBundle/contributors"
+            }
+        ],
+        "description": "Easily use alipay & weixinpay in Symfony",
+        "homepage": "https://github.com/kitlabs-cn/KitPayBundle",
+        "keywords": [
+            "alipay",
+            "pay bundle",
+            "payment",
+            "weixin pay"
+        ]
     }
 ]

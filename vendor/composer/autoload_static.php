@@ -73,6 +73,7 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
             'Knp\\Bundle\\PaginatorBundle\\' => 27,
             'Knp\\Bundle\\MenuBundle\\' => 22,
             'Kit\\Bundle\\OssBundle\\' => 21,
+            'Kit\\Bundle\\KitPayBundle\\' => 24,
         ),
         'I' => 
         array (
@@ -223,6 +224,10 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         'Kit\\Bundle\\OssBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/kitlabs/kit-oss-bundle',
+        ),
+        'Kit\\Bundle\\KitPayBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kitlabs/kit-pay-bundle',
         ),
         'Incenteev\\ParameterHandler\\' => 
         array (
