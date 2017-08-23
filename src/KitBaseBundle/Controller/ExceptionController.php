@@ -1,11 +1,11 @@
 <?php
 namespace KitBaseBundle\Controller;
 
-use Symfony\Bundle\TwigBundle\Controller\ExceptionController as BaseController;
+use Symfony\Bundle\TwigBundle\Controller\ExceptionController as BaseExceptionController;
 use Symfony\Component\HttpFoundation\Request;
 use KitAdminBundle\Service\ThemeService;
 
-class ExceptionController extends BaseController
+class ExceptionController extends BaseExceptionController
 {
     private $theme;
     
