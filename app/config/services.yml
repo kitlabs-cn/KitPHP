@@ -28,3 +28,6 @@ services:
     kit_admin.theme_service:
         class: KitAdminBundle\Service\ThemeService
         arguments: ["@doctrine"]
+    twig.controller.exception:
+        class: KitBaseBundle\Controller\ExceptionController
+        arguments: ['@twig','%kernel.debug%', '@kit_admin.theme_service']

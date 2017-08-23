@@ -1,7 +1,3 @@
-kit_pay:
-    resource: "@KitPayBundle/Resources/config/routing.yml"
-    prefix:   /
-
 kit_rbac:
     resource: "@KitRbacBundle/Resources/config/routing.yml"
     prefix:   /admin/rbac

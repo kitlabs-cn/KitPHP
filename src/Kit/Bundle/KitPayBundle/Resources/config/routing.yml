@@ -1,3 +1,0 @@
-kit_pay_homepage:
-    path:     /
-    defaults: { _controller: KitPayBundle:Default:index }
