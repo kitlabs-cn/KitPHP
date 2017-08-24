@@ -75,10 +75,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-fos_user:
-    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
-    firewall_name: main
-    user_class: KitAdminBundle\Entity\Admin
 
 knp_menu:
     # use "twig: false" to disable the Twig extension and the TwigRenderer

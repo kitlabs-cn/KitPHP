@@ -86,7 +86,6 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         ),
         'F' => 
         array (
-            'FOS\\UserBundle\\' => 15,
             'FOS\\RestBundle\\' => 15,
             'FOS\\JsRoutingBundle\\' => 20,
         ),
@@ -240,10 +239,6 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         'Gregwar\\CaptchaBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/gregwar/captcha-bundle',
-        ),
-        'FOS\\UserBundle\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/friendsofsymfony/user-bundle',
         ),
         'FOS\\RestBundle\\' => 
         array (
