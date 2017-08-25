@@ -281,12 +281,8 @@
     <div class="field">
     {% for attrname, attrvalue in attr %}
         {% if attrname == 'id' %}
-            <script type="text/plain" id="{{ attrvalue }}" style="width:{{ attr.width }};height:{{ attr.height }};">
+            <script type="text/plain" id="{{ attrvalue }}" name="{{ full_name }}" style="width:{{ attr.width }};height:{{ attr.height }};">{{ value | raw }}{% if attr.placeholder is defined %}{{ attr.placeholder }}{% endif%}</script>
         {% endif %}
     {% endfor %}
-    {% if attr.placeholder is defined %}
-            <p>{{ attr.placeholder }}</p>
-    {% endif%}
-    </script>
     </div>
 {% endblock fulltext_widget %}
