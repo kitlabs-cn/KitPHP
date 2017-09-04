@@ -133,8 +133,7 @@ class UserController extends BaseController
                  */
                 $userForm = $form->getData();
                 if (password_verify($userForm->getPassword() . $user->getSalt(), $hash)) {
-                    //$password = $encoder->encodePassword($user, $userForm->getPlainPassword());
-                    $user->setPassword(password_hash($userForm->getPlainPassword() . $user->getSalt(), PASSWORD_BCRYPT ));
+                    $user->setPassword($userForm->getPlainPassword());
                     $em->persist($user);
                     $em->flush();
                     return $this->msgResponse(0, '恭喜', '修改成功,请重新登录', 'kit_admin_logout');
