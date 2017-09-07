@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block main_content %}
+<div class="panel">
+	<div class="panel-head">
+		<strong>清除系统缓存</strong>
+	</div>
+	<div class="panel-body">
+		<p>您确定要清除系统缓存?</p>
+	</div>
+	<div class="panel-foot text-right">
+		<button class="button border-main btn-clear">确定</button>
+	</div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+$(function(){
+	$('.btn-clear').click(function(){
+		var index = layer.load(1, {
+		  shade: [0.6,'#666'] //0.1透明度的白色背景
+		});
+		$.post("{{ path('kit_admin_cache_clear') }}", {}, function(data){
+			layer.close(index);
+			layer.msg(data.msg);
+		}, 'json');
+	});
+});
+</script>
+{% endblock %}
