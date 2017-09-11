@@ -68,9 +68,9 @@ class Role implements RoleInterface
     private $updateAt;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="ip", type="integer", options={"comment": "IP"})
+     * @ORM\Column(name="ip", type="string", length=32, options={"comment": "IP"})
      */
     private $ip;
 
@@ -224,7 +224,7 @@ class Role implements RoleInterface
     /**
      * Set ip
      *
-     * @param integer $ip
+     * @param string $ip
      *
      * @return Role
      */
@@ -238,7 +238,7 @@ class Role implements RoleInterface
     /**
      * Get ip
      *
-     * @return int
+     * @return string
      */
     public function getIp()
     {
