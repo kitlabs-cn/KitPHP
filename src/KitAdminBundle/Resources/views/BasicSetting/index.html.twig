@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block main_content %}
+<form method="post">
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong>基本设置</strong>
+		</div>
+		{% if pagination is defined and pagination is not empty %}
+		
+		{% for u in pagination %}
+		<div class="padding border-bottom">
+			<a href="{{ path('kit_admin_basicsetting_edit',{id:u.id}) }}" type="button"
+				class="button button-small border-green">修改设置</a>
+		</div>
+		<table class="table table-hover table-bordered">
+            <tr>
+                <td width="200">网站名称</td>
+                <td>{{ u.sitename }}</td>
+            </tr>
+            <tr>
+                <td width="200">网站LOGO</td>
+                <td><img style="max-width:100px; max-hight:50px" alt="" src="{{ u.logo }}">
+            </tr>
+            <tr>
+                <td width="200">关键字</td>
+                <td>{{ u.keywords }}</td>
+		    </tr>
+		    <tr>
+		         <td width="200">站点描述</td>
+		         <td>{{ u.description }}</td>
+		    </tr> 
+		    <tr>
+		          <td width="200">版权信息</td>
+		          <td>{{ u.copyright }}</td>
+		    </tr>
+		    <tr>
+		          <td width="200">联系方式</td>
+		          <td>{{ u.contact }}</td>
+		    </tr>
+		    <tr>
+		          <td width="200">ICP备案号</td>
+		          <td>{{ u.icp }}</td>
+		    </tr>
+		    <tr>
+		          <td width="200">统计代码</td>
+		          <td>{{ u.code }}</td>
+		    </tr>
+		    <tr>
+		          <td width="200">其他</td>
+		          <td>{{ u.other | raw }}</td>
+		    </tr>
+		</table>
+		{% endfor %}
+		{{ knp_pagination_render(pagination,'pagination.html.twig') }}
+		{% endif %}
+	</div>
+</form>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %} 
+{% form_theme form 'form_theme_pintuer.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+        <style>
+            textarea{
+	           overflowe:hidden;
+            	height:100px;
+            }
+    </style>
+     <link href="{{ asset('public/umeditor/themes/default/css/umeditor.css')}}" type="text/css" rel="stylesheet">
+{% endblock %}
+{% block main_content %}
+    <div class="line">
+        <div class="x4">
+        {% for error in errors %}
+        <div class="alert alert-yellow">
+            <span class="close rotate-hover"></span><strong>提示：</strong>{{ error }}
+        </div>
+        {% endfor %}
+            {{ form(form, {'attr': {'novalidate': 'novalidate', 'class': 'form-x', 'id': 'form'}}) }}
+        </div>
+    </div> 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" charset="utf-8" src="{{ asset('public/umeditor/umeditor.config.js')}}"></script>
+    <script type="text/javascript" charset="utf-8" src="{{ asset('public/umeditor/umeditor.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('public/umeditor/lang/zh-cn/zh-cn.js')}}"></script>
+    <script type="text/javascript">
+    //实例化编辑器
+    window.UMEDITOR_HOME_URL = "/"; 
+    
+    var um = UM.getEditor('other', {
+        'topOffset': 600,
+        'initialStyle': {
+            'margin-top': 300
+            },
+        'initialFrameWidth': 600,
+        'initialFrameHeight': 500,
+        });
+</script>
+{% endblock %}
+    
