@@ -14,7 +14,7 @@ class AdminCommand extends ContainerAwareCommand
 
     protected function configure()
     {
-        $this->setName('admin:generate')
+        $this->setName('kit:admin:generate')
             ->addOption('username', 'u', InputOption::VALUE_OPTIONAL, 'admin username')
             ->addOption('password', 'p', InputOption::VALUE_OPTIONAL, 'admin password')
             ->setDescription('generate admin account.')
@@ -32,7 +32,7 @@ class AdminCommand extends ContainerAwareCommand
             $password = 'admin';
         }
         $helper = $this->getHelper('question');
-        $question = new ConfirmationQuestion('generate account username:'.$username.', password='.$password.'?', false);
+        $question = new ConfirmationQuestion('generate account username:'.$username.', password='.$password.'?(enter yes|no)', false);
         
         if (!$helper->ask($input, $output, $question)) {
             return;
