@@ -1,0 +1,16 @@
+{% if pageCount > 1 %}
+<style>
+.layui-laypage a, .layui-laypage span{padding: 5px 20px;}
+</style>
+    <div class="layui-box layui-laypage layui-laypage-default" >
+    	<a href="{% if previous is defined %}{{ path(route, query|merge({(pageParameterName): previous})) }}{% endif %}" class="layui-laypage-prev {% if previous is not defined %}layui-disabled{% endif %}">上一页</a>
+    	{% for p in pagesInRange %}
+    	    {% if p == current  %}
+    	    	<span class="layui-laypage-curr"><em class="layui-laypage-em" style="background-color:#1E9FFF;"></em><em>{{ p }}</em></span>
+    	    {% else %}
+    	    <a href="{{ path(route, query|merge({(pageParameterName): p})) }}">{{ p }}</a>
+    	    {% endif %}
+    	{% endfor %}
+    	<a href="{% if next is defined %}{{ path(route, query|merge({(pageParameterName): next})) }}{% endif %}" class="layui-laypage-prev {% if next is not defined %}layui-disabled{% endif %}">下一页</a>
+    </div>
+{% endif %}
