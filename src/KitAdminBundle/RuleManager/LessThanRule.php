@@ -12,6 +12,6 @@ class LessThanRule implements Rule
      */
     public function apply($value)
     {
-        return $value < 1000;
+        return $value < 9000;
     }
 }

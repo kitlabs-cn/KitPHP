@@ -12,7 +12,7 @@ kit_admin_flow:
     path:     /flow
     defaults: { _controller: KitAdminBundle:Default:flow }
 kit_admin_test:
-    path:     /flow
+    path:     /test
     defaults: { _controller: KitAdminBundle:Default:test }
 kit_admin_login:
     path:     /login

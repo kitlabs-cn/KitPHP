@@ -12,6 +12,6 @@ class GreaterThanRule implements Rule
      */
     public function apply($value)
     {
-        return $value > 4000;
+        return $value > 1000;
     }
 }
