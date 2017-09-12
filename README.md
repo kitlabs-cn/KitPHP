@@ -12,3 +12,4 @@ a skeleton for symfony
 	
 	php bin/console kit:admin:generate --username=admin --password=123456
 	// param optional, default username=admin, password=admin
+	php bin/console kit:admin:generate -u admin -p 123456

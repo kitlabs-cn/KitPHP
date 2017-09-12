@@ -2,3 +2,17 @@ services:
 #    kit_admin.example:
 #        class: KitAdminBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+    kit_admin.rule_manager_service:
+        class: KitAdminBundle\Service\RuleManagerService
+    kit_admin.rule_manager.is_numeric:
+        class: KitAdminBundle\RuleManager\IsNumericRule
+        tags:
+          - { name: rule_manager.rule}
+    kit_admin.rule_manager.greater_than:
+        class: KitAdminBundle\RuleManager\GreaterThanRule
+        tags:
+          - { name: rule_manager.rule}
+    kit_admin.rule_manager.less_than:
+        class: KitAdminBundle\RuleManager\LessThanRule
+        tags:
+          - { name: rule_manager.rule}

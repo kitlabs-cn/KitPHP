@@ -32,7 +32,7 @@ class AdminCommand extends ContainerAwareCommand
             $password = 'admin';
         }
         $helper = $this->getHelper('question');
-        $question = new ConfirmationQuestion('generate account username:'.$username.', password='.$password.'?(enter yes|no)', false);
+        $question = new ConfirmationQuestion('generate account username:'.$username.', password:'.$password.'?(enter yes|no)', false);
         
         if (!$helper->ask($input, $output, $question)) {
             return;
