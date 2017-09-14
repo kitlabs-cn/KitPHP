@@ -1,0 +1,3 @@
+kit_api_user_index_v1:
+    path: /user/index
+    defaults: { _controller: KitApiBundle:V1\User:index} 

@@ -1,3 +1,7 @@
+kit_api:
+    resource: "@KitApiBundle/Resources/config/routing.yml"
+    prefix:   /api
+
 kit_rbac:
     resource: "@KitRbacBundle/Resources/config/routing.yml"
     prefix:   /admin/rbac
