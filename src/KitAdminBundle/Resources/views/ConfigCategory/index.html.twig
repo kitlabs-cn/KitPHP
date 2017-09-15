@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Configcategories list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Createat</th>
+                <th>Updateat</th>
+                <th>Ip</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for configCategory in configCategories %}
+            <tr>
+                <td><a href="{{ path('configcategory_show', { 'id': configCategory.id }) }}">{{ configCategory.id }}</a></td>
+                <td>{{ configCategory.name }}</td>
+                <td>{% if configCategory.createAt %}{{ configCategory.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if configCategory.updateAt %}{{ configCategory.updateAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ configCategory.ip }}</td>
+                <td>{{ configCategory.status }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('configcategory_show', { 'id': configCategory.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('configcategory_edit', { 'id': configCategory.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('configcategory_new') }}">Create a new configCategory</a>
+        </li>
+    </ul>
+{% endblock %}

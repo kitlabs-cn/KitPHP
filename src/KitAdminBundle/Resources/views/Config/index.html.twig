@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Configs list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Categoryid</th>
+                <th>Value</th>
+                <th>Level</th>
+                <th>Status</th>
+                <th>Createat</th>
+                <th>Updateat</th>
+                <th>Ip</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for config in configs %}
+            <tr>
+                <td><a href="{{ path('config_show', { 'id': config.id }) }}">{{ config.id }}</a></td>
+                <td>{{ config.categoryId }}</td>
+                <td>{{ config.value }}</td>
+                <td>{{ config.level }}</td>
+                <td>{{ config.status }}</td>
+                <td>{% if config.createAt %}{{ config.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if config.updateAt %}{{ config.updateAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ config.ip }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('config_show', { 'id': config.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('config_edit', { 'id': config.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('config_new') }}">Create a new config</a>
+        </li>
+    </ul>
+{% endblock %}
