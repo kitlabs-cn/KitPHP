@@ -1,0 +1,9 @@
+services:
+#    kit_table_prefix.example:
+#        class: Kit\TablePrefixBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    kit_table_prefix.table_prefix_subscriber:
+        class: Kit\TablePrefixBundle\Subscriber\TablePrefixSubscriber
+        arguments: ["plain_value", ["plain_value"], ["parameter"], "@logger"]
+        tags:
+          - { name: doctrine.event_subscriber }

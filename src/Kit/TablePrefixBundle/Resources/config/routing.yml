@@ -1,0 +1,3 @@
+kit_table_prefix_homepage:
+    path:     /
+    defaults: { _controller: KitTablePrefixBundle:Default:index }

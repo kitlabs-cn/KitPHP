@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new Liip\ThemeBundle\LiipThemeBundle(),
             new Kit\Bundle\KitPayBundle\KitPayBundle(),
             new KitApiBundle\KitApiBundle(),
+            new Kit\TablePrefixBundle\KitTablePrefixBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
