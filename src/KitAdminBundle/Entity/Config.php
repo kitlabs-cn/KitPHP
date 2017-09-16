@@ -249,4 +249,3 @@ class Config
         return $this->ip;
     }
 }
-

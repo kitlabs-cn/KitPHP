@@ -187,4 +187,3 @@ class ConfigCategory
         return $this->status;
     }
 }
-
