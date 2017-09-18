@@ -10,3 +10,4 @@
 /var/sessions/*
 .idea/
 parameters.yml
+/web/bundles/*
