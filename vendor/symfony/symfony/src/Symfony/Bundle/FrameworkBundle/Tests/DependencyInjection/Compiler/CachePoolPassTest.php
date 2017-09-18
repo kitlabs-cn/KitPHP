@@ -11,13 +11,15 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Tests\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\CachePoolPass;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
-class CachePoolPassTest extends \PHPUnit_Framework_TestCase
+class CachePoolPassTest extends TestCase
 {
     private $cachePoolPass;
 
@@ -38,14 +40,32 @@ class CachePoolPassTest extends \PHPUnit_Framework_TestCase
         $adapter->addTag('cache.pool');
         $container->setDefinition('app.cache_adapter', $adapter);
         $container->setAlias('app.cache_adapter_alias', 'app.cache_adapter');
-        $cachePool = new DefinitionDecorator('app.cache_adapter_alias');
+        $cachePool = new ChildDefinition('app.cache_adapter_alias');
         $cachePool->addArgument(null);
         $cachePool->addTag('cache.pool');
         $container->setDefinition('app.cache_pool', $cachePool);
 
         $this->cachePoolPass->process($container);
 
-        $this->assertSame('C42Pcl9VBJ', $cachePool->getArgument(0));
+        $this->assertSame('D07rhFx97S', $cachePool->getArgument(0));
+    }
+
+    public function testNamespaceArgumentIsNotReplacedIfArrayAdapterIsUsed()
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.environment', 'prod');
+        $container->setParameter('kernel.name', 'app');
+        $container->setParameter('kernel.root_dir', 'foo');
+
+        $container->register('cache.adapter.array', ArrayAdapter::class)->addArgument(0);
+
+        $cachePool = new ChildDefinition('cache.adapter.array');
+        $cachePool->addTag('cache.pool');
+        $container->setDefinition('app.cache_pool', $cachePool);
+
+        $this->cachePoolPass->process($container);
+
+        $this->assertCount(0, $container->getDefinition('app.cache_pool')->getArguments());
     }
 
     public function testArgsAreReplaced()
@@ -69,7 +89,7 @@ class CachePoolPassTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(Reference::class, $cachePool->getArgument(0));
         $this->assertSame('foobar', (string) $cachePool->getArgument(0));
-        $this->assertSame('KO3xHaFEZU', $cachePool->getArgument(1));
+        $this->assertSame('itantF+pIq', $cachePool->getArgument(1));
         $this->assertSame(3, $cachePool->getArgument(2));
     }
 
@@ -88,7 +108,7 @@ class CachePoolPassTest extends \PHPUnit_Framework_TestCase
         $adapter->setAbstract(true);
         $adapter->addTag('cache.pool');
         $container->setDefinition('app.cache_adapter', $adapter);
-        $cachePool = new DefinitionDecorator('app.cache_adapter');
+        $cachePool = new ChildDefinition('app.cache_adapter');
         $cachePool->addTag('cache.pool', array('foobar' => 123));
         $container->setDefinition('app.cache_pool', $cachePool);
 

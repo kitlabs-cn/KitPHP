@@ -11,11 +11,12 @@
 
 namespace Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
@@ -34,9 +35,8 @@ class CachePoolPass implements CompilerPassInterface
         } else {
             $seed = '_'.$container->getParameter('kernel.root_dir');
         }
-        $seed .= '.'.$container->getParameter('kernel.name').'.'.$container->getParameter('kernel.environment').'.'.$container->getParameter('kernel.debug');
+        $seed .= '.'.$container->getParameter('kernel.name').'.'.$container->getParameter('kernel.environment');
 
-        $aliases = $container->getAliases();
         $attributes = array(
             'provider',
             'namespace',
@@ -47,8 +47,10 @@ class CachePoolPass implements CompilerPassInterface
             if ($pool->isAbstract()) {
                 continue;
             }
-            while ($adapter instanceof DefinitionDecorator) {
+            $isLazy = $pool->isLazy();
+            while ($adapter instanceof ChildDefinition) {
                 $adapter = $container->findDefinition($adapter->getParent());
+                $isLazy = $isLazy || $adapter->isLazy();
                 if ($t = $adapter->getTag('cache.pool')) {
                     $tags[0] += $t[0];
                 }
@@ -57,9 +59,9 @@ class CachePoolPass implements CompilerPassInterface
                 $tags[0]['namespace'] = $this->getNamespace($seed, $id);
             }
             if (isset($tags[0]['clearer'])) {
-                $clearer = strtolower($tags[0]['clearer']);
-                while (isset($aliases[$clearer])) {
-                    $clearer = (string) $aliases[$clearer];
+                $clearer = $tags[0]['clearer'];
+                while ($container->hasAlias($clearer)) {
+                    $clearer = (string) $container->getAlias($clearer);
                 }
             } else {
                 $clearer = null;
@@ -71,7 +73,7 @@ class CachePoolPass implements CompilerPassInterface
             }
             $i = 0;
             foreach ($attributes as $attr) {
-                if (isset($tags[0][$attr])) {
+                if (isset($tags[0][$attr]) && ('namespace' !== $attr || ArrayAdapter::class !== $adapter->getClass())) {
                     $pool->replaceArgument($i++, $tags[0][$attr]);
                 }
                 unset($tags[0][$attr]);
@@ -80,8 +82,16 @@ class CachePoolPass implements CompilerPassInterface
                 throw new InvalidArgumentException(sprintf('Invalid "cache.pool" tag for service "%s": accepted attributes are "clearer", "provider", "namespace" and "default_lifetime", found "%s".', $id, implode('", "', array_keys($tags[0]))));
             }
 
+            $attr = array();
             if (null !== $clearer) {
-                $pool->addTag('cache.pool', array('clearer' => $clearer));
+                $attr['clearer'] = $clearer;
+            }
+            if (!$isLazy) {
+                $pool->setLazy(true);
+                $attr['unlazy'] = true;
+            }
+            if ($attr) {
+                $pool->addTag('cache.pool', $attr);
             }
         }
     }
@@ -96,13 +106,15 @@ class CachePoolPass implements CompilerPassInterface
      */
     public static function getServiceProvider(ContainerBuilder $container, $name)
     {
-        if (0 === strpos($name, 'redis://')) {
+        $container->resolveEnvPlaceholders($name, null, $usedEnvs);
+
+        if ($usedEnvs || preg_match('#^[a-z]++://#', $name)) {
             $dsn = $name;
 
             if (!$container->hasDefinition($name = md5($dsn))) {
-                $definition = new Definition(\Redis::class);
+                $definition = new Definition(AbstractAdapter::class);
                 $definition->setPublic(false);
-                $definition->setFactory(array(RedisAdapter::class, 'createConnection'));
+                $definition->setFactory(array(AbstractAdapter::class, 'createConnection'));
                 $definition->setArguments(array($dsn));
                 $container->setDefinition($name, $definition);
             }

@@ -21,6 +21,8 @@ use Symfony\Component\PropertyInfo\Type;
  * Extracts data using the reflection API.
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
+ *
+ * @final since version 3.3
  */
 class ReflectionExtractor implements PropertyListExtractorInterface, PropertyTypeExtractorInterface, PropertyAccessExtractorInterface
 {
@@ -68,22 +70,26 @@ class ReflectionExtractor implements PropertyListExtractorInterface, PropertyTyp
         $properties = array();
         foreach ($reflectionProperties as $reflectionProperty) {
             if ($reflectionProperty->isPublic()) {
-                $properties[$reflectionProperty->name] = true;
+                $properties[$reflectionProperty->name] = $reflectionProperty->name;
             }
         }
 
         foreach ($reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $reflectionMethod) {
+            if ($reflectionMethod->isStatic()) {
+                continue;
+            }
+
             $propertyName = $this->getPropertyName($reflectionMethod->name, $reflectionProperties);
             if (!$propertyName || isset($properties[$propertyName])) {
                 continue;
             }
-            if (!preg_match('/^[A-Z]{2,}/', $propertyName)) {
+            if (!$reflectionClass->hasProperty($propertyName) && !preg_match('/^[A-Z]{2,}/', $propertyName)) {
                 $propertyName = lcfirst($propertyName);
             }
-            $properties[$propertyName] = true;
+            $properties[$propertyName] = $propertyName;
         }
 
-        return array_keys($properties);
+        return array_values($properties);
     }
 
     /**
@@ -263,6 +269,9 @@ class ReflectionExtractor implements PropertyListExtractorInterface, PropertyTyp
         foreach (self::$accessorPrefixes as $prefix) {
             try {
                 $reflectionMethod = new \ReflectionMethod($class, $prefix.$ucProperty);
+                if ($reflectionMethod->isStatic()) {
+                    continue;
+                }
 
                 if (0 === $reflectionMethod->getNumberOfRequiredParameters()) {
                     return array($reflectionMethod, $prefix);
@@ -298,6 +307,9 @@ class ReflectionExtractor implements PropertyListExtractorInterface, PropertyTyp
             foreach ($names as $name) {
                 try {
                     $reflectionMethod = new \ReflectionMethod($class, $prefix.$name);
+                    if ($reflectionMethod->isStatic()) {
+                        continue;
+                    }
 
                     // Parameter can be optional to allow things like: method(array $foo = null)
                     if ($reflectionMethod->getNumberOfParameters() >= 1) {

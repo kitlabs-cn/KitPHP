@@ -11,11 +11,15 @@
 
 namespace Liip\ImagineBundle;
 
+use Enqueue\Bundle\DependencyInjection\Compiler\AddTopicMetaPass;
+use Liip\ImagineBundle\Async\Topics;
 use Liip\ImagineBundle\DependencyInjection\Compiler\FiltersCompilerPass;
 use Liip\ImagineBundle\DependencyInjection\Compiler\LoadersCompilerPass;
+use Liip\ImagineBundle\DependencyInjection\Compiler\LocatorsCompilerPass;
 use Liip\ImagineBundle\DependencyInjection\Compiler\MetadataReaderCompilerPass;
 use Liip\ImagineBundle\DependencyInjection\Compiler\PostProcessorsCompilerPass;
 use Liip\ImagineBundle\DependencyInjection\Compiler\ResolversCompilerPass;
+use Liip\ImagineBundle\DependencyInjection\Factory\Loader\ChainLoaderFactory;
 use Liip\ImagineBundle\DependencyInjection\Factory\Loader\FileSystemLoaderFactory;
 use Liip\ImagineBundle\DependencyInjection\Factory\Loader\FlysystemLoaderFactory;
 use Liip\ImagineBundle\DependencyInjection\Factory\Loader\StreamLoaderFactory;
@@ -35,6 +39,7 @@ class LiipImagineBundle extends Bundle
     {
         parent::build($container);
 
+        $container->addCompilerPass(new LocatorsCompilerPass());
         $container->addCompilerPass(new LoadersCompilerPass());
         $container->addCompilerPass(new FiltersCompilerPass());
         $container->addCompilerPass(new PostProcessorsCompilerPass());
@@ -51,5 +56,13 @@ class LiipImagineBundle extends Bundle
         $extension->addLoaderFactory(new StreamLoaderFactory());
         $extension->addLoaderFactory(new FileSystemLoaderFactory());
         $extension->addLoaderFactory(new FlysystemLoaderFactory());
+        $extension->addLoaderFactory(new ChainLoaderFactory());
+
+        if (class_exists('Enqueue\Bundle\DependencyInjection\Compiler\AddTopicMetaPass')) {
+            $container->addCompilerPass(AddTopicMetaPass::create()
+                ->add(Topics::RESOLVE_CACHE, 'Send message to this topic when you want to resolve image\'s cache.')
+                ->add(Topics::CACHE_RESOLVED, 'The topic contains messages about resolved image\'s caches')
+            );
+        }
     }
 }

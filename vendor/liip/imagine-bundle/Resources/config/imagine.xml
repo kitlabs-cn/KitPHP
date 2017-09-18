@@ -45,13 +45,16 @@
         <parameter key="liip_imagine.filter.loader.downscale.class">Liip\ImagineBundle\Imagine\Filter\Loader\DownscaleFilterLoader</parameter>
         <parameter key="liip_imagine.filter.loader.auto_rotate.class">Liip\ImagineBundle\Imagine\Filter\Loader\AutoRotateFilterLoader</parameter>
         <parameter key="liip_imagine.filter.loader.rotate.class">Liip\ImagineBundle\Imagine\Filter\Loader\RotateFilterLoader</parameter>
+        <parameter key="liip_imagine.filter.loader.flip.class">Liip\ImagineBundle\Imagine\Filter\Loader\FlipFilterLoader</parameter>
         <parameter key="liip_imagine.filter.loader.interlace.class">Liip\ImagineBundle\Imagine\Filter\Loader\InterlaceFilterLoader</parameter>
+        <parameter key="liip_imagine.filter.loader.resample.class">Liip\ImagineBundle\Imagine\Filter\Loader\ResampleFilterLoader</parameter>
 
         <!-- Data loaders' classes -->
 
         <parameter key="liip_imagine.binary.loader.filesystem.class">Liip\ImagineBundle\Binary\Loader\FileSystemLoader</parameter>
         <parameter key="liip_imagine.binary.loader.stream.class">Liip\ImagineBundle\Binary\Loader\StreamLoader</parameter>
         <parameter key="liip_imagine.binary.loader.flysystem.class">Liip\ImagineBundle\Binary\Loader\FlysystemLoader</parameter>
+        <parameter key="liip_imagine.binary.loader.chain.class">Liip\ImagineBundle\Binary\Loader\ChainLoader</parameter>
 
         <!-- Data loader loaders' classes -->
 
@@ -132,6 +135,7 @@
             <argument type="service" id="liip_imagine.cache.manager" />
             <argument type="service" id="liip_imagine.cache.signer" />
             <argument type="service" id="logger" on-invalid="ignore" />
+            <argument>%liip_imagine.controller.redirect_response_code%</argument>
         </service>
 
         <service id="liip_imagine.meta_data.reader" class="%liip_imagine.meta_data.reader.class%" public="false" />
@@ -221,8 +225,17 @@
             <tag name="liip_imagine.filter.loader" loader="rotate" />
         </service>
 
+        <service id="liip_imagine.filter.loader.flip" class="%liip_imagine.filter.loader.flip.class%">
+            <tag name="liip_imagine.filter.loader" loader="flip" />
+        </service>
+
         <service id="liip_imagine.filter.loader.interlace" class="%liip_imagine.filter.loader.interlace.class%">
             <tag name="liip_imagine.filter.loader" loader="interlace" />
+        </service>
+
+        <service id="liip_imagine.filter.loader.resample" class="%liip_imagine.filter.loader.resample.class%">
+            <argument type="service" id="liip_imagine" />
+            <tag name="liip_imagine.filter.loader" loader="resample" />
         </service>
 
         <!-- Data loaders -->
@@ -244,12 +257,20 @@
             <argument><!-- will be injected by FlysystemLoaderFactory --></argument>
         </service>
 
+        <service id="liip_imagine.binary.loader.prototype.chain" class="%liip_imagine.binary.loader.chain.class%" abstract="true">
+            <argument><!-- will be injected by ChainLoaderFactory --></argument>
+        </service>
+
         <!-- Data loader locators -->
 
         <service id="liip_imagine.binary.locator.filesystem" class="%liip_imagine.binary.locator.filesystem.class%" public="false">
+            <argument><!-- will be injected by FileSystemLoaderFactory --></argument>
+            <tag name="liip_imagine.binary.locator" shared="false" />
         </service>
 
         <service id="liip_imagine.binary.locator.filesystem_insecure" class="%liip_imagine.binary.locator.filesystem_insecure.class%" public="false">
+            <argument><!-- will be injected by FileSystemLoaderFactory --></argument>
+            <tag name="liip_imagine.binary.locator" shared="false" />
         </service>
 
         <!-- Cache resolver -->

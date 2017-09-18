@@ -4,26 +4,39 @@
 |:----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|
 | [![Travis](https://src.run/shield/liip/LiipImagineBundle/1.0/travis.svg)](https://src.run/service/liip/LiipImagineBundle/1.0/travis) | [![Style CI](https://src.run/shield/liip/LiipImagineBundle/1.0/styleci.svg)](https://src.run/service/liip/LiipImagineBundle/1.0/styleci) | [![Coverage](https://src.run/shield/liip/LiipImagineBundle/1.0/coveralls.svg)](https://src.run/service/liip/LiipImagineBundle/1.0/coveralls) | [![Downloads](https://src.run/shield/liip/LiipImagineBundle/packagist_dt.svg)](https://src.run/service/liip/LiipImagineBundle/packagist) | [![Latest Stable Version](https://src.run/shield/liip/LiipImagineBundle/packagist_v.svg)](https://src.run/service/liip/LiipImagineBundle/packagist) | 
 
-*This bundle provides an image manipulation abstraction toolkit for
-[Symfony](http://symfony.com/)-based projects.*
+*This bundle provides an image manipulation abstraction toolkit for [Symfony](http://symfony.com/)-based projects.*
 
 ## Overview
 
 - [Filter Sets](http://symfony.com/doc/master/bundles/LiipImagineBundle/basic-usage.html):
-  Using any Symfony-supported configuration language (such as YML and XML), 
-  you can create *filter set* definitions that specify transformation routines. 
-  These include a set of *filters* and *post-processors*, as well as other,
-  optional parameters.
+  Using any Symfony-supported configuration language (such as YML and XML), you can create *filter set* definitions that
+  specify transformation routines. These definitions include a set of
+  *[filters](http://symfony.com/doc/current/bundles/LiipImagineBundle/filters.html)* and
+  *[post-processors](http://symfony.com/doc/current/bundles/LiipImagineBundle/post-processors.html)*,
+  as well as other optional parameters.
+
 - [Filters](http://symfony.com/doc/master/bundles/LiipImagineBundle/filters.html):
-  Many built-in filters are provided, allowing the application of common 
-  transformations. Examples include `thumbnail`, `scale`, `crop`, `strip`, `watermark`,  
-  and many more. Additionally, [custom filters](http://symfony.com/doc/master/bundles/LiipImagineBundle/filters.html#filter-custom) 
-  are supported.
+  Image transformations are applied using *filters*. A set of
+  [build-in filters](http://symfony.com/doc/current/bundles/LiipImagineBundle/filters.html) are provided by the bundle,
+  implementing the most common transformations; examples include
+  [thumbnail](http://symfony.com/doc/current/bundles/LiipImagineBundle/filters/sizing.html#thumbnails),
+  [scale](http://symfony.com/doc/current/bundles/LiipImagineBundle/filters/sizing.html#scale),
+  [crop](http://symfony.com/doc/current/bundles/LiipImagineBundle/filters/sizing.html#cropping-images),
+  [flip](http://symfony.com/doc/current/bundles/LiipImagineBundle/filters/orientation.html#flip),
+  [strip](http://symfony.com/doc/current/bundles/LiipImagineBundle/filters/general.html#strip), and
+  [watermark](http://symfony.com/doc/current/bundles/LiipImagineBundle/filters/general.html#watermark).
+  For more advances transformations, you can easily create your own
+  [custom filters](http://symfony.com/doc/master/bundles/LiipImagineBundle/filters.html#filter-custom).
+
 - [Post-Processors](http://symfony.com/doc/master/bundles/LiipImagineBundle/post-processors.html):
-  This component allows for the modification of the resulting binary file 
-  created by filters. Examples include `jpegoptim`, `optipng`, `cjpeg`, 
-  and `pngquant`. Additionally, [custom post-processors](http://symfony.com/doc/master/bundles/LiipImagineBundle/post-processors.html#post-processors-custom) 
-  are supported.
+  Modification of the resulting binary image file (created from your *filters*) are handled by *post-processors*.
+  Examples include
+  [JPEG Optim](http://symfony.com/doc/current/bundles/LiipImagineBundle/post-processors/jpeg-optim.html),
+  [Moz JPEG](http://symfony.com/doc/current/bundles/LiipImagineBundle/post-processors/jpeg-moz.html),
+  [Opti PNG](http://symfony.com/doc/current/bundles/LiipImagineBundle/post-processors/png-opti.html), and
+  [PNG Quant](http://symfony.com/doc/current/bundles/LiipImagineBundle/post-processors/png-quant.html). Just like filters
+  you can easily create your own
+  [custom post-processors](http://symfony.com/doc/master/bundles/LiipImagineBundle/post-processors.html#post-processors-custom).
 
 
 ### Example
@@ -367,12 +380,12 @@ $response = $imagine
 ```
 
 
-## Images Outside Data Root
+## Data Roots
 
-When your setup requires your source images reside outside the web root,
-you have to set your loader's `data_root` parameter in your configuration 
-(often `app/config/config.yml`) with the absolute path to your source image 
-location.
+By default, Symfony's `web/` directory is registered as a data root to load
+assets from. For many installations this will be sufficient, but sometime you
+may need to load images from other locations. To do this, you must set the
+`data_root` parameter in your configuration (often located at `app/config/config.yml`).
 
 ```yml
 liip_imagine:
@@ -382,7 +395,70 @@ liip_imagine:
                 data_root: /path/to/source/images/dir
 ```
 
-This location must be readable by your web server. On a system that supports 
+As of version `1.7.2` you can register multiple data root paths, and the 
+file locator will search each for the requested file.
+
+```yml
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                data_root:
+                    - /path/foo
+                    - /path/bar
+```
+
+As of version `1.7.3` you ask for the public resource paths from all registered bundles
+to be auto-registered as data roots. This allows you to load assets from the
+`Resources/public` folders that reside within the loaded bundles. To enable this
+feature, set the `bundle_resources.enabled` configuration option to `true`.
+
+```yml
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                bundle_resources:
+                    enabled: true
+```
+
+If you want to register some of the `Resource/public` folders, but not all, you can do
+so by blacklisting the bundles you don't want registered or whitelisting the bundles you
+do want registered. For example, to blacklist (not register) the bundles "FooBundle" and
+"BarBundle", you would use the following configuration.
+
+```yml
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                bundle_resources:
+                    enabled: true
+                    access_control_type: blacklist
+                    access_control_list:
+                        - FooBundle
+                        - BarBundle
+```
+
+Alternatively, if you want to whitelist (only register) the bundles "FooBundle" and "BarBundle",
+you would use the following configuration.
+
+```yml
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                bundle_resources:
+                    enabled: true
+                    access_control_type: whitelist
+                    access_control_list:
+                        - FooBundle
+                        - BarBundle
+```
+
+### Permissions
+
+Image locations must be readable by your web server. On a system that supports 
 `setfacl` (such as Linux/BSD), use
 
 ```sh

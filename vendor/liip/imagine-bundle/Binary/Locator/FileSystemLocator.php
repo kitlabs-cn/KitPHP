@@ -13,6 +13,7 @@ namespace Liip\ImagineBundle\Binary\Locator;
 
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Exception\InvalidArgumentException;
+use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FileSystemLocator implements LocatorInterface
@@ -20,16 +21,36 @@ class FileSystemLocator implements LocatorInterface
     /**
      * @var string[]
      */
-    protected $roots;
+    private $roots = array();
 
     /**
+     * @param string[] $roots
+     */
+    public function __construct(array $roots = array())
+    {
+        $this->roots = array_map(array($this, 'sanitizeRootPath'), $roots);
+    }
+
+    /**
+     * @deprecated Since version 0.9.0, use __construct(array $roots) instead
+     *
      * @param array[] $options
      */
     public function setOptions(array $options = array())
     {
-        $optionsResolver = new OptionsResolver();
-        $optionsResolver->setDefaults(array('roots' => array()));
-        $options = $optionsResolver->resolve($options);
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(array('roots' => array()));
+
+        try {
+            $options = $resolver->resolve($options);
+        } catch (ExceptionInterface $e) {
+            throw new InvalidArgumentException(sprintf('Invalid options provided to %s()', __METHOD__), null, $e);
+        }
+
+        @trigger_error(
+            sprintf('%s() is deprecated. Pass the data roots to the constructor instead.', __METHOD__),
+            E_USER_DEPRECATED
+        );
 
         $this->roots = array_map(array($this, 'sanitizeRootPath'), (array) $options['roots']);
     }
@@ -43,14 +64,51 @@ class FileSystemLocator implements LocatorInterface
      */
     public function locate($path)
     {
-        foreach ($this->roots as $root) {
-            if (false !== $absolute = $this->generateAbsolutePath($root, $path)) {
-                return $this->sanitizeAbsolutePath($absolute);
-            }
+        if (false !== $absolute = $this->locateUsingRootPlaceholder($path)) {
+            return $this->sanitizeAbsolutePath($absolute);
+        }
+
+        if (false !== $absolute = $this->locateUsingRootPathsSearch($path)) {
+            return $this->sanitizeAbsolutePath($absolute);
         }
 
         throw new NotLoadableException(sprintf('Source image not resolvable "%s" in root path(s) "%s"',
             $path, implode(':', $this->roots)));
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return bool|string
+     */
+    private function locateUsingRootPathsSearch($path)
+    {
+        foreach ($this->roots as $root) {
+            if (false !== $absolute = $this->generateAbsolutePath($root, $path)) {
+                return $absolute;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return bool|string
+     */
+    private function locateUsingRootPlaceholder($path)
+    {
+        if (0 !== strpos($path, '@') || 1 !== preg_match('{@(?<name>[^:]+):(?<path>.+)}', $path, $matches)) {
+            return false;
+        }
+
+        if (isset($this->roots[$matches['name']])) {
+            return $this->generateAbsolutePath($this->roots[$matches['name']], $matches['path']);
+        }
+
+        throw new NotLoadableException(sprintf('Invalid root placeholder "%s" for path "%s"',
+            $matches['name'], $matches['path']));
     }
 
     /**
@@ -71,7 +129,7 @@ class FileSystemLocator implements LocatorInterface
      *
      * @return string
      */
-    protected function sanitizeRootPath($root)
+    private function sanitizeRootPath($root)
     {
         if (!empty($root) && false !== $realRoot = realpath($root)) {
             return $realRoot;

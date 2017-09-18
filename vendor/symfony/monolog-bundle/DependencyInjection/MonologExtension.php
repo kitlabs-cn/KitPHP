@@ -52,12 +52,11 @@ class MonologExtension extends Extension
         if (isset($config['handlers'])) {
             $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('monolog.xml');
-            $container->setAlias('logger', 'monolog.logger');
 
             $container->setParameter('monolog.use_microseconds', $config['use_microseconds']);
 
-            // always autowire the main logger, require Symfony >= 2.8
-            if (method_exists('Symfony\Component\DependencyInjection\Definition', 'addAutowiringType')) {
+            // always autowire the main logger, require Symfony >= 2.8, < 3.3
+            if (!method_exists('Symfony\Component\DependencyInjection\ContainerBuilder', 'fileExists') && method_exists('Symfony\Component\DependencyInjection\Definition', 'addAutowiringType')) {
                 $container->getDefinition('monolog.logger')->addAutowiringType('Psr\Log\LoggerInterface');
             }
 
@@ -91,21 +90,23 @@ class MonologExtension extends Extension
             }
             $container->setParameter('monolog.handlers_to_channels', $handlersToChannels);
 
-            $this->addClassesToCompile(array(
-                'Monolog\\Formatter\\FormatterInterface',
-                'Monolog\\Formatter\\LineFormatter',
-                'Monolog\\Handler\\HandlerInterface',
-                'Monolog\\Handler\\AbstractHandler',
-                'Monolog\\Handler\\AbstractProcessingHandler',
-                'Monolog\\Handler\\StreamHandler',
-                'Monolog\\Handler\\FingersCrossedHandler',
-                'Monolog\\Handler\\FilterHandler',
-                'Monolog\\Handler\\TestHandler',
-                'Monolog\\Logger',
-                'Symfony\\Bridge\\Monolog\\Logger',
-                'Monolog\\Handler\\FingersCrossed\\ActivationStrategyInterface',
-                'Monolog\\Handler\\FingersCrossed\\ErrorLevelActivationStrategy',
-            ));
+            if (PHP_VERSION_ID < 70000) {
+                $this->addClassesToCompile(array(
+                    'Monolog\\Formatter\\FormatterInterface',
+                    'Monolog\\Formatter\\LineFormatter',
+                    'Monolog\\Handler\\HandlerInterface',
+                    'Monolog\\Handler\\AbstractHandler',
+                    'Monolog\\Handler\\AbstractProcessingHandler',
+                    'Monolog\\Handler\\StreamHandler',
+                    'Monolog\\Handler\\FingersCrossedHandler',
+                    'Monolog\\Handler\\FilterHandler',
+                    'Monolog\\Handler\\TestHandler',
+                    'Monolog\\Logger',
+                    'Symfony\\Bridge\\Monolog\\Logger',
+                    'Monolog\\Handler\\FingersCrossed\\ActivationStrategyInterface',
+                    'Monolog\\Handler\\FingersCrossed\\ErrorLevelActivationStrategy',
+                ));
+            }
         }
 
         $container->setParameter('monolog.additional_channels', isset($config['channels']) ? $config['channels'] : array());
@@ -532,6 +533,30 @@ class MonologExtension extends Extension
             ));
             break;
 
+        case 'slackwebhook':
+            $definition->setArguments(array(
+                $handler['webhook_url'],
+                $handler['channel'],
+                $handler['bot_name'],
+                $handler['use_attachment'],
+                $handler['icon_emoji'],
+                $handler['use_short_attachment'],
+                $handler['include_extra'],
+                $handler['level'],
+                $handler['bubble'],
+            ));
+            break;
+
+        case 'slackbot':
+            $definition->setArguments(array(
+                $handler['team'],
+                $handler['token'],
+                urlencode($handler['channel']),
+                $handler['level'],
+                $handler['bubble'],
+            ));
+            break;
+
         case 'cube':
             $definition->setArguments(array(
                 $handler['url'],
@@ -652,11 +677,23 @@ class MonologExtension extends Extension
                 $handler['app_name'],
             ));
             break;
+        case 'server_log':
+            if (!class_exists('Symfony\Bridge\Monolog\Handler\ServerLogHandler')) {
+                throw new \RuntimeException('The ServerLogHandler is not available. Please update "symfony/monolog-bridge" to 3.3.');
+            }
+
+            $definition->setArguments(array(
+                $handler['host'],
+                $handler['level'],
+                $handler['bubble'],
+            ));
+            break;
 
         // Handlers using the constructor of AbstractHandler without adding their own arguments
         case 'browser_console':
         case 'test':
         case 'null':
+        case 'debug':
             $definition->setArguments(array(
                 $handler['level'],
                 $handler['bubble'],
@@ -712,6 +749,7 @@ class MonologExtension extends Extension
             'browser_console' => 'Monolog\Handler\BrowserConsoleHandler',
             'firephp' => 'Symfony\Bridge\Monolog\Handler\FirePHPHandler',
             'chromephp' => 'Symfony\Bridge\Monolog\Handler\ChromePhpHandler',
+            'debug' => 'Symfony\Bridge\Monolog\Handler\DebugHandler',
             'swift_mailer' => 'Symfony\Bridge\Monolog\Handler\SwiftMailerHandler',
             'native_mailer' => 'Monolog\Handler\NativeMailerHandler',
             'socket' => 'Monolog\Handler\SocketHandler',
@@ -720,6 +758,8 @@ class MonologExtension extends Extension
             'newrelic' => 'Monolog\Handler\NewRelicHandler',
             'hipchat' => 'Monolog\Handler\HipChatHandler',
             'slack' => 'Monolog\Handler\SlackHandler',
+            'slackwebhook' => 'Monolog\Handler\SlackWebhookHandler',
+            'slackbot' => 'Monolog\Handler\SlackbotHandler',
             'cube' => 'Monolog\Handler\CubeHandler',
             'amqp' => 'Monolog\Handler\AmqpHandler',
             'error_log' => 'Monolog\Handler\ErrorLogHandler',
@@ -730,6 +770,7 @@ class MonologExtension extends Extension
             'filter' => 'Monolog\Handler\FilterHandler',
             'mongo' => 'Monolog\Handler\MongoDBHandler',
             'elasticsearch' => 'Monolog\Handler\ElasticSearchHandler',
+            'server_log' => 'Symfony\Bridge\Monolog\Handler\ServerLogHandler',
         );
 
         if (!isset($typeToClassMapping[$handlerType])) {
@@ -738,5 +779,4 @@ class MonologExtension extends Extension
 
         return $typeToClassMapping[$handlerType];
     }
-
 }

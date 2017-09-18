@@ -72,6 +72,10 @@ class LiipImagineExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('imagine.xml');
 
+        if ($config['enqueue']) {
+            $loader->load('enqueue.xml');
+        }
+
         $this->setFactories($container);
 
         if (interface_exists('Imagine\Image\Metadata\MetadataReaderInterface')) {
@@ -91,6 +95,7 @@ class LiipImagineExtension extends Extension
 
         $container->setParameter('liip_imagine.controller.filter_action', $config['controller']['filter_action']);
         $container->setParameter('liip_imagine.controller.filter_runtime_action', $config['controller']['filter_runtime_action']);
+        $container->setParameter('liip_imagine.controller.redirect_response_code', $config['controller']['redirect_response_code']);
 
         $resources = $container->hasParameter('twig.form.resources') ? $container->getParameter('twig.form.resources') : array();
         $resources[] = 'LiipImagineBundle:Form:form_div_layout.html.twig';

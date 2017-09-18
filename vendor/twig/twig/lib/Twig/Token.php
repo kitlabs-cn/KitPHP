@@ -3,8 +3,8 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2009 Fabien Potencier
- * (c) 2009 Armin Ronacher
+ * (c) Fabien Potencier
+ * (c) Armin Ronacher
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,11 +15,11 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Token
+final class Twig_Token
 {
-    protected $value;
-    protected $type;
-    protected $lineno;
+    private $value;
+    private $type;
+    private $lineno;
 
     const EOF_TYPE = -1;
     const TEXT_TYPE = 0;
@@ -201,3 +201,5 @@ class Twig_Token
         }
     }
 }
+
+class_alias('Twig_Token', 'Twig\Token', false);

@@ -11,12 +11,10 @@
 
 namespace Symfony\Bundle\FrameworkBundle\CacheWarmer;
 
+use Doctrine\Common\Annotations\AnnotationException;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
-use Symfony\Component\Cache\Adapter\ProxyAdapter;
-use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 use Symfony\Component\Validator\Mapping\Cache\Psr6Cache;
 use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\LoaderChain;
@@ -30,66 +28,54 @@ use Symfony\Component\Validator\ValidatorBuilderInterface;
  *
  * @author Titouan Galopin <galopintitouan@gmail.com>
  */
-class ValidatorCacheWarmer implements CacheWarmerInterface
+class ValidatorCacheWarmer extends AbstractPhpFileCacheWarmer
 {
     private $validatorBuilder;
-    private $phpArrayFile;
-    private $fallbackPool;
 
     /**
      * @param ValidatorBuilderInterface $validatorBuilder
-     * @param string                    $phpArrayFile     The PHP file where metadata are cached.
-     * @param CacheItemPoolInterface    $fallbackPool     The pool where runtime-discovered metadata are cached.
+     * @param string                    $phpArrayFile     The PHP file where metadata are cached
+     * @param CacheItemPoolInterface    $fallbackPool     The pool where runtime-discovered metadata are cached
      */
     public function __construct(ValidatorBuilderInterface $validatorBuilder, $phpArrayFile, CacheItemPoolInterface $fallbackPool)
     {
+        parent::__construct($phpArrayFile, $fallbackPool);
         $this->validatorBuilder = $validatorBuilder;
-        $this->phpArrayFile = $phpArrayFile;
-        if (!$fallbackPool instanceof AdapterInterface) {
-            $fallbackPool = new ProxyAdapter($fallbackPool);
-        }
-        $this->fallbackPool = $fallbackPool;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function warmUp($cacheDir)
+    protected function doWarmUp($cacheDir, ArrayAdapter $arrayAdapter)
     {
         if (!method_exists($this->validatorBuilder, 'getLoaders')) {
-            return;
+            return false;
         }
 
-        $adapter = new PhpArrayAdapter($this->phpArrayFile, $this->fallbackPool);
-        $arrayPool = new ArrayAdapter(0, false);
-
         $loaders = $this->validatorBuilder->getLoaders();
-        $metadataFactory = new LazyLoadingMetadataFactory(new LoaderChain($loaders), new Psr6Cache($arrayPool));
+        $metadataFactory = new LazyLoadingMetadataFactory(new LoaderChain($loaders), new Psr6Cache($arrayAdapter));
 
         foreach ($this->extractSupportedLoaders($loaders) as $loader) {
             foreach ($loader->getMappedClasses() as $mappedClass) {
-                if ($metadataFactory->hasMetadataFor($mappedClass)) {
-                    $metadataFactory->getMetadataFor($mappedClass);
+                try {
+                    if ($metadataFactory->hasMetadataFor($mappedClass)) {
+                        $metadataFactory->getMetadataFor($mappedClass);
+                    }
+                } catch (\ReflectionException $e) {
+                    // ignore failing reflection
+                } catch (AnnotationException $e) {
+                    // ignore failing annotations
                 }
             }
         }
 
-        $values = $arrayPool->getValues();
-        $adapter->warmUp($values);
-
-        foreach ($values as $k => $v) {
-            $item = $this->fallbackPool->getItem($k);
-            $this->fallbackPool->saveDeferred($item->set($v));
-        }
-        $this->fallbackPool->commit();
+        return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isOptional()
+    protected function warmUpPhpArrayAdapter(PhpArrayAdapter $phpArrayAdapter, array $values)
     {
-        return true;
+        // make sure we don't cache null values
+        parent::warmUpPhpArrayAdapter($phpArrayAdapter, array_filter($values));
     }
 
     /**

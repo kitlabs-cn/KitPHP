@@ -20,7 +20,7 @@ class BucketService extends  ClientService
         }
     }
     
-    public function list()
+    public function getList()
     {
         try {
             return $this->getClient()->listBuckets();

@@ -11,12 +11,15 @@
 
 namespace Symfony\Bridge\Twig\Tests\Extension;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Loader\ArrayLoader;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader as TwigArrayLoader;
 
-class TranslationExtensionTest extends \PHPUnit_Framework_TestCase
+class TranslationExtensionTest extends TestCase
 {
     public function testEscaping()
     {
@@ -32,8 +35,8 @@ class TranslationExtensionTest extends \PHPUnit_Framework_TestCase
     {
         if ($expected != $this->getTemplate($template)->render($variables)) {
             echo $template."\n";
-            $loader = new \Twig_Loader_Array(array('index' => $template));
-            $twig = new \Twig_Environment($loader, array('debug' => true, 'cache' => false));
+            $loader = new TwigArrayLoader(array('index' => $template));
+            $twig = new Environment($loader, array('debug' => true, 'cache' => false));
             $twig->addExtension(new TranslationExtension(new Translator('en', new MessageSelector())));
 
             echo $twig->compile($twig->parse($twig->tokenize($twig->getLoader()->getSourceContext('index'))))."\n\n";
@@ -44,7 +47,7 @@ class TranslationExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \Twig_Error_Syntax
+     * @expectedException        \Twig\Error\SyntaxError
      * @expectedExceptionMessage Unexpected token. Twig was looking for the "with", "from", or "into" keyword in "index" at line 3.
      */
     public function testTransUnknownKeyword()
@@ -53,7 +56,7 @@ class TranslationExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \Twig_Error_Syntax
+     * @expectedException        \Twig\Error\SyntaxError
      * @expectedExceptionMessage A message inside a trans tag must be a simple text in "index" at line 2.
      */
     public function testTransComplexBody()
@@ -62,7 +65,7 @@ class TranslationExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        \Twig_Error_Syntax
+     * @expectedException        \Twig\Error\SyntaxError
      * @expectedExceptionMessage A message inside a transchoice tag must be a simple text in "index" at line 2.
      */
     public function testTransChoiceComplexBody()
@@ -188,11 +191,11 @@ class TranslationExtensionTest extends \PHPUnit_Framework_TestCase
         }
 
         if (is_array($template)) {
-            $loader = new \Twig_Loader_Array($template);
+            $loader = new TwigArrayLoader($template);
         } else {
-            $loader = new \Twig_Loader_Array(array('index' => $template));
+            $loader = new TwigArrayLoader(array('index' => $template));
         }
-        $twig = new \Twig_Environment($loader, array('debug' => true, 'cache' => false));
+        $twig = new Environment($loader, array('debug' => true, 'cache' => false));
         $twig->addExtension(new TranslationExtension($translator));
 
         return $twig->loadTemplate('index');

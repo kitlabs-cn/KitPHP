@@ -13,13 +13,15 @@ namespace Symfony\Component\Ldap\Adapter\ExtLdap;
 
 use Symfony\Component\Ldap\Adapter\AbstractQuery;
 use Symfony\Component\Ldap\Exception\LdapException;
+use Symfony\Component\Ldap\Exception\NotBoundException;
 
 /**
  * @author Charles Sarrazin <charles@sarraz.in>
+ * @author Bob van de Vijver <bobvandevijver@hotmail.com>
  */
 class Query extends AbstractQuery
 {
-    /** @var  Connection */
+    /** @var Connection */
     protected $connection;
 
     /** @var resource */
@@ -53,14 +55,28 @@ class Query extends AbstractQuery
     public function execute()
     {
         if (null === $this->search) {
-            // If the connection is not bound, then we try an anonymous bind.
+            // If the connection is not bound, throw an exception. Users should use an explicit bind call first.
             if (!$this->connection->isBound()) {
-                $this->connection->bind();
+                throw new NotBoundException('Query execution is not possible without binding the connection first.');
             }
 
             $con = $this->connection->getResource();
 
-            $this->search = @ldap_search(
+            switch ($this->options['scope']) {
+                case static::SCOPE_BASE:
+                    $func = 'ldap_read';
+                    break;
+                case static::SCOPE_ONE:
+                    $func = 'ldap_list';
+                    break;
+                case static::SCOPE_SUB:
+                    $func = 'ldap_search';
+                    break;
+                default:
+                    throw new LdapException(sprintf('Could not search in scope %s', $this->options['scopen']));
+            }
+
+            $this->search = @$func(
                 $con,
                 $this->dn,
                 $this->query,

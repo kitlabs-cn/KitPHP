@@ -7,7 +7,7 @@
  * Time: 下午3:40
  */
 
-require_once __DIR__ . '/../../autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Payment\Common\PayException;
 use Payment\Client\Charge;
@@ -31,7 +31,7 @@ $payData = [
     //{"h5_info": {"type":"Wap","wap_url": "https://pay.qq.com","wap_name": "腾讯充值"}}
     'scene_info' => [
         'type' => 'Wap',// IOS  Android  Wap  腾讯建议 IOS  ANDROID 采用app支付
-        'wap_url' => 'helei112g.github.io',//自己的 wap 地址
+        'wap_url' => 'https://helei112g.github.io/',//自己的 wap 地址
         'wap_name' => '测试充值',
     ],
 ];

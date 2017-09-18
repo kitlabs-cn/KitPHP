@@ -4,6 +4,7 @@ namespace FOS\JsRoutingBundle\Tests\Controller;
 
 use FOS\JsRoutingBundle\Controller\Controller;
 use FOS\JsRoutingBundle\Extractor\ExtractedRoute;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -11,7 +12,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpFoundation\Session;
 
-class ControllerTest extends \PHPUnit_Framework_TestCase
+class ControllerTest extends TestCase
 {
     private $cachePath;
 
@@ -36,7 +37,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         );
         $response = $controller->indexAction($this->getRequest('/'), 'json');
 
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]},"blog":{"tokens":[["variable","\/","[^\/]+?","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]},"blog":{"tokens":[["variable","\/","[^\/]+?","slug"],["text","\/blog-post"]],"defaults":[],"requirements":[],"hosttokens":[["text","localhost"]],"methods":[],"schemes":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
     }
 
     public function testConfigCache()
@@ -49,11 +50,11 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         );
 
         $response = $controller->indexAction($this->getRequest('/'), 'json');
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
 
         // second call should serve the cached content
         $response = $controller->indexAction($this->getRequest('/'), 'json');
-        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
+        $this->assertEquals('{"base_url":"","routes":{"literal":{"tokens":[["text","\/homepage"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":[],"schemes":[]}},"prefix":"","host":"","scheme":""}', $response->getContent());
     }
 
     /**
@@ -65,7 +66,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $response   = $controller->indexAction($this->getRequest('/', 'GET', array('callback' => $callback)), 'json');
 
         $this->assertEquals(
-            sprintf('%s({"base_url":"","routes":[],"prefix":"","host":"","scheme":""});', $callback),
+            sprintf('/**/%s({"base_url":"","routes":[],"prefix":"","host":"","scheme":""});', $callback),
             $response->getContent()
         );
     }
@@ -129,7 +130,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     private function getExtractor(array $exposedRoutes = array(), $baseUrl = '')
     {
-        $extractor = $this->getMock('FOS\\JsRoutingBundle\\Extractor\\ExposedRoutesExtractorInterface');
+        $extractor = $this->getMockBuilder('FOS\\JsRoutingBundle\\Extractor\\ExposedRoutesExtractorInterface')->getMock();
         $extractor
             ->expects($this->any())
             ->method('getRoutes')
@@ -179,7 +180,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
         if (version_compare(strtolower(Kernel::VERSION), '2.1.0-dev', '<')) {
             $request->setSession(new Session(
-                $this->getMock('Symfony\Component\HttpFoundation\SessionStorage\SessionStorageInterface')
+                $this->getMockBuilder('Symfony\Component\HttpFoundation\SessionStorage\SessionStorageInterface')->getMock()
             ));
         }
 

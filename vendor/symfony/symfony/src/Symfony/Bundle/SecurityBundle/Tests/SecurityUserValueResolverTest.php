@@ -11,6 +11,7 @@
 
 namespace Symfony\Bundle\SecurityBundle\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\SecurityUserValueResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
@@ -20,7 +21,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class SecurityUserValueResolverTest extends \PHPUnit_Framework_TestCase
+class SecurityUserValueResolverTest extends TestCase
 {
     public function testResolveNoToken()
     {
@@ -33,8 +34,8 @@ class SecurityUserValueResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolveNoUser()
     {
-        $mock = $this->getMock(UserInterface::class);
-        $token = $this->getMock(TokenInterface::class);
+        $mock = $this->getMockBuilder(UserInterface::class)->getMock();
+        $token = $this->getMockBuilder(TokenInterface::class)->getMock();
         $tokenStorage = new TokenStorage();
         $tokenStorage->setToken($token);
 
@@ -55,8 +56,8 @@ class SecurityUserValueResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testResolve()
     {
-        $user = $this->getMock(UserInterface::class);
-        $token = $this->getMock(TokenInterface::class);
+        $user = $this->getMockBuilder(UserInterface::class)->getMock();
+        $token = $this->getMockBuilder(TokenInterface::class)->getMock();
         $token->expects($this->any())->method('getUser')->willReturn($user);
         $tokenStorage = new TokenStorage();
         $tokenStorage->setToken($token);
@@ -70,8 +71,8 @@ class SecurityUserValueResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testIntegration()
     {
-        $user = $this->getMock(UserInterface::class);
-        $token = $this->getMock(TokenInterface::class);
+        $user = $this->getMockBuilder(UserInterface::class)->getMock();
+        $token = $this->getMockBuilder(TokenInterface::class)->getMock();
         $token->expects($this->any())->method('getUser')->willReturn($user);
         $tokenStorage = new TokenStorage();
         $tokenStorage->setToken($token);
@@ -82,7 +83,7 @@ class SecurityUserValueResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testIntegrationNoUser()
     {
-        $token = $this->getMock(TokenInterface::class);
+        $token = $this->getMockBuilder(TokenInterface::class)->getMock();
         $tokenStorage = new TokenStorage();
         $tokenStorage->setToken($token);
 

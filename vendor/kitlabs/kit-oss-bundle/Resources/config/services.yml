@@ -5,6 +5,9 @@ services:
     kit_oss.bucket_service:
         class: Kit\Bundle\OssBundle\Service\BucketService
         parent: "kit_oss.client_service"
-    kit_oss.images_service:
+    kit_oss.image_service:
         class: Kit\Bundle\OssBundle\Service\ImageService
+        parent: "kit_oss.client_service"
+    kit_oss.file_service:
+        class: Kit\Bundle\OssBundle\Service\FileService
         parent: "kit_oss.client_service"

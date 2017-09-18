@@ -12,9 +12,12 @@
 namespace Symfony\Component\Ldap\Adapter;
 
 use Symfony\Component\Ldap\Entry;
+use Symfony\Component\Ldap\Exception\LdapException;
+use Symfony\Component\Ldap\Exception\NotBoundException;
 
 /**
  * @author Charles Sarrazin <charles@sarraz.in>
+ * @author Bob van de Vijver <bobvandevijver@hotmail.com>
  */
 interface QueryInterface
 {
@@ -23,10 +26,17 @@ interface QueryInterface
     const DEREF_FINDING = 0x02;
     const DEREF_ALWAYS = 0x03;
 
+    const SCOPE_BASE = 'base';
+    const SCOPE_ONE = 'one';
+    const SCOPE_SUB = 'sub';
+
     /**
      * Executes a query and returns the list of Ldap entries.
      *
      * @return CollectionInterface|Entry[]
+     *
+     * @throws NotBoundException
+     * @throws LdapException
      */
     public function execute();
 }

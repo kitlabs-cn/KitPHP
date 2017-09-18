@@ -62,7 +62,7 @@ class JsonResponse extends Response
      * @param int   $status  The response status code
      * @param array $headers An array of response headers
      *
-     * @return JsonResponse
+     * @return static
      */
     public static function create($data = null, $status = 200, $headers = array())
     {
@@ -82,7 +82,7 @@ class JsonResponse extends Response
      *
      * @param string|null $callback The JSONP callback or null to use none
      *
-     * @return JsonResponse
+     * @return $this
      *
      * @throws \InvalidArgumentException When the callback name is not valid
      */
@@ -117,7 +117,7 @@ class JsonResponse extends Response
      *
      * @param string $json
      *
-     * @return JsonResponse
+     * @return $this
      *
      * @throws \InvalidArgumentException
      */
@@ -133,7 +133,7 @@ class JsonResponse extends Response
      *
      * @param mixed $data
      *
-     * @return JsonResponse
+     * @return $this
      *
      * @throws \InvalidArgumentException
      */
@@ -145,16 +145,22 @@ class JsonResponse extends Response
             // If only PHP did the same...
             $data = json_encode($data, $this->encodingOptions);
         } else {
-            try {
-                // PHP 5.4 and up wrap exceptions thrown by JsonSerializable
-                // objects in a new exception that needs to be removed.
-                // Fortunately, PHP 5.5 and up do not trigger any warning anymore.
-                $data = json_encode($data, $this->encodingOptions);
-            } catch (\Exception $e) {
-                if ('Exception' === get_class($e) && 0 === strpos($e->getMessage(), 'Failed calling ')) {
-                    throw $e->getPrevious() ?: $e;
+            if (!interface_exists('JsonSerializable', false)) {
+                set_error_handler(function () { return false; });
+                try {
+                    $data = @json_encode($data, $this->encodingOptions);
+                } finally {
+                     restore_error_handler();
                 }
-                throw $e;
+            } else {
+                try {
+                    $data = json_encode($data, $this->encodingOptions);
+                } catch (\Exception $e) {
+                    if ('Exception' === get_class($e) && 0 === strpos($e->getMessage(), 'Failed calling ')) {
+                        throw $e->getPrevious() ?: $e;
+                    }
+                    throw $e;
+                }
             }
         }
 
@@ -180,7 +186,7 @@ class JsonResponse extends Response
      *
      * @param int $encodingOptions
      *
-     * @return JsonResponse
+     * @return $this
      */
     public function setEncodingOptions($encodingOptions)
     {
@@ -192,7 +198,7 @@ class JsonResponse extends Response
     /**
      * Updates the content and headers according to the JSON data and callback.
      *
-     * @return JsonResponse
+     * @return $this
      */
     protected function update()
     {

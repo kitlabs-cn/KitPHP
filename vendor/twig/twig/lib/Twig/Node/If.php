@@ -3,8 +3,8 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2009 Fabien Potencier
- * (c) 2009 Armin Ronacher
+ * (c) Fabien Potencier
+ * (c) Armin Ronacher
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  */
 class Twig_Node_If extends Twig_Node
 {
-    public function __construct(Twig_NodeInterface $tests, Twig_NodeInterface $else = null, $lineno, $tag = null)
+    public function __construct(Twig_Node $tests, Twig_Node $else = null, $lineno, $tag = null)
     {
         $nodes = array('tests' => $tests);
         if (null !== $else) {
@@ -64,3 +64,5 @@ class Twig_Node_If extends Twig_Node
             ->write("}\n");
     }
 }
+
+class_alias('Twig_Node_If', 'Twig\Node\IfNode', false);

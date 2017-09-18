@@ -69,7 +69,7 @@ class Form extends Link implements \ArrayAccess
      *
      * @param array $values An array of field values
      *
-     * @return Form
+     * @return $this
      */
     public function setValues(array $values)
     {
@@ -172,6 +172,18 @@ class Form extends Link implements \ArrayAccess
             if (!empty($qs)) {
                 parse_str($qs, $expandedValue);
                 $varName = substr($name, 0, strlen(key($expandedValue)));
+
+                array_walk_recursive(
+                    $expandedValue,
+                    function (&$value, $key) {
+                        if (ctype_digit($value) && ('size' === $key || 'error' === $key)) {
+                            $value = (int) $value;
+                        }
+                    }
+                );
+
+                reset($expandedValue);
+
                 $values = array_replace_recursive($values, array($varName => current($expandedValue)));
             }
         }
@@ -211,6 +223,11 @@ class Form extends Link implements \ArrayAccess
 
     protected function getRawUri()
     {
+        // If the form was created from a button rather than the form node, check for HTML5 action overrides
+        if ($this->button !== $this->node && $this->button->getAttribute('formaction')) {
+            return $this->button->getAttribute('formaction');
+        }
+
         return $this->node->getAttribute('action');
     }
 
@@ -225,6 +242,11 @@ class Form extends Link implements \ArrayAccess
     {
         if (null !== $this->method) {
             return $this->method;
+        }
+
+        // If the form was created from a button rather than the form node, check for HTML5 method override
+        if ($this->button !== $this->node && $this->button->getAttribute('formmethod')) {
+            return strtoupper($this->button->getAttribute('formmethod'));
         }
 
         return $this->node->getAttribute('method') ? strtoupper($this->node->getAttribute('method')) : 'GET';
@@ -279,7 +301,7 @@ class Form extends Link implements \ArrayAccess
     /**
      * Gets all fields.
      *
-     * @return FormField[] An array of fields
+     * @return FormField[]
      */
     public function all()
     {

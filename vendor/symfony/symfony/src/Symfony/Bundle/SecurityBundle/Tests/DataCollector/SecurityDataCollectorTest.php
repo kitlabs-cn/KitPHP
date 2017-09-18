@@ -11,6 +11,7 @@
 
 namespace Symfony\Bundle\SecurityBundle\Tests\DataCollector;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\DataCollector\SecurityDataCollector;
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
@@ -20,7 +21,7 @@ use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Http\FirewallMapInterface;
 
-class SecurityDataCollectorTest extends \PHPUnit_Framework_TestCase
+class SecurityDataCollectorTest extends TestCase
 {
     public function testCollectWhenSecurityIsDisabled()
     {
@@ -62,17 +63,14 @@ class SecurityDataCollectorTest extends \PHPUnit_Framework_TestCase
 
         $collector = new SecurityDataCollector($tokenStorage, $this->getRoleHierarchy());
         $collector->collect($this->getRequest(), $this->getResponse());
+        $collector->lateCollect();
 
         $this->assertTrue($collector->isEnabled());
         $this->assertTrue($collector->isAuthenticated());
-        $this->assertSame('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken', $collector->getTokenClass());
+        $this->assertSame('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken', $collector->getTokenClass()->getValue());
         $this->assertTrue($collector->supportsRoleHierarchy());
-        $this->assertSame($normalizedRoles, $collector->getRoles()->getRawData()[1]);
-        if ($inheritedRoles) {
-            $this->assertSame($inheritedRoles, $collector->getInheritedRoles()->getRawData()[1]);
-        } else {
-            $this->assertSame($inheritedRoles, $collector->getInheritedRoles()->getRawData()[0][0]);
-        }
+        $this->assertSame($normalizedRoles, $collector->getRoles()->getValue(true));
+        $this->assertSame($inheritedRoles, $collector->getInheritedRoles()->getValue(true));
         $this->assertSame('hhamon', $collector->getUser());
     }
 
@@ -93,6 +91,7 @@ class SecurityDataCollectorTest extends \PHPUnit_Framework_TestCase
 
         $collector = new SecurityDataCollector(null, null, null, null, $firewallMap);
         $collector->collect($request, $this->getResponse());
+        $collector->lateCollect();
         $collected = $collector->getFirewall();
 
         $this->assertSame($firewallConfig->getName(), $collected['name']);
@@ -106,7 +105,7 @@ class SecurityDataCollectorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($firewallConfig->getAccessDeniedHandler(), $collected['access_denied_handler']);
         $this->assertSame($firewallConfig->getAccessDeniedUrl(), $collected['access_denied_url']);
         $this->assertSame($firewallConfig->getUserChecker(), $collected['user_checker']);
-        $this->assertSame($firewallConfig->getListeners(), $collected['listeners']->getRawData()[0][0]);
+        $this->assertSame($firewallConfig->getListeners(), $collected['listeners']->getValue());
     }
 
     public function testGetFirewallReturnsNull()
@@ -165,6 +164,11 @@ class SecurityDataCollectorTest extends \PHPUnit_Framework_TestCase
                 array('ROLE_ADMIN'),
                 array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH'),
             ),
+            array(
+                array('ROLE_ADMIN', 'ROLE_OPERATOR'),
+                array('ROLE_ADMIN', 'ROLE_OPERATOR'),
+                array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH'),
+            ),
         );
     }
 
@@ -172,6 +176,7 @@ class SecurityDataCollectorTest extends \PHPUnit_Framework_TestCase
     {
         return new RoleHierarchy(array(
             'ROLE_ADMIN' => array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH'),
+            'ROLE_OPERATOR' => array('ROLE_USER'),
         ));
     }
 

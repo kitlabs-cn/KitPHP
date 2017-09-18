@@ -27,10 +27,13 @@ class WebProfilerExtensionTest extends TestCase
      */
     private $container;
 
-    public static function assertSaneContainer(Container $container, $message = '')
+    public static function assertSaneContainer(Container $container, $message = '', $knownPrivates = array())
     {
         $errors = array();
         foreach ($container->getServiceIds() as $id) {
+            if (in_array($id, $knownPrivates, true)) { // to be removed in 4.0
+                continue;
+            }
             try {
                 $container->get($id);
             } catch (\Exception $e) {
@@ -45,13 +48,13 @@ class WebProfilerExtensionTest extends TestCase
     {
         parent::setUp();
 
-        $this->kernel = $this->getMock('Symfony\\Component\\HttpKernel\\KernelInterface');
+        $this->kernel = $this->getMockBuilder('Symfony\\Component\\HttpKernel\\KernelInterface')->getMock();
 
         $this->container = new ContainerBuilder();
         $this->container->register('router', $this->getMockClass('Symfony\\Component\\Routing\\RouterInterface'));
-        $this->container->register('twig', 'Twig_Environment');
-        $this->container->register('twig_loader', 'Twig_Loader_Array')->addArgument(array());
-        $this->container->register('twig', 'Twig_Environment')->addArgument(new Reference('twig_loader'));
+        $this->container->register('twig', 'Twig\Environment');
+        $this->container->register('twig_loader', 'Twig\Loader\ArrayLoader')->addArgument(array());
+        $this->container->register('twig', 'Twig\Environment')->addArgument(new Reference('twig_loader'));
         $this->container->setParameter('kernel.bundles', array());
         $this->container->setParameter('kernel.cache_dir', __DIR__);
         $this->container->setParameter('kernel.debug', false);
@@ -98,7 +101,7 @@ class WebProfilerExtensionTest extends TestCase
 
         $this->assertSame($listenerInjected, $this->container->has('web_profiler.debug_toolbar'));
 
-        $this->assertSaneContainer($this->getDumpedContainer());
+        $this->assertSaneContainer($this->getDumpedContainer(), '', array('web_profiler.csp.handler'));
 
         if ($listenerInjected) {
             $this->assertSame($listenerEnabled, $this->container->get('web_profiler.debug_toolbar')->isEnabled());

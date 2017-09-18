@@ -15,6 +15,8 @@ namespace Symfony\Component\PropertyInfo;
  * Type value object (immutable).
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
+ *
+ * @final since version 3.3
  */
 class Type
 {
@@ -148,7 +150,7 @@ class Type
      *
      * Only applicable for a collection type.
      *
-     * @return Type|null
+     * @return self|null
      */
     public function getCollectionKeyType()
     {
@@ -160,7 +162,7 @@ class Type
      *
      * Only applicable for a collection type.
      *
-     * @return Type|null
+     * @return self|null
      */
     public function getCollectionValueType()
     {

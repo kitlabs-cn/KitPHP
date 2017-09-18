@@ -11,20 +11,6 @@
 
 class Twig_Tests_Loader_ChainTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @group legacy
-     */
-    public function testGetSource()
-    {
-        $loader = new Twig_Loader_Chain(array(
-            new Twig_Loader_Array(array('foo' => 'bar')),
-            new Twig_Loader_Array(array('foo' => 'foobar', 'bar' => 'foo')),
-        ));
-
-        $this->assertEquals('bar', $loader->getSource('foo'));
-        $this->assertEquals('foo', $loader->getSource('bar'));
-    }
-
     public function testGetSourceContext()
     {
         $path = dirname(__FILE__).'/../Fixtures';
@@ -56,17 +42,6 @@ class Twig_Tests_Loader_ChainTest extends PHPUnit_Framework_TestCase
         $loader->getSourceContext('foo');
     }
 
-    /**
-     * @group legacy
-     * @expectedException Twig_Error_Loader
-     */
-    public function testGetSourceWhenTemplateDoesNotExist()
-    {
-        $loader = new Twig_Loader_Chain(array());
-
-        $loader->getSource('foo');
-    }
-
     public function testGetCacheKey()
     {
         $loader = new Twig_Loader_Chain(array(
@@ -74,8 +49,8 @@ class Twig_Tests_Loader_ChainTest extends PHPUnit_Framework_TestCase
             new Twig_Loader_Array(array('foo' => 'foobar', 'bar' => 'foo')),
         ));
 
-        $this->assertEquals('bar', $loader->getCacheKey('foo'));
-        $this->assertEquals('foo', $loader->getCacheKey('bar'));
+        $this->assertEquals('foo:bar', $loader->getCacheKey('foo'));
+        $this->assertEquals('bar:foo', $loader->getCacheKey('bar'));
     }
 
     /**
@@ -98,14 +73,13 @@ class Twig_Tests_Loader_ChainTest extends PHPUnit_Framework_TestCase
 
     public function testExists()
     {
-        $loader1 = $this->getMockBuilder('Twig_Loader_Array')->setMethods(array('exists', 'getSourceContext'))->disableOriginalConstructor()->getMock();
+        $loader1 = $this->getMockBuilder('Twig_LoaderInterface')->getMock();
         $loader1->expects($this->once())->method('exists')->will($this->returnValue(false));
         $loader1->expects($this->never())->method('getSourceContext');
 
-        // can be removed in 2.0
-        $loader2 = $this->getMockBuilder('Twig_ChainTestLoaderInterface')->getMock();
-        //$loader2 = $this->getMockBuilder(array('Twig_LoaderInterface', 'Twig_SourceContextLoaderInterface'))->getMock();
-        $loader2->expects($this->once())->method('getSourceContext')->will($this->returnValue(new Twig_Source('content', 'index')));
+        $loader2 = $this->getMockBuilder('Twig_LoaderInterface')->getMock();
+        $loader2->expects($this->once())->method('exists')->will($this->returnValue(true));
+        $loader2->expects($this->never())->method('getSourceContext');
 
         $loader = new Twig_Loader_Chain();
         $loader->addLoader($loader1);
@@ -113,8 +87,4 @@ class Twig_Tests_Loader_ChainTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($loader->exists('foo'));
     }
-}
-
-interface Twig_ChainTestLoaderInterface extends Twig_LoaderInterface, Twig_SourceContextLoaderInterface
-{
 }

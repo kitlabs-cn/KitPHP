@@ -11,16 +11,18 @@
 
 namespace Symfony\Component\ExpressionLanguage\Tests;
 
+use Symfony\Component\ExpressionLanguage\ExpressionFunction;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\ParsedExpression;
 use Symfony\Component\ExpressionLanguage\Tests\Fixtures\TestProvider;
 
-class ExpressionLanguageTest extends \PHPUnit_Framework_TestCase
+class ExpressionLanguageTest extends TestCase
 {
     public function testCachedParse()
     {
-        $cacheMock = $this->getMock('Psr\Cache\CacheItemPoolInterface');
-        $cacheItemMock = $this->getMock('Psr\Cache\CacheItemInterface');
+        $cacheMock = $this->getMockBuilder('Psr\Cache\CacheItemPoolInterface')->getMock();
+        $cacheItemMock = $this->getMockBuilder('Psr\Cache\CacheItemInterface')->getMock();
         $savedParsedExpression = null;
         $expressionLanguage = new ExpressionLanguage($cacheMock);
 
@@ -66,9 +68,9 @@ class ExpressionLanguageTest extends \PHPUnit_Framework_TestCase
      */
     public function testCachedParseWithDeprecatedParserCacheInterface()
     {
-        $cacheMock = $this->getMock('Symfony\Component\ExpressionLanguage\ParserCache\ParserCacheInterface');
+        $cacheMock = $this->getMockBuilder('Symfony\Component\ExpressionLanguage\ParserCache\ParserCacheInterface')->getMock();
 
-        $cacheItemMock = $this->getMock('Psr\Cache\CacheItemInterface');
+        $cacheItemMock = $this->getMockBuilder('Psr\Cache\CacheItemInterface')->getMock();
         $savedParsedExpression = null;
         $expressionLanguage = new ExpressionLanguage($cacheMock);
 
@@ -98,7 +100,7 @@ class ExpressionLanguageTest extends \PHPUnit_Framework_TestCase
      */
     public function testWrongCacheImplementation()
     {
-        $cacheMock = $this->getMock('Psr\Cache\CacheItemSpoolInterface');
+        $cacheMock = $this->getMockBuilder('Psr\Cache\CacheItemSpoolInterface')->getMock();
         $expressionLanguage = new ExpressionLanguage($cacheMock);
     }
 
@@ -108,7 +110,7 @@ class ExpressionLanguageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(PHP_VERSION, $expressionLanguage->evaluate('constant("PHP_VERSION")'));
 
         $expressionLanguage = new ExpressionLanguage();
-        $this->assertEquals('constant("PHP_VERSION")', $expressionLanguage->compile('constant("PHP_VERSION")'));
+        $this->assertEquals('\constant("PHP_VERSION")', $expressionLanguage->compile('constant("PHP_VERSION")'));
     }
 
     public function testProviders()
@@ -116,6 +118,12 @@ class ExpressionLanguageTest extends \PHPUnit_Framework_TestCase
         $expressionLanguage = new ExpressionLanguage(null, array(new TestProvider()));
         $this->assertEquals('foo', $expressionLanguage->evaluate('identity("foo")'));
         $this->assertEquals('"foo"', $expressionLanguage->compile('identity("foo")'));
+        $this->assertEquals('FOO', $expressionLanguage->evaluate('strtoupper("foo")'));
+        $this->assertEquals('\strtoupper("foo")', $expressionLanguage->compile('strtoupper("foo")'));
+        $this->assertEquals('foo', $expressionLanguage->evaluate('strtolower("FOO")'));
+        $this->assertEquals('\strtolower("FOO")', $expressionLanguage->compile('strtolower("FOO")'));
+        $this->assertTrue($expressionLanguage->evaluate('fn_namespaced()'));
+        $this->assertEquals('\Symfony\Component\ExpressionLanguage\Tests\Fixtures\fn_namespaced()', $expressionLanguage->compile('fn_namespaced()'));
     }
 
     /**
@@ -172,8 +180,8 @@ class ExpressionLanguageTest extends \PHPUnit_Framework_TestCase
 
     public function testCachingWithDifferentNamesOrder()
     {
-        $cacheMock = $this->getMock('Psr\Cache\CacheItemPoolInterface');
-        $cacheItemMock = $this->getMock('Psr\Cache\CacheItemInterface');
+        $cacheMock = $this->getMockBuilder('Psr\Cache\CacheItemPoolInterface')->getMock();
+        $cacheItemMock = $this->getMockBuilder('Psr\Cache\CacheItemInterface')->getMock();
         $expressionLanguage = new ExpressionLanguage($cacheMock);
         $savedParsedExpressions = array();
 
@@ -210,5 +218,69 @@ class ExpressionLanguageTest extends \PHPUnit_Framework_TestCase
         $expression = 'a + b';
         $expressionLanguage->compile($expression, array('a', 'B' => 'b'));
         $expressionLanguage->compile($expression, array('B' => 'b', 'a'));
+    }
+
+    /**
+     * @dataProvider getRegisterCallbacks
+     * @expectedException \LogicException
+     */
+    public function testRegisterAfterParse($registerCallback)
+    {
+        $el = new ExpressionLanguage();
+        $el->parse('1 + 1', array());
+        $registerCallback($el);
+    }
+
+    /**
+     * @dataProvider getRegisterCallbacks
+     * @expectedException \LogicException
+     */
+    public function testRegisterAfterEval($registerCallback)
+    {
+        $el = new ExpressionLanguage();
+        $el->evaluate('1 + 1');
+        $registerCallback($el);
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessageRegExp  /Unable to call method "\w+" of object "\w+"./
+     */
+    public function testCallBadCallable()
+    {
+        $el = new ExpressionLanguage();
+        $el->evaluate('foo.myfunction()', array('foo' => new \stdClass()));
+    }
+
+    /**
+     * @dataProvider getRegisterCallbacks
+     * @expectedException \LogicException
+     */
+    public function testRegisterAfterCompile($registerCallback)
+    {
+        $el = new ExpressionLanguage();
+        $el->compile('1 + 1');
+        $registerCallback($el);
+    }
+
+    public function getRegisterCallbacks()
+    {
+        return array(
+            array(
+                function (ExpressionLanguage $el) {
+                    $el->register('fn', function () {}, function () {});
+                },
+            ),
+            array(
+                function (ExpressionLanguage $el) {
+                    $el->addFunction(new ExpressionFunction('fn', function () {}, function () {}));
+                },
+            ),
+            array(
+                function (ExpressionLanguage $el) {
+                    $el->registerProvider(new TestProvider());
+                },
+            ),
+        );
     }
 }

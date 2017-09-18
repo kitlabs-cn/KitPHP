@@ -3,14 +3,15 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2009 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Extension_Escaper extends Twig_Extension
+
+final class Twig_Extension_Escaper extends Twig_Extension
 {
-    protected $defaultStrategy;
+    private $defaultStrategy;
 
     /**
      * @param string|false|callable $defaultStrategy An escaping strategy
@@ -35,7 +36,7 @@ class Twig_Extension_Escaper extends Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('raw', 'twig_raw_filter', array('is_safe' => array('all'))),
+            new Twig_Filter('raw', 'twig_raw_filter', array('is_safe' => array('all'))),
         );
     }
 
@@ -49,19 +50,6 @@ class Twig_Extension_Escaper extends Twig_Extension
      */
     public function setDefaultStrategy($defaultStrategy)
     {
-        // for BC
-        if (true === $defaultStrategy) {
-            @trigger_error('Using "true" as the default strategy is deprecated since version 1.21. Use "html" instead.', E_USER_DEPRECATED);
-
-            $defaultStrategy = 'html';
-        }
-
-        if ('filename' === $defaultStrategy) {
-            @trigger_error('Using "filename" as the default strategy is deprecated since version 1.27. Use "name" instead.', E_USER_DEPRECATED);
-
-            $defaultStrategy = 'name';
-        }
-
         if ('name' === $defaultStrategy) {
             $defaultStrategy = array('Twig_FileExtensionEscapingStrategy', 'guess');
         }
@@ -86,11 +74,6 @@ class Twig_Extension_Escaper extends Twig_Extension
 
         return $this->defaultStrategy;
     }
-
-    public function getName()
-    {
-        return 'escaper';
-    }
 }
 
 /**
@@ -104,3 +87,5 @@ function twig_raw_filter($string)
 {
     return $string;
 }
+
+class_alias('Twig_Extension_Escaper', 'Twig\Extension\EscaperExtension', false);

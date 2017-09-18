@@ -10,17 +10,6 @@
  */
 class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @group legacy
-     */
-    public function testLegacyConstructorSignature()
-    {
-        $lexer = new Twig_Lexer(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()));
-        $stream = $lexer->tokenize('{{ foo }}', 'foo');
-        $this->assertEquals('foo', $stream->getFilename());
-        $this->assertEquals('{{ foo }}', $stream->getSource());
-    }
-
     public function testNameLabelForTag()
     {
         $template = '{% § %}';
@@ -116,7 +105,9 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $lexer = new Twig_Lexer(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()));
         $lexer->tokenize(new Twig_Source($template, 'index'));
 
-        // should not throw an exception
+        // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+        // can be executed without throwing any exceptions
+        $this->addToAssertionCount(1);
     }
 
     public function testLongVerbatim()
@@ -126,7 +117,9 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $lexer = new Twig_Lexer(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()));
         $lexer->tokenize(new Twig_Source($template, 'index'));
 
-        // should not throw an exception
+        // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+        // can be executed without throwing any exceptions
+        $this->addToAssertionCount(1);
     }
 
     public function testLongVar()
@@ -136,7 +129,9 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $lexer = new Twig_Lexer(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()));
         $lexer->tokenize(new Twig_Source($template, 'index'));
 
-        // should not throw an exception
+        // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+        // can be executed without throwing any exceptions
+        $this->addToAssertionCount(1);
     }
 
     public function testLongBlock()
@@ -146,7 +141,9 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $lexer = new Twig_Lexer(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()));
         $lexer->tokenize(new Twig_Source($template, 'index'));
 
-        // should not throw an exception
+        // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+        // can be executed without throwing any exceptions
+        $this->addToAssertionCount(1);
     }
 
     public function testBigNumbers()
@@ -166,11 +163,16 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
             "{{ 'foo \' bar' }}" => 'foo \' bar',
             '{{ "foo \" bar" }}' => 'foo " bar',
         );
+
         $lexer = new Twig_Lexer(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()));
         foreach ($tests as $template => $expected) {
             $stream = $lexer->tokenize(new Twig_Source($template, 'index'));
             $stream->expect(Twig_Token::VAR_START_TYPE);
             $stream->expect(Twig_Token::STRING_TYPE, $expected);
+
+            // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+            // can be executed without throwing any exceptions
+            $this->addToAssertionCount(1);
         }
     }
 
@@ -189,6 +191,10 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $stream->expect(Twig_Token::NUMBER_TYPE, '1');
         $stream->expect(Twig_Token::INTERPOLATION_END_TYPE);
         $stream->expect(Twig_Token::VAR_END_TYPE);
+
+        // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+        // can be executed without throwing any exceptions
+        $this->addToAssertionCount(1);
     }
 
     public function testStringWithEscapedInterpolation()
@@ -200,6 +206,10 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $stream->expect(Twig_Token::VAR_START_TYPE);
         $stream->expect(Twig_Token::STRING_TYPE, 'bar #{baz+1}');
         $stream->expect(Twig_Token::VAR_END_TYPE);
+
+        // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+        // can be executed without throwing any exceptions
+        $this->addToAssertionCount(1);
     }
 
     public function testStringWithHash()
@@ -211,6 +221,10 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $stream->expect(Twig_Token::VAR_START_TYPE);
         $stream->expect(Twig_Token::STRING_TYPE, 'bar # baz');
         $stream->expect(Twig_Token::VAR_END_TYPE);
+
+        // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+        // can be executed without throwing any exceptions
+        $this->addToAssertionCount(1);
     }
 
     /**
@@ -240,6 +254,10 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $stream->expect(Twig_Token::INTERPOLATION_END_TYPE);
         $stream->expect(Twig_Token::INTERPOLATION_END_TYPE);
         $stream->expect(Twig_Token::VAR_END_TYPE);
+
+        // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+        // can be executed without throwing any exceptions
+        $this->addToAssertionCount(1);
     }
 
     public function testStringWithNestedInterpolationsInBlock()
@@ -258,6 +276,10 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $stream->expect(Twig_Token::INTERPOLATION_END_TYPE);
         $stream->expect(Twig_Token::INTERPOLATION_END_TYPE);
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
+
+        // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+        // can be executed without throwing any exceptions
+        $this->addToAssertionCount(1);
     }
 
     public function testOperatorEndingWithALetterAtTheEndOfALine()
@@ -269,6 +291,10 @@ class Twig_Tests_LexerTest extends PHPUnit_Framework_TestCase
         $stream->expect(Twig_Token::VAR_START_TYPE);
         $stream->expect(Twig_Token::NUMBER_TYPE, 1);
         $stream->expect(Twig_Token::OPERATOR_TYPE, 'and');
+
+        // add a dummy assertion here to satisfy PHPUnit, the only thing we want to test is that the code above
+        // can be executed without throwing any exceptions
+        $this->addToAssertionCount(1);
     }
 
     /**

@@ -33,6 +33,32 @@ class YamlReferenceDumper
         return $this->dumpNode($configuration->getConfigTreeBuilder()->buildTree());
     }
 
+    public function dumpAtPath(ConfigurationInterface $configuration, $path)
+    {
+        $rootNode = $node = $configuration->getConfigTreeBuilder()->buildTree();
+
+        foreach (explode('.', $path) as $step) {
+            if (!$node instanceof ArrayNode) {
+                throw new \UnexpectedValueException(sprintf('Unable to find node at path "%s.%s"', $rootNode->getName(), $path));
+            }
+
+            /** @var NodeInterface[] $children */
+            $children = $node instanceof PrototypedArrayNode ? $this->getPrototypeChildren($node) : $node->getChildren();
+
+            foreach ($children as $child) {
+                if ($child->getName() === $step) {
+                    $node = $child;
+
+                    continue 2;
+                }
+            }
+
+            throw new \UnexpectedValueException(sprintf('Unable to find node at path "%s.%s"', $rootNode->getName(), $path));
+        }
+
+        return $this->dumpNode($node);
+    }
+
     public function dumpNode(NodeInterface $node)
     {
         $this->reference = '';
@@ -106,7 +132,7 @@ class YamlReferenceDumper
         $comments = count($comments) ? '# '.implode(', ', $comments) : '';
 
         $key = $prototypedArray ? '-' : $node->getName().':';
-        $text = rtrim(sprintf('%-20s %s %s', $key, $default, $comments), ' ');
+        $text = rtrim(sprintf('%-21s%s %s', $key, $default, $comments), ' ');
 
         if ($info = $node->getInfo()) {
             $this->writeLine('');

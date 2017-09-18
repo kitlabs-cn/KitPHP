@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Environment;
 
 /**
  * ProfilerController.
@@ -40,14 +41,15 @@ class ProfilerController
     /**
      * Constructor.
      *
-     * @param UrlGeneratorInterface $generator       The URL Generator
-     * @param Profiler              $profiler        The profiler
-     * @param \Twig_Environment     $twig            The twig environment
-     * @param array                 $templates       The templates
-     * @param string                $toolbarPosition The toolbar position (top, bottom, normal, or null -- use the configuration)
-     * @param string                $baseDir         The project root directory
+     * @param UrlGeneratorInterface        $generator       The URL Generator
+     * @param Profiler                     $profiler        The profiler
+     * @param Environment                  $twig            The twig environment
+     * @param array                        $templates       The templates
+     * @param string                       $toolbarPosition The toolbar position (top, bottom, normal, or null -- use the configuration)
+     * @param ContentSecurityPolicyHandler $cspHandler      The Content-Security-Policy handler
+     * @param string                       $baseDir         The project root directory
      */
-    public function __construct(UrlGeneratorInterface $generator, Profiler $profiler = null, \Twig_Environment $twig, array $templates, $toolbarPosition = 'normal', ContentSecurityPolicyHandler $cspHandler = null, $baseDir = null)
+    public function __construct(UrlGeneratorInterface $generator, Profiler $profiler = null, Environment $twig, array $templates, $toolbarPosition = 'bottom', ContentSecurityPolicyHandler $cspHandler = null, $baseDir = null)
     {
         $this->generator = $generator;
         $this->profiler = $profiler;
@@ -123,34 +125,6 @@ class ProfilerController
             'templates' => $this->getTemplateManager()->getNames($profile),
             'is_ajax' => $request->isXmlHttpRequest(),
             'profiler_markup_version' => 2, // 1 = original profiler, 2 = Symfony 2.8+ profiler
-        )), 200, array('Content-Type' => 'text/html'));
-    }
-
-    /**
-     * Displays information page.
-     *
-     * @param Request $request The current HTTP Request
-     * @param string  $about   The about message
-     *
-     * @return Response A Response instance
-     *
-     * @throws NotFoundHttpException
-     */
-    public function infoAction(Request $request, $about)
-    {
-        if (null === $this->profiler) {
-            throw new NotFoundHttpException('The profiler must be enabled.');
-        }
-
-        $this->profiler->disable();
-
-        if (null !== $this->cspHandler) {
-            $this->cspHandler->disableCsp();
-        }
-
-        return new Response($this->twig->render('@WebProfiler/Profiler/info.html.twig', array(
-            'about' => $about,
-            'request' => $request,
         )), 200, array('Content-Type' => 'text/html'));
     }
 

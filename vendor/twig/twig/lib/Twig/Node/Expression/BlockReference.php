@@ -3,8 +3,8 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2009 Fabien Potencier
- * (c) 2009 Armin Ronacher
+ * (c) Fabien Potencier
+ * (c) Armin Ronacher
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,17 +17,8 @@
  */
 class Twig_Node_Expression_BlockReference extends Twig_Node_Expression
 {
-    /**
-     * @param Twig_Node|null $template
-     */
-    public function __construct(Twig_NodeInterface $name, $template = null, $lineno, $tag = null)
+    public function __construct(Twig_Node $name, Twig_Node $template = null, $lineno, $tag = null)
     {
-        if (is_bool($template)) {
-            @trigger_error(sprintf('The %s method "$asString" argument is deprecated since version 1.28 and will be removed in 2.0.', __METHOD__), E_USER_DEPRECATED);
-
-            $template = null;
-        }
-
         $nodes = array('name' => $name);
         if (null !== $template) {
             $nodes['template'] = $template;
@@ -89,3 +80,5 @@ class Twig_Node_Expression_BlockReference extends Twig_Node_Expression
         return $compiler->raw(')');
     }
 }
+
+class_alias('Twig_Node_Expression_BlockReference', 'Twig\Node\Expression\BlockReferenceExpression', false);

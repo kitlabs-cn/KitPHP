@@ -30,7 +30,7 @@ class TagAwareAdapterTest extends AdapterTestCase
     }
 
     /**
-     * @expectedException Psr\Cache\InvalidArgumentException
+     * @expectedException \Psr\Cache\InvalidArgumentException
      */
     public function testInvalidTag()
     {
@@ -96,5 +96,33 @@ class TagAwareAdapterTest extends AdapterTestCase
         $pool->invalidateTags(array('foo'));
 
         $this->assertTrue($pool->getItem('k')->isHit());
+    }
+
+    public function testTagItemExpiry()
+    {
+        $pool = $this->createCachePool(10);
+
+        $item = $pool->getItem('foo');
+        $item->tag(array('baz'));
+        $item->expiresAfter(100);
+
+        $pool->save($item);
+        $pool->invalidateTags(array('baz'));
+        $this->assertFalse($pool->getItem('foo')->isHit());
+
+        sleep(20);
+
+        $this->assertFalse($pool->getItem('foo')->isHit());
+    }
+
+    public function testGetPreviousTags()
+    {
+        $pool = $this->createCachePool();
+
+        $i = $pool->getItem('k');
+        $pool->save($i->tag('foo'));
+
+        $i = $pool->getItem('k');
+        $this->assertSame(array('foo' => 'foo'), $i->getPreviousTags());
     }
 }

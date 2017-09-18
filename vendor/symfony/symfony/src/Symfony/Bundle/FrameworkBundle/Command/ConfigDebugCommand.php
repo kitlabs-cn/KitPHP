@@ -62,11 +62,12 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
+        $errorIo = $io->getErrorStyle();
 
         if (null === $name = $input->getArgument('name')) {
-            $this->listBundles($io);
-            $io->comment('Provide the name of a bundle as the first argument of this command to dump its configuration. (e.g. <comment>debug:config FrameworkBundle</comment>)');
-            $io->comment('For dumping a specific option, add its path as the second argument of this command. (e.g. <comment>debug:config FrameworkBundle serializer</comment> to dump the <comment>framework.serializer</comment> configuration)');
+            $this->listBundles($errorIo);
+            $errorIo->comment('Provide the name of a bundle as the first argument of this command to dump its configuration. (e.g. <comment>debug:config FrameworkBundle</comment>)');
+            $errorIo->comment('For dumping a specific option, add its path as the second argument of this command. (e.g. <comment>debug:config FrameworkBundle serializer</comment> to dump the <comment>framework.serializer</comment> configuration)');
 
             return;
         }
@@ -80,10 +81,10 @@ EOF
 
         $this->validateConfiguration($extension, $configuration);
 
-        $configs = $container->getParameterBag()->resolveValue($configs);
+        $configs = $container->resolveEnvPlaceholders($container->getParameterBag()->resolveValue($configs));
 
         $processor = new Processor();
-        $config = $processor->processConfiguration($configuration, $configs);
+        $config = $container->resolveEnvPlaceholders($container->getParameterBag()->resolveValue($processor->processConfiguration($configuration, $configs)));
 
         if (null === $path = $input->getArgument('path')) {
             $io->title(
@@ -98,7 +99,7 @@ EOF
         try {
             $config = $this->getConfigForPath($config, $path, $extensionAlias);
         } catch (LogicException $e) {
-            $io->error($e->getMessage());
+            $errorIo->error($e->getMessage());
 
             return;
         }
@@ -130,7 +131,7 @@ EOF
      *
      * @return mixed
      */
-    private function getConfigForPath(array $config = array(), $path, $alias)
+    private function getConfigForPath(array $config, $path, $alias)
     {
         $steps = explode('.', $path);
 

@@ -28,16 +28,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
  *
  * Parameter and service keys are case insensitive.
  *
- * A service id can contain lowercased letters, digits, underscores, and dots.
- * Underscores are used to separate words, and dots to group services
- * under namespaces:
- *
- * <ul>
- *   <li>request</li>
- *   <li>mysql_session_storage</li>
- *   <li>symfony.mysql_session_storage</li>
- * </ul>
- *
  * A service can also be defined by creating a method named
  * getXXXService(), where XXX is the camelized version of the id:
  *
@@ -66,12 +56,22 @@ class Container implements ResettableContainerInterface
 
     protected $services = array();
     protected $methodMap = array();
-    protected $privates = array();
     protected $aliases = array();
     protected $loading = array();
 
+    /**
+     * @internal
+     */
+    protected $privates = array();
+
+    /**
+     * @internal
+     */
+    protected $normalizedIds = array();
+
     private $underscoreMap = array('_' => '', '.' => '_', '\\' => '_');
     private $envCache = array();
+    private $compiled = false;
 
     /**
      * @param ParameterBagInterface $parameterBag A ParameterBagInterface instance
@@ -94,15 +94,31 @@ class Container implements ResettableContainerInterface
         $this->parameterBag->resolve();
 
         $this->parameterBag = new FrozenParameterBag($this->parameterBag->all());
+
+        $this->compiled = true;
+    }
+
+    /**
+     * Returns true if the container is compiled.
+     *
+     * @return bool
+     */
+    public function isCompiled()
+    {
+        return $this->compiled;
     }
 
     /**
      * Returns true if the container parameter bag are frozen.
      *
+     * @deprecated since version 3.3, to be removed in 4.0.
+     *
      * @return bool true if the container parameter bag are frozen, false otherwise
      */
     public function isFrozen()
     {
+        @trigger_error(sprintf('The %s() method is deprecated since version 3.3 and will be removed in 4.0. Use the isCompiled() method instead.', __METHOD__), E_USER_DEPRECATED);
+
         return $this->parameterBag instanceof FrozenParameterBag;
     }
 
@@ -164,7 +180,7 @@ class Container implements ResettableContainerInterface
      */
     public function set($id, $service)
     {
-        $id = strtolower($id);
+        $id = $this->normalizeId($id);
 
         if ('service_container' === $id) {
             throw new InvalidArgumentException('You cannot set service "service_container".');
@@ -185,7 +201,13 @@ class Container implements ResettableContainerInterface
                 @trigger_error(sprintf('Unsetting the "%s" private service is deprecated since Symfony 3.2 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
                 unset($this->privates[$id]);
             } else {
-                @trigger_error(sprintf('Setting the "%s" private service is deprecated since Symfony 3.2 and won\'t be supported anymore in Symfony 4.0. A new public service will be created instead.', $id), E_USER_DEPRECATED);
+                @trigger_error(sprintf('Setting the "%s" private service is deprecated since Symfony 3.2 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
+            }
+        } elseif (isset($this->methodMap[$id])) {
+            if (null === $service) {
+                @trigger_error(sprintf('Unsetting the "%s" pre-defined service is deprecated since Symfony 3.3 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
+            } else {
+                @trigger_error(sprintf('Setting the "%s" pre-defined service is deprecated since Symfony 3.3 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
             }
         }
     }
@@ -200,23 +222,25 @@ class Container implements ResettableContainerInterface
     public function has($id)
     {
         for ($i = 2;;) {
-            if ('service_container' === $id
-                || isset($this->aliases[$id])
-                || isset($this->services[$id])
-            ) {
-                return true;
-            }
-
             if (isset($this->privates[$id])) {
                 @trigger_error(sprintf('Checking for the existence of the "%s" private service is deprecated since Symfony 3.2 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
+            }
+            if (isset($this->aliases[$id])) {
+                $id = $this->aliases[$id];
+            }
+            if (isset($this->services[$id])) {
+                return true;
+            }
+            if ('service_container' === $id) {
+                return true;
             }
 
             if (isset($this->methodMap[$id])) {
                 return true;
             }
 
-            if (--$i && $id !== $lcId = strtolower($id)) {
-                $id = $lcId;
+            if (--$i && $id !== $normalizedId = $this->normalizeId($id)) {
+                $id = $normalizedId;
                 continue;
             }
 
@@ -254,17 +278,21 @@ class Container implements ResettableContainerInterface
         // Attempt to retrieve the service by checking first aliases then
         // available services. Service IDs are case insensitive, however since
         // this method can be called thousands of times during a request, avoid
-        // calling strtolower() unless necessary.
+        // calling $this->normalizeId($id) unless necessary.
         for ($i = 2;;) {
-            if ('service_container' === $id) {
-                return $this;
+            if (isset($this->privates[$id])) {
+                @trigger_error(sprintf('Requesting the "%s" private service is deprecated since Symfony 3.2 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
             }
             if (isset($this->aliases[$id])) {
                 $id = $this->aliases[$id];
             }
+
             // Re-use shared service instance if it exists.
             if (isset($this->services[$id])) {
                 return $this->services[$id];
+            }
+            if ('service_container' === $id) {
+                return $this;
             }
 
             if (isset($this->loading[$id])) {
@@ -273,8 +301,8 @@ class Container implements ResettableContainerInterface
 
             if (isset($this->methodMap[$id])) {
                 $method = $this->methodMap[$id];
-            } elseif (--$i && $id !== $lcId = strtolower($id)) {
-                $id = $lcId;
+            } elseif (--$i && $id !== $normalizedId = $this->normalizeId($id)) {
+                $id = $normalizedId;
                 continue;
             } elseif (!$this->methodMap && !$this instanceof ContainerBuilder && __CLASS__ !== static::class && method_exists($this, $method = 'get'.strtr($id, $this->underscoreMap).'Service')) {
                 // We only check the convention-based factory in a compiled container (i.e. a child class other than a ContainerBuilder,
@@ -299,9 +327,6 @@ class Container implements ResettableContainerInterface
                 }
 
                 return;
-            }
-            if (isset($this->privates[$id])) {
-                @trigger_error(sprintf('Requesting the "%s" private service is deprecated since Symfony 3.2 and won\'t be supported anymore in Symfony 4.0.', $id), E_USER_DEPRECATED);
             }
 
             $this->loading[$id] = true;
@@ -329,14 +354,14 @@ class Container implements ResettableContainerInterface
      */
     public function initialized($id)
     {
-        $id = strtolower($id);
-
-        if ('service_container' === $id) {
-            return false;
-        }
+        $id = $this->normalizeId($id);
 
         if (isset($this->aliases[$id])) {
             $id = $this->aliases[$id];
+        }
+
+        if ('service_container' === $id) {
+            return false;
         }
 
         return isset($this->services[$id]);
@@ -402,9 +427,9 @@ class Container implements ResettableContainerInterface
     /**
      * Fetches a variable from the environment.
      *
-     * @param string The name of the environment variable
+     * @param string $name The name of the environment variable
      *
-     * @return scalar The value to use for the provided environment variable name
+     * @return mixed The value to use for the provided environment variable name
      *
      * @throws EnvNotFoundException When the environment variable is not found and has no default value
      */
@@ -413,10 +438,13 @@ class Container implements ResettableContainerInterface
         if (isset($this->envCache[$name]) || array_key_exists($name, $this->envCache)) {
             return $this->envCache[$name];
         }
+        if (isset($_SERVER[$name]) && 0 !== strpos($name, 'HTTP_')) {
+            return $this->envCache[$name] = $_SERVER[$name];
+        }
         if (isset($_ENV[$name])) {
             return $this->envCache[$name] = $_ENV[$name];
         }
-        if (false !== $env = getenv($name)) {
+        if (false !== ($env = getenv($name)) && null !== $env) { // null is a possible value because of thread safety issues
             return $this->envCache[$name] = $env;
         }
         if (!$this->hasParameter("env($name)")) {
@@ -424,6 +452,32 @@ class Container implements ResettableContainerInterface
         }
 
         return $this->envCache[$name] = $this->getParameter("env($name)");
+    }
+
+    /**
+     * Returns the case sensitive id used at registration time.
+     *
+     * @param string $id
+     *
+     * @return string
+     *
+     * @internal
+     */
+    public function normalizeId($id)
+    {
+        if (!is_string($id)) {
+            $id = (string) $id;
+        }
+        if (isset($this->normalizedIds[$normalizedId = strtolower($id)])) {
+            $normalizedId = $this->normalizedIds[$normalizedId];
+            if ($id !== $normalizedId) {
+                @trigger_error(sprintf('Service identifiers will be made case sensitive in Symfony 4.0. Using "%s" instead of "%s" is deprecated since version 3.3.', $id, $normalizedId), E_USER_DEPRECATED);
+            }
+        } else {
+            $normalizedId = $this->normalizedIds[$normalizedId] = $id;
+        }
+
+        return $normalizedId;
     }
 
     private function __clone()

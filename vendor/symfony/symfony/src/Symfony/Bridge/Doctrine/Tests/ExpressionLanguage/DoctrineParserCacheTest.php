@@ -11,16 +11,17 @@
 
 namespace Symfony\Bridge\Doctrine\Tests\ExpressionLanguage;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Doctrine\ExpressionLanguage\DoctrineParserCache;
 
 /**
  * @group legacy
  */
-class DoctrineParserCacheTest extends \PHPUnit_Framework_TestCase
+class DoctrineParserCacheTest extends TestCase
 {
     public function testFetch()
     {
-        $doctrineCacheMock = $this->getMock('Doctrine\Common\Cache\Cache');
+        $doctrineCacheMock = $this->getMockBuilder('Doctrine\Common\Cache\Cache')->getMock();
         $parserCache = new DoctrineParserCache($doctrineCacheMock);
 
         $doctrineCacheMock->expects($this->once())
@@ -34,7 +35,7 @@ class DoctrineParserCacheTest extends \PHPUnit_Framework_TestCase
 
     public function testFetchUnexisting()
     {
-        $doctrineCacheMock = $this->getMock('Doctrine\Common\Cache\Cache');
+        $doctrineCacheMock = $this->getMockBuilder('Doctrine\Common\Cache\Cache')->getMock();
         $parserCache = new DoctrineParserCache($doctrineCacheMock);
 
         $doctrineCacheMock
@@ -47,7 +48,7 @@ class DoctrineParserCacheTest extends \PHPUnit_Framework_TestCase
 
     public function testSave()
     {
-        $doctrineCacheMock = $this->getMock('Doctrine\Common\Cache\Cache');
+        $doctrineCacheMock = $this->getMockBuilder('Doctrine\Common\Cache\Cache')->getMock();
         $parserCache = new DoctrineParserCache($doctrineCacheMock);
 
         $expression = $this->getMockBuilder('Symfony\Component\ExpressionLanguage\ParsedExpression')

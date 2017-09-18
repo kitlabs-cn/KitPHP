@@ -11,12 +11,13 @@
 
 namespace Symfony\Component\Serializer\Tests\Encoder;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
-class CsvEncoderTest extends \PHPUnit_Framework_TestCase
+class CsvEncoderTest extends TestCase
 {
     /**
      * @var CsvEncoder
@@ -109,6 +110,23 @@ a;c-d
 
 CSV
     , $this->encoder->encode($value, 'csv'));
+    }
+
+    public function testEncodeCustomSettingsPassedInContext()
+    {
+        $value = array('a' => 'he\'llo', 'c' => array('d' => 'foo'));
+
+        $this->assertSame(<<<'CSV'
+a;c-d
+'he''llo';foo
+
+CSV
+        , $this->encoder->encode($value, 'csv', array(
+            CsvEncoder::DELIMITER_KEY => ';',
+            CsvEncoder::ENCLOSURE_KEY => "'",
+            CsvEncoder::ESCAPE_CHAR_KEY => '|',
+            CsvEncoder::KEY_SEPARATOR_KEY => '-',
+        )));
     }
 
     public function testEncodeEmptyArray()
@@ -204,6 +222,21 @@ a;bar-baz
 'hell''o';b;c
 CSV
         , 'csv'));
+    }
+
+    public function testDecodeCustomSettingsPassedInContext()
+    {
+        $expected = array('a' => 'hell\'o', 'bar' => array('baz' => 'b'));
+        $this->assertEquals($expected, $this->encoder->decode(<<<'CSV'
+a;bar-baz
+'hell''o';b;c
+CSV
+        , 'csv', array(
+            CsvEncoder::DELIMITER_KEY => ';',
+            CsvEncoder::ENCLOSURE_KEY => "'",
+            CsvEncoder::ESCAPE_CHAR_KEY => '|',
+            CsvEncoder::KEY_SEPARATOR_KEY => '-',
+        )));
     }
 
     public function testDecodeMalformedCollection()

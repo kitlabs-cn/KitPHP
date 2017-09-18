@@ -27,18 +27,6 @@ class Twig_Tests_TokenStreamTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @group legacy
-     */
-    public function testLegacyConstructorSignature()
-    {
-        $stream = new Twig_TokenStream(array(), 'foo', '{{ foo }}');
-        $this->assertEquals('foo', $stream->getFilename());
-        $this->assertEquals('{{ foo }}', $stream->getSource());
-        $this->assertEquals('foo', $stream->getSourceContext()->getName());
-        $this->assertEquals('{{ foo }}', $stream->getSourceContext()->getCode());
-    }
-
     public function testNext()
     {
         $stream = new Twig_TokenStream(self::$tokens);
@@ -52,8 +40,8 @@ class Twig_Tests_TokenStreamTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Twig_Error_Syntax
-     * @expectedMessage   Unexpected end of template
+     * @expectedException        Twig_Error_Syntax
+     * @expectedExceptionMessage Unexpected end of template
      */
     public function testEndOfTemplateNext()
     {
@@ -66,8 +54,8 @@ class Twig_Tests_TokenStreamTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Twig_Error_Syntax
-     * @expectedMessage   Unexpected end of template
+     * @expectedException        Twig_Error_Syntax
+     * @expectedExceptionMessage Unexpected end of template
      */
     public function testEndOfTemplateLook()
     {

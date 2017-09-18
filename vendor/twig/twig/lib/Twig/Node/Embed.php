@@ -3,7 +3,7 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2012 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,8 +22,6 @@ class Twig_Node_Embed extends Twig_Node_Include
         parent::__construct(new Twig_Node_Expression_Constant('not_used', $lineno), $variables, $only, $ignoreMissing, $lineno, $tag);
 
         $this->setAttribute('name', $name);
-        // to be removed in 2.0, used name instead
-        $this->setAttribute('filename', $name);
         $this->setAttribute('index', $index);
     }
 
@@ -42,3 +40,5 @@ class Twig_Node_Embed extends Twig_Node_Include
         ;
     }
 }
+
+class_alias('Twig_Node_Embed', 'Twig\Node\EmbedNode', false);

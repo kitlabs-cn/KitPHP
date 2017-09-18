@@ -171,11 +171,11 @@ class SlidingPagination extends AbstractPagination
             'endPage'           => $endPage
         );
 
-        if ($current - 1 > 0) {
+        if ($current > 1) {
             $viewData['previous'] = $current - 1;
         }
 
-        if ($current + 1 <= $pageCount) {
+        if ($current < $pageCount) {
             $viewData['next'] = $current + 1;
         }
 
@@ -185,8 +185,12 @@ class SlidingPagination extends AbstractPagination
 
         if ($this->getItems() !== null) {
             $viewData['currentItemCount'] = $this->count();
-            $viewData['firstItemNumber'] = (($current - 1) * $this->numItemsPerPage) + 1;
-            $viewData['lastItemNumber'] = $viewData['firstItemNumber'] + $viewData['currentItemCount'] - 1;
+            $viewData['firstItemNumber'] = 0;
+            $viewData['lastItemNumber'] = 0;
+            if ($viewData['totalCount'] > 0) {
+                $viewData['firstItemNumber'] = (($current - 1) * $this->numItemsPerPage) + 1;
+                $viewData['lastItemNumber'] = $viewData['firstItemNumber'] + $viewData['currentItemCount'] - 1;
+            }
         }
 
         return $viewData;

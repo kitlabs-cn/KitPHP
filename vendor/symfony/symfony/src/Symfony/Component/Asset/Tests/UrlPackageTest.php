@@ -11,11 +11,12 @@
 
 namespace Symfony\Component\Asset\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Asset\UrlPackage;
 use Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 
-class UrlPackageTest extends \PHPUnit_Framework_TestCase
+class UrlPackageTest extends TestCase
 {
     /**
      * @dataProvider getConfigs
@@ -76,6 +77,17 @@ class UrlPackageTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testVersionStrategyGivesAbsoluteURL()
+    {
+        $versionStrategy = $this->getMockBuilder('Symfony\Component\Asset\VersionStrategy\VersionStrategyInterface')->getMock();
+        $versionStrategy->expects($this->any())
+            ->method('applyVersion')
+            ->willReturn('https://cdn.com/bar/main.css');
+        $package = new UrlPackage('https://example.com', $versionStrategy);
+
+        $this->assertEquals('https://cdn.com/bar/main.css', $package->getUrl('main.css'));
+    }
+
     /**
      * @expectedException \Symfony\Component\Asset\Exception\LogicException
      */
@@ -94,7 +106,7 @@ class UrlPackageTest extends \PHPUnit_Framework_TestCase
 
     private function getContext($secure)
     {
-        $context = $this->getMock('Symfony\Component\Asset\Context\ContextInterface');
+        $context = $this->getMockBuilder('Symfony\Component\Asset\Context\ContextInterface')->getMock();
         $context->expects($this->any())->method('isSecure')->will($this->returnValue($secure));
 
         return $context;

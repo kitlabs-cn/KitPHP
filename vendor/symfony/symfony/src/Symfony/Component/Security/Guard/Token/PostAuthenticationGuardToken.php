@@ -12,7 +12,7 @@
 namespace Symfony\Component\Security\Guard\Token;
 
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -21,16 +21,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * If you're using Guard authentication, you *must* use a class that implements
  * GuardTokenInterface as your authenticated token (like this class).
  *
- * @author Ryan Weaver <ryan@knpuniversity.com>n@gmail.com>
+ * @author Ryan Weaver <ryan@knpuniversity.com>
  */
 class PostAuthenticationGuardToken extends AbstractToken implements GuardTokenInterface
 {
     private $providerKey;
 
     /**
-     * @param UserInterface            $user        The user!
-     * @param string                   $providerKey The provider (firewall) key
-     * @param RoleInterface[]|string[] $roles       An array of roles
+     * @param UserInterface   $user        The user!
+     * @param string          $providerKey The provider (firewall) key
+     * @param (Role|string)[] $roles       An array of roles
      *
      * @throws \InvalidArgumentException
      */

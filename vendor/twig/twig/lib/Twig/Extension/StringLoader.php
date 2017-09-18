@@ -3,23 +3,19 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2012 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Extension_StringLoader extends Twig_Extension
+
+final class Twig_Extension_StringLoader extends Twig_Extension
 {
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('template_from_string', 'twig_template_from_string', array('needs_environment' => true)),
+            new Twig_Function('template_from_string', 'twig_template_from_string', array('needs_environment' => true)),
         );
-    }
-
-    public function getName()
-    {
-        return 'string_loader';
     }
 }
 
@@ -39,3 +35,5 @@ function twig_template_from_string(Twig_Environment $env, $template)
 {
     return $env->createTemplate((string) $template);
 }
+
+class_alias('Twig_Extension_StringLoader', 'Twig\Extension\StringLoaderExtension', false);

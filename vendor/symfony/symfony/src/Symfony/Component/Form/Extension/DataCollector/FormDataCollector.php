@@ -16,12 +16,10 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-use Symfony\Component\HttpKernel\DataCollector\Util\ValueExporter;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\VarDumper\Caster\Caster;
 use Symfony\Component\VarDumper\Caster\ClassStub;
-use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Cloner\Stub;
-use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 /**
  * Data collector for {@link FormInterface} instances.
@@ -69,16 +67,7 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
      */
     private $formsByView;
 
-    /**
-     * @var ValueExporter
-     */
-    private $valueExporter;
-
-    /**
-     * @var ClonerInterface
-     */
-    private $cloner;
-    private $clonerCache = array();
+    private $hasVarDumper;
 
     public function __construct(FormDataExtractorInterface $dataExtractor)
     {
@@ -88,6 +77,7 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
             'forms_by_hash' => array(),
             'nb_errors' => 0,
         );
+        $this->hasVarDumper = class_exists(ClassStub::class);
     }
 
     /**
@@ -207,9 +197,7 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
      */
     public function buildPreliminaryFormTree(FormInterface $form)
     {
-        $this->data['forms'][$form->getName()] = array();
-
-        $this->recursiveBuildPreliminaryFormTree($form, $this->data['forms'][$form->getName()], $this->data['forms_by_hash']);
+        $this->data['forms'][$form->getName()] = &$this->recursiveBuildPreliminaryFormTree($form, $this->data['forms_by_hash']);
     }
 
     /**
@@ -217,9 +205,7 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
      */
     public function buildFinalFormTree(FormInterface $form, FormView $view)
     {
-        $this->data['forms'][$form->getName()] = array();
-
-        $this->recursiveBuildFinalFormTree($form, $view, $this->data['forms'][$form->getName()], $this->data['forms_by_hash']);
+        $this->data['forms'][$form->getName()] = &$this->recursiveBuildFinalFormTree($form, $view, $this->data['forms_by_hash']);
     }
 
     /**
@@ -240,138 +226,68 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
 
     public function serialize()
     {
-        $cloneVar = array($this, 'cloneVar');
-
-        foreach ($this->data['forms_by_hash'] as &$form) {
-            foreach ($form as $k => $v) {
-                switch ($k) {
-                    case 'type_class':
-                        $form[$k] = $cloneVar($v, true);
-                        break;
-                    case 'synchronized':
-                        $form[$k] = $cloneVar($v);
-                        break;
-                    case 'view_vars':
-                    case 'passed_options':
-                    case 'resolved_options':
-                    case 'default_data':
-                    case 'submitted_data':
-                        if ($v) {
-                            $form[$k] = array_map($cloneVar, $v);
-                        }
-                        break;
-                    case 'errors':
-                        foreach ($v as $i => $e) {
-                            if (!empty($e['trace'])) {
-                                $form['errors'][$i]['trace'] = array_map($cloneVar, $e['trace']);
-                            }
-                        }
-                        break;
+        if ($this->hasVarDumper) {
+            foreach ($this->data['forms_by_hash'] as &$form) {
+                if (isset($form['type_class']) && !$form['type_class'] instanceof ClassStub) {
+                    $form['type_class'] = new ClassStub($form['type_class']);
                 }
             }
         }
 
-        return serialize($this->data);
+        return serialize($this->cloneVar($this->data));
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function cloneVar($var, $isClass = false)
+    protected function getCasters()
     {
-        if ($var instanceof Data) {
-            return $var;
-        }
-        if (null === $this->cloner) {
-            if (class_exists(ClassStub::class)) {
-                $this->cloner = new VarCloner();
-                $this->cloner->setMaxItems(25);
-                $this->cloner->addCasters(array(
-                    '*' => function ($v, array $a, Stub $s, $isNested) {
-                        if ($isNested && !$v instanceof \DateTimeInterface) {
-                            $s->cut = -1;
-                            $a = array();
-                        }
+        return parent::getCasters() + array(
+            \Exception::class => function (\Exception $e, array $a, Stub $s) {
+                foreach (array("\0Exception\0previous", "\0Exception\0trace") as $k) {
+                    if (isset($a[$k])) {
+                        unset($a[$k]);
+                        ++$s->cut;
+                    }
+                }
 
-                        return $a;
-                    },
-                    \Exception::class => function (\Exception $e, array $a, Stub $s) {
-                        if (isset($a[$k = "\0Exception\0previous"])) {
-                            unset($a[$k]);
-                            ++$s->cut;
-                        }
-
-                        return $a;
-                    },
-                    FormInterface::class => function (FormInterface $f, array $a) {
-                        return array(
-                            Caster::PREFIX_VIRTUAL.'name' => $f->getName(),
-                            Caster::PREFIX_VIRTUAL.'type_class' => new ClassStub(get_class($f->getConfig()->getType()->getInnerType())),
-                        );
-                    },
-                    ConstraintViolationInterface::class => function (ConstraintViolationInterface $v, array $a) {
-                        return array(
-                            Caster::PREFIX_VIRTUAL.'root' => $v->getRoot(),
-                            Caster::PREFIX_VIRTUAL.'path' => $v->getPropertyPath(),
-                            Caster::PREFIX_VIRTUAL.'value' => $v->getInvalidValue(),
-                        );
-                    },
-                ));
-            } else {
-                @trigger_error(sprintf('Using the %s() method without the VarDumper component is deprecated since version 3.2 and won\'t be supported in 4.0. Install symfony/var-dumper version 3.2 or above.', __METHOD__), E_USER_DEPRECATED);
-                $this->cloner = false;
-            }
-        }
-        if (false === $this->cloner) {
-            if (null === $this->valueExporter) {
-                $this->valueExporter = new ValueExporter();
-            }
-
-            return $this->valueExporter->exportValue($var);
-        }
-        if (null === $var) {
-            $type = $hash = 'null';
-        } elseif (array() === $var) {
-            $type = $hash = 'array';
-        } elseif ('object' === $type = gettype($var)) {
-            $hash = spl_object_hash($var);
-        } elseif ('double' === $type) {
-            $hash = (string) $var;
-        } elseif ('integer' === $type || 'string' === $type) {
-            $hash = $var;
-        } else {
-            $type = null;
-        }
-        if (null !== $type && null !== $cache = &$this->clonerCache[$type][$hash]) {
-            return $cache;
-        }
-        if ($isClass) {
-            return $cache = $this->cloner->cloneVar(array(new ClassStub($var)))->seek(0);
-        }
-
-        return $cache = $this->cloner->cloneVar($var);
+                return $a;
+            },
+            FormInterface::class => function (FormInterface $f, array $a) {
+                return array(
+                    Caster::PREFIX_VIRTUAL.'name' => $f->getName(),
+                    Caster::PREFIX_VIRTUAL.'type_class' => new ClassStub(get_class($f->getConfig()->getType()->getInnerType())),
+                );
+            },
+            ConstraintViolationInterface::class => function (ConstraintViolationInterface $v, array $a) {
+                return array(
+                    Caster::PREFIX_VIRTUAL.'root' => $v->getRoot(),
+                    Caster::PREFIX_VIRTUAL.'path' => $v->getPropertyPath(),
+                    Caster::PREFIX_VIRTUAL.'value' => $v->getInvalidValue(),
+                );
+            },
+        );
     }
 
-    private function recursiveBuildPreliminaryFormTree(FormInterface $form, &$output, array &$outputByHash)
+    private function &recursiveBuildPreliminaryFormTree(FormInterface $form, array &$outputByHash)
     {
         $hash = spl_object_hash($form);
 
+        $output = &$outputByHash[$hash];
         $output = isset($this->dataByForm[$hash])
             ? $this->dataByForm[$hash]
             : array();
 
-        $outputByHash[$hash] = &$output;
-
         $output['children'] = array();
 
         foreach ($form as $name => $child) {
-            $output['children'][$name] = array();
-
-            $this->recursiveBuildPreliminaryFormTree($child, $output['children'][$name], $outputByHash);
+            $output['children'][$name] = &$this->recursiveBuildPreliminaryFormTree($child, $outputByHash);
         }
+
+        return $output;
     }
 
-    private function recursiveBuildFinalFormTree(FormInterface $form = null, FormView $view, &$output, array &$outputByHash)
+    private function &recursiveBuildFinalFormTree(FormInterface $form = null, FormView $view, array &$outputByHash)
     {
         $viewHash = spl_object_hash($view);
         $formHash = null;
@@ -383,6 +299,9 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
             // the FormInterface tree of the form, so we need to get the
             // corresponding FormInterface instance for its view in a different way
             $formHash = $this->formsByView[$viewHash];
+        }
+        if (null !== $formHash) {
+            $output = &$outputByHash[$formHash];
         }
 
         $output = isset($this->dataByView[$viewHash])
@@ -396,8 +315,6 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
                     ? $this->dataByForm[$formHash]
                     : array()
             );
-
-            $outputByHash[$formHash] = &$output;
         }
 
         $output['children'] = array();
@@ -409,9 +326,9 @@ class FormDataCollector extends DataCollector implements FormDataCollectorInterf
                 ? $form->get($name)
                 : null;
 
-            $output['children'][$name] = array();
-
-            $this->recursiveBuildFinalFormTree($childForm, $childView, $output['children'][$name], $outputByHash);
+            $output['children'][$name] = &$this->recursiveBuildFinalFormTree($childForm, $childView, $outputByHash);
         }
+
+        return $output;
     }
 }

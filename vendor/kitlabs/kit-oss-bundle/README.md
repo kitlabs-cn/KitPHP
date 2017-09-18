@@ -58,5 +58,13 @@ in the `app/AppKernel.php` file of your project:
 		 */
 		$bucketService = $this->get('kit_oss.bucket_service');
 		$bucketService->create($bucket);
-		$bucketService->list();
+		$bucketService->getList();
 		$bucketService->checkExist($bucket);
+- upload file
+
+		/**
+         *
+         * @var \Kit\Bundle\OssBundle\Service\FileService $fileService
+         */
+        $fileService = $this->container->get('kit_oss.file_service');
+		$response = $fileService->upload($file, $bucket, $object, $dir);

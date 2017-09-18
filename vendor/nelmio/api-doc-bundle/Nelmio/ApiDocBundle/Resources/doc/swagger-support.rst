@@ -10,7 +10,7 @@ Annotation options
 
 A couple of properties has been added to ``@ApiDoc``:
 
-To define a **resource description*::
+To define a **resource description**::
 
     /**
      * @ApiDoc(
@@ -42,6 +42,8 @@ If you use forms to capture GET requests, you will have to specify the
 
     public function searchAction(Request $request)
     {
+        //...
+    }
 
 Multiple response models
 ------------------------
@@ -79,7 +81,7 @@ when this endpoint returns a ``400 Validation failed.`` HTTP response.
     You can omit the ``200`` entry in the ``responseMap`` property and specify
     the default ``output`` property instead. That will result on the same thing.
 
-Integration with ``wordnik/swagger-ui``
+Integration with ``swagger-api/swagger-ui``
 ---------------------------------------
 
 You could import the routes for use with `swagger-ui`_.
@@ -157,5 +159,5 @@ namespaces (``Vendor\UserBundle\Entity\User => User``). This will not afford you
 the guarantee that model IDs are unique, but that would really just depend on
 the classes you have in use.
 
-.. _`swagger-ui`: https://github.com/wordnik/swagger-ui
+.. _`swagger-ui`: https://github.com/swagger-api/swagger-ui
 .. _`NelmioCorsBundle`: https://github.com/nelmio/NelmioCorsBundle

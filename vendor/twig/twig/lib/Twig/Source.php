@@ -3,7 +3,7 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2016 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Source
+final class Twig_Source
 {
     private $code;
     private $name;
@@ -47,3 +47,5 @@ class Twig_Source
         return $this->path;
     }
 }
+
+class_alias('Twig_Source', 'Twig\Source', false);
