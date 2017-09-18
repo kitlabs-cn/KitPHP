@@ -217,4 +217,3 @@ class Theme
         return $this->updateAt;
     }
 }
-

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Config</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ config.id }}</td>
+            </tr>
+            <tr>
+                <th>Categoryid</th>
+                <td>{{ config.categoryId }}</td>
+            </tr>
+            <tr>
+                <th>Value</th>
+                <td>{{ config.value }}</td>
+            </tr>
+            <tr>
+                <th>Level</th>
+                <td>{{ config.level }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ config.status }}</td>
+            </tr>
+            <tr>
+                <th>Createat</th>
+                <td>{% if config.createAt %}{{ config.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updateat</th>
+                <td>{% if config.updateAt %}{{ config.updateAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Ip</th>
+                <td>{{ config.ip }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('config_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('config_edit', { 'id': config.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

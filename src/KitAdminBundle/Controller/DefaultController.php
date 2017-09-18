@@ -120,4 +120,11 @@ class DefaultController extends BaseController
             'size' => 1024
         ]));
     }
+    
+    public function testAction()
+    {
+        $data = [2000, 3000, 256, 8000, 10000, 'abc', 20000, 40000, 'x123'];
+        $data = $this->get('kit_admin.rule_manager_service')->applyRules($data);
+        dump($data);
+    }
 }

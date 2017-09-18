@@ -1,0 +1,24 @@
+configcategory_index:
+    path:     /
+    defaults: { _controller: "KitAdminBundle:ConfigCategory:index" }
+    methods:  GET
+
+configcategory_show:
+    path:     /{id}/show
+    defaults: { _controller: "KitAdminBundle:ConfigCategory:show" }
+    methods:  GET
+
+configcategory_new:
+    path:     /new
+    defaults: { _controller: "KitAdminBundle:ConfigCategory:new" }
+    methods:  [GET, POST]
+
+configcategory_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "KitAdminBundle:ConfigCategory:edit" }
+    methods:  [GET, POST]
+
+configcategory_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "KitAdminBundle:ConfigCategory:delete" }
+    methods:  DELETE

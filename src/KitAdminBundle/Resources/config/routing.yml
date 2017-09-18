@@ -1,7 +1,12 @@
 kit_admin_theme:
     resource: "@KitAdminBundle/Resources/config/routing/theme.yml"
     prefix:   /theme
-
+kit_admin_config:
+    resource: "@KitAdminBundle/Resources/config/routing/config.yml"
+    prefix:   /config
+kit_admin_configcategory:
+    resource: "@KitAdminBundle/Resources/config/routing/configcategory.yml"
+    prefix:   /configcategory
 kit_admin_homepage:
     path:     /
     defaults: { _controller: KitAdminBundle:Default:index }
@@ -11,6 +16,9 @@ kit_admin_upload:
 kit_admin_flow:
     path:     /flow
     defaults: { _controller: KitAdminBundle:Default:flow }
+kit_admin_test:
+    path:     /test
+    defaults: { _controller: KitAdminBundle:Default:test }
 kit_admin_login:
     path:     /login
     defaults: { _controller: KitAdminBundle:Login:login }
