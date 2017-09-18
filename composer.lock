@@ -3696,8 +3696,6 @@
     ],
     "packages-dev": [
         {
-<<<<<<< HEAD
-=======
             "name": "doctrine/data-fixtures",
             "version": "v1.2.2",
             "source": {
