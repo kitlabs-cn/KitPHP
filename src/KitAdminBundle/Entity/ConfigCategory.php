@@ -27,6 +27,13 @@ class ConfigCategory
      * @ORM\Column(name="name", type="string", length=32)
      */
     private $name;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=32)
+     */
+    private $title;
 
     /**
      * @var \DateTime
@@ -55,6 +62,13 @@ class ConfigCategory
      * @ORM\Column(name="status", type="smallint")
      */
     private $status;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="field_type", type="smallint")
+     */
+    private $fieldType;
 
 
     /**
@@ -89,6 +103,30 @@ class ConfigCategory
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return ConfigCategory
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        
+        return $this;
+    }
+    
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     /**
@@ -186,4 +224,29 @@ class ConfigCategory
     {
         return $this->status;
     }
+    
+    /**
+    * Set fieldType
+    *
+    * @param integer $fieldType
+    *
+    * @return ConfigCategory
+    */
+    public function setFieldType($fieldType)
+    {
+        $this->fieldType = $fieldType;
+        
+        return $this;
+    }
+    
+    /**
+     * Get fieldType
+     *
+     * @return int
+     */
+    public function getFieldType()
+    {
+        return $this->fieldType;
+    }
 }
+

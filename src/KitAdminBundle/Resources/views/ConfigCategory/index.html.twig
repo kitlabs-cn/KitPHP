@@ -1,47 +1,62 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    <h1>Configcategories list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Createat</th>
-                <th>Updateat</th>
-                <th>Ip</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for configCategory in configCategories %}
-            <tr>
-                <td><a href="{{ path('configcategory_show', { 'id': configCategory.id }) }}">{{ configCategory.id }}</a></td>
-                <td>{{ configCategory.name }}</td>
-                <td>{% if configCategory.createAt %}{{ configCategory.createAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if configCategory.updateAt %}{{ configCategory.updateAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ configCategory.ip }}</td>
-                <td>{{ configCategory.status }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('configcategory_show', { 'id': configCategory.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('configcategory_edit', { 'id': configCategory.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('configcategory_new') }}">Create a new configCategory</a>
-        </li>
-    </ul>
+{% extends 'base.html.twig' %} 
+{% block main_content %}
+<form method="post">
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong>配置项列表</strong>
+		</div>
+		<div class="padding border-bottom" style="display:none;">
+			<a href="{{ path('kit_admin_configcategory_new') }}" type="button"
+				class="button button-small border-green">新增配置项</a> 
+		</div>
+		<table class="table table-hover">
+			<tr>
+				<th width="45">编号</th>
+				<th width="220">配置项</th>
+				<th width="220">配置名称</th>
+				<th width="*">状态</th>
+				<th width="100">添加时间</th>
+				<th width="100">更新时间</th>
+				<th width="200">操作</th>
+			</tr>
+			{% if pagination is defined and pagination is not empty %}
+			{% for item in pagination %}
+			<tr id="item_{{ item.id }}">
+				<td>{{ item.id }}</td>
+				<td>{{ item.name }}</td>
+				<td>{{ item.title }}</td>
+				<td>{% if item.status == 1 %}正常{% else %}禁用{% endif %}</td>
+				<td>{{ item.createAt|date('Y-m-d') }}</td>
+				<td>{{ item.updateAt|date('Y-m-d') }}</td>
+				<td>
+					<a class="button border-yellow button-little" href="{{ path('kit_admin_config_new', { cid: item.id}) }}">新增配置</a>
+					<a class="button border-blue button-little" href="{{ path('kit_admin_config_index', { cid: item.id}) }}">配置详情</a>
+				</td>
+			</tr>
+			{% endfor %}
+			{% else %}
+			<tr>
+				<td colspan="7">暂无记录</td>
+			</tr>
+			{% endif %}
+		</table>
+		{% if pagination is defined and pagination is not empty %}
+		{{ knp_pagination_render(pagination,'pagination.html.twig') }}
+		{% endif %}
+	</div>
+</form>
+{% endblock %}
+{% block javascripts %} {{ parent() }}
+<script>
+   function delItem(id){
+	   $.post("{{ path('kit_news_delete') }}", { id: id },
+			   function(data){
+			     if(data.status == 1){
+				     $('#item_'+id).hide();
+				     alert(data.msg);
+				     }else{
+					     alert(data.msg);}
+			   }, "json");
+	}
+</script>
 {% endblock %}

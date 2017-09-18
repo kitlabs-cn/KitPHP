@@ -1,21 +1,14 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    <h1>Config edit</h1>
-
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('config_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+{% extends 'base.html.twig' %} 
+{% form_theme form 'form_theme_pintuer.html.twig' %}
+{% block main_content %}
+    <div class="line">
+        <div class="x6">
+        {% for error in errors %}
+        <div class="alert alert-yellow">
+            <span class="close rotate-hover"></span><strong>提示：</strong>{{ error }}
+        </div>
+        {% endfor %}
+            {{ form(form, {'attr': {'novalidate': 'novalidate', 'class': 'form-x', 'id': 'form'}}) }}
+        </div>
+    </div> 
 {% endblock %}
