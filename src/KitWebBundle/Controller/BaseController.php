@@ -10,9 +10,13 @@ class BaseController extends Controller
      * 
      * @return string
      */
-    protected function getTheme()
+    protected function getTheme($default = 'Default')
     {
-        return 'default';
+        /**
+         * @var \KitAdminBundle\Service\ThemeService $themeService
+         */
+        $themeService = $this->get('kit_admin.theme_service');
+        return $themeService->get($default);
     }
     /**
      * 
@@ -21,16 +25,23 @@ class BaseController extends Controller
      */
     protected function render($view, array $parameters = array(), Response $response = null)
     {
+        $basic = $this->getDoctrine()->getRepository('KitAdminBundle:BasicSetting')->basicRepo();
+        
         $theme = $this->getTheme();
+        
         if(strpos($view, ':')){
             $views = explode(':', $view);
             if(isset($views[1])){
-                $views[1] = $theme . '/';
+                $views[1] = 'theme/' . $theme . '/' . $views[1];
+                $view = implode(':', $views);
             }
         }
-        $parameters = array_merge($parameters, [
+        
+        $parameters = array_merge([
+            'basic' => $basic,
             'theme' => $theme
-        ]);
-        return $this->render($view, $parameters, $response);
+        ], $parameters);
+        
+        return parent::render($view, $parameters, $response);
     }
 }

@@ -18,7 +18,6 @@ class ApiVersionListener
         }
 
         $request = $event->getRequest();
-        dump($request->getRequestUri());
         $acceptHeader = AcceptHeader::fromString($request->headers->get('Accept'))->get('application/kit.custom.api+json');
 
         if (!is_null($acceptHeader)) {

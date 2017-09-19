@@ -36,7 +36,6 @@ class DefaultController extends BaseController
         dump($event->getEndTime());    // Returns the end time of the very last period
         dump($event->getDuration());   // Returns the event duration, including all periods
         dump($event->getMemory());     // Returns the max memory usage of all periods
-        
         return $this->render('KitWebBundle:Default:index.html.twig', [
             'nav' => 1,
             'toutiao' => $toutiao,

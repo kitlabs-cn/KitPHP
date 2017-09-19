@@ -1,6 +1,6 @@
 kit_table_prefix:
     resource: "@KitTablePrefixBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /pre
 
 kit_api:
     resource: "@KitApiBundle/Resources/config/routing.yml"
