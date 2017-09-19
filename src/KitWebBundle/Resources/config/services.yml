@@ -2,3 +2,8 @@ services:
 #    kit_web.example:
 #        class: KitWebBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+    kit_web.login_listener:
+        class: KitWebBundle\EventListener\LoginListener
+        arguments: ['@session']
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
