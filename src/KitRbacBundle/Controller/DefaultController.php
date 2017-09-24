@@ -44,7 +44,7 @@ class DefaultController extends BaseController
         $form = $this->createFormBuilder($user)
             ->add('username', null, ['label' => '用户名'])
             ->add('password', PasswordType::class, ['label' => '密码'])
-            ->add('roles', EntityType::class, [
+            ->add('group', EntityType::class, [
                 'class' => 'KitRbacBundle:Role',
                 'choice_label' => 'rolename',
                 'label' => '用户组'
