@@ -101,7 +101,7 @@ kit_pay:
     config:
         alipay:
             use_sandbox: true
-            partner: 20888xxxxxx
+            partner: 20888
             app_id: xxxxxxx
             sign_type: RSA2 # RSA or RSA2
             ali_public_key: /path # path or content

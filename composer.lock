@@ -1533,16 +1533,16 @@
         },
         {
             "name": "knplabs/knp-components",
-            "version": "1.3.4",
+            "version": "1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/knp-components.git",
-                "reference": "f98bcc6d348fbe863a224b468e11fb5e91e28f2a"
+                "reference": "a03bbd87ecf9e56db6f7533db2c63d6da6cd5f33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/KnpLabs/knp-components/f98bcc6d348fbe863a224b468e11fb5e91e28f2a.zip",
-                "reference": "f98bcc6d348fbe863a224b468e11fb5e91e28f2a",
+                "url": "https://files.phpcomposer.com/files/KnpLabs/knp-components/a03bbd87ecf9e56db6f7533db2c63d6da6cd5f33.zip",
+                "reference": "a03bbd87ecf9e56db6f7533db2c63d6da6cd5f33",
                 "shasum": ""
             },
             "require": {
@@ -1555,7 +1555,8 @@
                 "jackalope/jackalope-doctrine-dbal": "~1.2",
                 "phpunit/phpunit": "~4.2",
                 "ruflin/elastica": "~1.0",
-                "symfony/event-dispatcher": "~2.5"
+                "symfony/event-dispatcher": "~2.5",
+                "symfony/property-access": ">=2.3"
             },
             "suggest": {
                 "doctrine/common": "to allow usage pagination with Doctrine ArrayCollection",
@@ -1564,7 +1565,8 @@
                 "doctrine/phpcr-odm": "to allow usage pagination with Doctrine ODM PHPCR",
                 "propel/propel1": "to allow usage pagination with Propel ORM",
                 "ruflin/Elastica": "to allow usage pagination with ElasticSearch Client",
-                "solarium/solarium": "to allow usage pagination with Solarium Client"
+                "solarium/solarium": "to allow usage pagination with Solarium Client",
+                "symfony/property-access": "To allow sorting arrays"
             },
             "type": "library",
             "extra": {
@@ -1600,7 +1602,7 @@
                 "pager",
                 "paginator"
             ],
-            "time": "2016-12-06T18:10:24+00:00"
+            "time": "2017-09-15T12:50:01+00:00"
         },
         {
             "name": "knplabs/knp-menu",
@@ -2579,16 +2581,16 @@
         },
         {
             "name": "riverslei/payment",
-            "version": "v4.1.0",
+            "version": "v4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helei112g/payment.git",
-                "reference": "6e586244c611430c431bdb370ed300f6b1db4b1a"
+                "reference": "4082c6edcd3d5e1fd26fb85d9005ef5cb47db483"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/helei112g/payment/6e586244c611430c431bdb370ed300f6b1db4b1a.zip",
-                "reference": "6e586244c611430c431bdb370ed300f6b1db4b1a",
+                "url": "https://files.phpcomposer.com/files/helei112g/payment/4082c6edcd3d5e1fd26fb85d9005ef5cb47db483.zip",
+                "reference": "4082c6edcd3d5e1fd26fb85d9005ef5cb47db483",
                 "shasum": ""
             },
             "require": {
@@ -2629,7 +2631,7 @@
                 "支付宝支付",
                 "集成支付接口SDK"
             ],
-            "time": "2017-09-13T10:23:47+00:00"
+            "time": "2017-09-21T07:14:11+00:00"
         },
         {
             "name": "sensio/distribution-bundle",

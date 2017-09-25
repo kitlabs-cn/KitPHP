@@ -9,3 +9,6 @@ kit_api_v2:
 kit_api_homepage:
     path:     /
     defaults: { _controller: KitApiBundle:Default:index }
+kit_api_pay:
+    path:     /pay
+    defaults: { _controller: KitApiBundle:Pay:index }
