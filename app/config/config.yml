@@ -123,3 +123,11 @@ kit_pay:
             notify_url: http://kitlabs.cn/notify
             redirect_url: http://kitlabs.cn/return
             return_raw: true # 异步回调是否显示原始数据
+guzzle:
+    # (de)activate logging/profiler; default: %kernel.debug%
+    logging: true
+    clients:
+        api_pay_union:
+            base_url: "https://vsp.allinpay.com/apiweb/unitorder/pay"
+            options:
+                timeout: 5

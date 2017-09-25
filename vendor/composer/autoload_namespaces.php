@@ -14,6 +14,8 @@ return array(
     'Knp\\Component' => array($vendorDir . '/knplabs/knp-components/src'),
     'JsonpCallbackValidator' => array($vendorDir . '/willdurand/jsonp-callback-validator/src'),
     'Imagine' => array($vendorDir . '/imagine/imagine/lib'),
+    'EightPoints\\Guzzle' => array($vendorDir . '/eightpoints/guzzle-wsse-middleware/src'),
+    'EightPoints\\Bundle\\GuzzleBundle' => array($vendorDir . '/eightpoints/guzzle-bundle'),
     'Doctrine\\ORM\\' => array($vendorDir . '/doctrine/orm/lib'),
     'Doctrine\\DBAL\\' => array($vendorDir . '/doctrine/dbal/lib'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),

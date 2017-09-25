@@ -6,3 +6,6 @@ services:
         class: KitApiBundle\EventListener\ApiVersionListener
         tags:
           - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 100 }
+    kit_api.pai_union:
+        class: KitApiBundle\Service\UnionService
+        arguments: ['@doctrine.orm.entity_manager', "@service_container"]
