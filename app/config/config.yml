@@ -124,10 +124,21 @@ kit_pay:
             redirect_url: http://kitlabs.cn/return
             return_raw: true # 异步回调是否显示原始数据
 guzzle:
-    # (de)activate logging/profiler; default: %kernel.debug%
     logging: true
     clients:
         api_pay_union:
             base_url: "https://vsp.allinpay.com/apiweb/unitorder/pay"
             options:
                 timeout: 5
+gregwar_captcha:
+    expiration: 120
+    width: 300
+    height: 180
+    length: 6
+    as_url: true
+    text_color: [255, 255, 255]
+    background_color: [255, 255, 255]
+    ignore_all_effects: false
+    distortion: false
+    interpolation: false
+    charset: 'abcdefhjkmnprstuvwxyz'
