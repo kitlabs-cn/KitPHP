@@ -136,7 +136,7 @@ gregwar_captcha:
     height: 180
     length: 6
     as_url: true
-    text_color: [255, 255, 255]
+    text_color: [255, 0, 255]
     background_color: [255, 255, 255]
     ignore_all_effects: false
     distortion: false
