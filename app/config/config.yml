@@ -139,6 +139,7 @@ gregwar_captcha:
     text_color: [255, 0, 255]
     background_color: [255, 255, 255]
     ignore_all_effects: false
-    distortion: false
-    interpolation: false
+    distortion: true
+    interpolation: true
     charset: 'abcdefhjkmnprstuvwxyz'
+    background_images: ["%kernel.root_dir%/../web/static/images/captcha_bg.jpg", "%kernel.root_dir%/../web/static/images/captcha_bg.jpg"]
