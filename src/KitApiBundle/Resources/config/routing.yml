@@ -12,3 +12,6 @@ kit_api_homepage:
 kit_api_pay:
     path:     /pay
     defaults: { _controller: KitApiBundle:Pay:index }
+kit_api_captcha:
+    path:     /captcha
+    defaults: { _controller: KitApiBundle:Captcha:index }

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Gregwar\CaptchaBundle\Type\CaptchaType;
 
 class DefaultController extends BaseController
 {
@@ -60,6 +61,9 @@ class DefaultController extends BaseController
                 'label_attr' => [
                     'class' =>'radio-inline'
                     ]
+            ])
+            ->add('captcha', CaptchaType::class, [
+                'mapped' => false 
             ])
             ->add('submit', SubmitType::class, ['label' => '提交'])
             ->getForm();

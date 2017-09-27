@@ -142,4 +142,5 @@ gregwar_captcha:
     distortion: true
     interpolation: true
     charset: 'abcdefhjkmnprstuvwxyz'
-    background_images: ["%kernel.root_dir%/../web/static/images/captcha_bg.jpg", "%kernel.root_dir%/../web/static/images/captcha_bg.jpg"]
+    whitelist_key: 'captcha_whitelist_key'
+    #background_images: ["%kernel.root_dir%/../web/static/images/captcha_bg.jpg", "%kernel.root_dir%/../web/static/images/captcha_bg.jpg"]
