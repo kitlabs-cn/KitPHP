@@ -7,6 +7,15 @@ kit_user_homepage:
 kit_user_report:
     path:     /report
     defaults: { _controller: KitWebBundle:User:report }
+kit_web_member:
+    resource: "@KitWebBundle/Resources/config/routing/member.yml"
+    prefix:   /member
+kit_web_pay:
+    resource: "@KitWebBundle/Resources/config/routing/pay.yml"
+    prefix:   /user/pay
+kit_web_work:
+    resource: "@KitWebBundle/Resources/config/routing/work.yml"
+    prefix:   /user/work
 kit_user_password:
     path:     /user/password
     defaults: { _controller: KitWebBundle:User:password }

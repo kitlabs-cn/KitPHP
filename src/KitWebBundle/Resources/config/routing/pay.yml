@@ -1,0 +1,15 @@
+kit_web_pay_index:
+    path:     /
+    defaults: { _controller: KitWebBundle:Pay:login }
+kit_web_pay_neworder:
+    path:     /neworder
+    defaults: { _controller: KitWebBundle:Pay:neworder }
+kit_web_pay_resend:
+    path:     /resend
+    defaults: { _controller: KitWebBundle:Pay:resend }
+kit_web_pay_gift:
+    path:     /gift
+    defaults: { _controller: KitWebBundle:Pay:gift }
+kit_web_pay_notify:
+    path:     /notify
+    defaults: { _controller: KitWebBundle:Pay:notify }

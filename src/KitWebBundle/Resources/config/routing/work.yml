@@ -1,0 +1,39 @@
+kit_web_work:
+    path:     /
+    defaults: { _controller: KitWebBundle:Work:index }
+kit_web_work_upload:
+    path:     /upload
+    defaults: { _controller: KitWebBundle:Work:upload }
+kit_web_work_show:
+    path:     /show
+    defaults: { _controller: KitWebBundle:Work:show }
+kit_web_work_picture:
+    path:     /picture
+    defaults: { _controller: KitWebBundle:Work:picture }
+    options: 
+        expose: true
+kit_web_work_video:
+    path:     /video
+    defaults: { _controller: KitWebBundle:Work:video }
+    options: 
+        expose: true
+kit_web_work_json:
+    path:     /json
+    defaults: { _controller: KitWebBundle:Work:json }
+    options: 
+        expose: true
+kit_web_work_retrieve:
+    path:     /retrieve
+    defaults: { _controller: KitWebBundle:Work:retrieve }
+    options: 
+        expose: true
+kit_web_work_delete:
+    path:     /delete
+    defaults: { _controller: KitWebBundle:Work:delete }
+    options: 
+        expose: true
+kit_web_work_save:
+    path:     /save
+    defaults: { _controller: KitWebBundle:Work:save }
+    options: 
+        expose: true

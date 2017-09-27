@@ -1,0 +1,12 @@
+kit_web_member_login:
+    path:     /login
+    defaults: { _controller: KitWebBundle:Member:login }
+kit_web_member_forget:
+    path:     /forget
+    defaults: { _controller: KitWebBundle:Member:forget }
+kit_web_member_register:
+    path:     /register
+    defaults: { _controller: KitWebBundle:Member:register }
+kit_web_member_sms:
+    path:     /sms
+    defaults: { _controller: KitWebBundle:Member:sms }
