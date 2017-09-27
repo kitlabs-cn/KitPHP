@@ -21,6 +21,6 @@ class CaptchaController extends Controller
          */
         $session = $this->get('session');
         $session->set('captcha_whitelist_key', $keys);
-        return $this->redirectToRoute('gregwar_captcha.generate_captcha', ['key' => $key]);
+        return $this->forward('GregwarCaptchaBundle:Captcha:generateCaptcha', ['key' => $key]);
     }
 }
