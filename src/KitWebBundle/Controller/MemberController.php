@@ -238,7 +238,7 @@ class MemberController extends BaseController
                 break;
         }
         $code = $this->generateCode(6);
-        $response = $this->requestSms('register', $mobile, $code);
+        $response = $this->requestSms($type, $mobile, $code);
         if(1 == $response['code']){
             // 存入session
             $request->getSession()->set('code_token', md5($type . $mobile . 'pdd' . $code));
