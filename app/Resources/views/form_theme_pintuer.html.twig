@@ -13,8 +13,13 @@
         {%- set attr = attr|merge({class: (attr.class|default('') ~ ' input')|trim}) -%}
     {% endif %}
     <div class="field">
-    {{- parent() -}}
-    {{- block('form_widget_note') -}}
+        {% if type is defined and type == 'file' %}
+            <a class="button input-file" href="javascript:void(0);">+ 浏览文件{{- parent() -}}</a>
+            {% else %}
+             {{- parent() -}}
+        {% endif %}
+        {{- block('form_widget_note') -}}
+       
     </div>
 {%- endblock form_widget_simple %}
 
