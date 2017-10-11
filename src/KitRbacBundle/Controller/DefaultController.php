@@ -3,30 +3,26 @@ namespace KitRbacBundle\Controller;
 
 use KitBaseBundle\Controller\BaseController;
 use KitRbacBundle\Entity\User;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Gregwar\CaptchaBundle\Type\CaptchaType;
+use RbacBundle\Form\Type\UserType;
 
 class DefaultController extends BaseController
 {
 
-    public function indexAction($page)
+    public function indexAction(Request $request)
     {
-        if($page < 1) $page = 1;
+        dump('ds');
         $pagesize = 10;
-        $repository = $this->getDoctrine()->getRepository('KitRbacBundle:User');
+        $repository = $this->getDoctrine()->getRepository('RbacBundle:User');
         $list = $repository->getList();
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $list,
-            $page,
+            $request->query->getInt('page', 1),
             $pagesize
         );
-        return $this->render('KitRbacBundle:Default:index.html.twig', [
+        return $this->render('RbacBundle:Default:index.html.twig', [
             'pagination' => $pagination
         ]);
     }
@@ -39,41 +35,13 @@ class DefaultController extends BaseController
     public function addAction(Request $request)
     {
         $errors = [];
-        $em = $this->getEntityManager();
         $user = new User();
-        
-        $form = $this->createFormBuilder($user)
-            ->add('username', null, ['label' => '用户名'])
-            ->add('password', PasswordType::class, ['label' => '密码'])
-            ->add('group', EntityType::class, [
-                'class' => 'KitRbacBundle:Role',
-                'choice_label' => 'rolename',
-                'label' => '用户组'
-            ])
-            ->add('status', ChoiceType::class, [
-                'choices'  => [
-                    '启用' => 1,
-                    '禁用' => 0
-                ],
-                'expanded' => true,
-                'label' => '状态',
-                'data' => 1,
-                'label_attr' => [
-                    'class' =>'radio-inline'
-                    ]
-            ])
-            ->add('captcha', CaptchaType::class, [
-                'mapped' => false 
-            ])
-            ->add('submit', SubmitType::class, ['label' => '提交'])
-            ->getForm();
+        $form = $this->createForm(UserType::class, $user);
         
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()){
-                /**
-                 */
-                $user = $form->getData();
+                $em = $this->getDoctrine()->getManager();
                 $user->setIp($request->getClientIp());
                 $user->setRole('ROLE_ADMIN');
                 $em->persist($user);
@@ -83,7 +51,7 @@ class DefaultController extends BaseController
                 $errors = $this->serializeFormErrors($form);
             }
         }
-        return $this->render('KitRbacBundle:Default:add.html.twig', [
+        return $this->render('RbacBundle:Default:add.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors
         ]);
@@ -95,46 +63,21 @@ class DefaultController extends BaseController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function updateAction($id, Request $request)
+    public function updateAction(Request $request)
     {
+        $id = $request->query->getInt('id');
         $errors = [];
-        $em = $this->getEntityManager();
-        $user = new User();
-        $repo = $this->getDoctrine()->getRepository('KitRbacBundle:User');
-        $user = $repo->find($id);
-        $oldPass = $user->getPassword();
+        $user = $this->getDoctrine()->getRepository('RbacBundle:User')->find($id);
         if(!$user){
             return $this->msgResponse(2, '警告', '该记录不存在', 'kit_rbac_user');
         }
-        $form = $this->createFormBuilder($user)
-        ->add('username', null, ['label' => '用户名'])
-        ->add('password', PasswordType::class, ['label' => '密码'])
-        ->add('roles', EntityType::class, [
-            'class' => 'KitRbacBundle:Role',
-            'choice_label' => 'rolename',
-            'label' => '用户组'
-        ])
-        ->add('status', ChoiceType::class, [
-            'choices'  => [
-                '启用' => 1,
-                '禁用' => 0
-            ],
-            'expanded' => true,
-            'label' => '状态',
-            'data' => 1,
-            'label_attr' => [
-                'class' =>'radio-inline'
-            ]
-        ])
-        ->add('submit', SubmitType::class, ['label' => '提交'])
-        ->getForm();
+        $oldPass = $user->getPassword();
+        $form = $this->createForm(UserType::class, $user);
     
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()){
-                /**
-                 */
-                $user = $form->getData();
+                $em = $this->getDoctrine()->getManager();
                 if($user->getPassword() == null){
                     $user->setPassword($oldPass);
                 }
@@ -142,12 +85,12 @@ class DefaultController extends BaseController
                 $user->setRole('ROLE_ADMIN');
                 $em->persist($user);
                 $em->flush();
-                return $this->msgResponse(0, '恭喜', '修改成功', 'kit_rbac_user');
+                return $this->msgResponse(0, '恭喜', '修改成功', 'rbac_user');
             }else{
                 $errors = $this->serializeFormErrors($form);
             }
         }
-        return $this->render('KitRbacBundle:Default:add.html.twig', [
+        return $this->render('RbacBundle:Default:add.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors
         ]);
@@ -157,7 +100,7 @@ class DefaultController extends BaseController
     {
         $id = $request->request->get('id');
         $item = $this->getDoctrine()
-        ->getRepository('KitRbacBundle:User')
+        ->getRepository('RbacBundle:User')
         ->find($id);
         if(!$item){
             return new JsonResponse([
