@@ -4170,5 +4170,56 @@
             "symfony",
             "web service"
         ]
+    },
+    {
+        "name": "kitlabs/kit-crypt-bundle",
+        "version": "v0.1.1",
+        "version_normalized": "0.1.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kitlabs-cn/KitCryptBundle.git",
+            "reference": "8d798b03bc80d21a2ed45303de9998a89041c384"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/kitlabs-cn/KitCryptBundle/8d798b03bc80d21a2ed45303de9998a89041c384.zip",
+            "reference": "8d798b03bc80d21a2ed45303de9998a89041c384",
+            "shasum": ""
+        },
+        "require": {
+            "ext-openssl": "*",
+            "php": ">=5.5.9"
+        },
+        "time": "2017-09-29T04:21:28+00:00",
+        "type": "symfony-bundle",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Kit\\CryptBundle\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "lcp0578",
+                "email": "lcp0578@gmail.com",
+                "homepage": "https://github.com/lcp0578"
+            },
+            {
+                "name": "The contributors",
+                "homepage": "https://github.com/kitlabs-cn/KitCryptBundle/contributors"
+            }
+        ],
+        "description": "Symfony Crypt Bundle",
+        "homepage": "https://github.com/kitlabs-cn/KitCryptBundle",
+        "keywords": [
+            "OPNESSL",
+            "aes",
+            "crypt bundle",
+            "des"
+        ]
     }
 ]

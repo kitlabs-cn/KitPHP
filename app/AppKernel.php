@@ -32,6 +32,7 @@ class AppKernel extends Kernel
             new Kit\Bundle\PayBundle\KitPayBundle(),
             new KitApiBundle\KitApiBundle(),
             new Kit\TablePrefixBundle\KitTablePrefixBundle(),
+            new Kit\CryptBundle\KitCryptBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

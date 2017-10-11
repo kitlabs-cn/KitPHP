@@ -144,3 +144,7 @@ gregwar_captcha:
     charset: 'abcdefhjkmnprstuvwxyz'
     whitelist_key: 'captcha_whitelist_key'
     #background_images: ["%kernel.root_dir%/../web/static/images/captcha_bg.jpg", "%kernel.root_dir%/../web/static/images/captcha_bg.jpg"]
+kit_crypt:
+    method: 'AES-256-CBC'
+    secret_key: 'ThisIsSecret'
+    secret_iv: '1234567890abcdef'

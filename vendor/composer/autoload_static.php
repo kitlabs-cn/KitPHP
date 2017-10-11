@@ -76,6 +76,7 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
             'Knp\\Menu\\' => 9,
             'Knp\\Bundle\\PaginatorBundle\\' => 27,
             'Knp\\Bundle\\MenuBundle\\' => 22,
+            'Kit\\CryptBundle\\' => 16,
             'Kit\\Bundle\\PayBundle\\' => 21,
             'Kit\\Bundle\\OssBundle\\' => 21,
         ),
@@ -249,6 +250,10 @@ class ComposerStaticInit11ed4cd401fa9de7d75d42ec4870d15d
         'Knp\\Bundle\\MenuBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/knplabs/knp-menu-bundle',
+        ),
+        'Kit\\CryptBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kitlabs/kit-crypt-bundle',
         ),
         'Kit\\Bundle\\PayBundle\\' => 
         array (

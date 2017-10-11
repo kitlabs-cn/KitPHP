@@ -40,6 +40,7 @@ return array(
     'Knp\\Menu\\' => array($vendorDir . '/knplabs/knp-menu/src/Knp/Menu'),
     'Knp\\Bundle\\PaginatorBundle\\' => array($vendorDir . '/knplabs/knp-paginator-bundle'),
     'Knp\\Bundle\\MenuBundle\\' => array($vendorDir . '/knplabs/knp-menu-bundle'),
+    'Kit\\CryptBundle\\' => array($vendorDir . '/kitlabs/kit-crypt-bundle'),
     'Kit\\Bundle\\PayBundle\\' => array($vendorDir . '/kitlabs/kit-pay-bundle'),
     'Kit\\Bundle\\OssBundle\\' => array($vendorDir . '/kitlabs/kit-oss-bundle'),
     'Incenteev\\ParameterHandler\\' => array($vendorDir . '/incenteev/composer-parameter-handler'),

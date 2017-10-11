@@ -15,6 +15,14 @@ class LoginController extends Controller
 
     public function loginAction(Request $request)
     {
+        /**
+         *
+         * @var \Kit\CryptBundle\Service\OpensslService $opensslService
+         */
+        $opensslService = $this->get('kit_crypt.openssl');
+        $encrypt = $opensslService->encrypt('lcp0578');
+        dump($encrypt);
+        dump($opensslService->decrypt($encrypt));
         $helper = $this->get('security.authentication_utils');
         
         return $this->render('KitAdminBundle:Login:login.html.twig', array(
