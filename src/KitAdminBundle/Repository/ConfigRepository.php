@@ -28,4 +28,14 @@ class ConfigRepository extends \Doctrine\ORM\EntityRepository
         ])
         ->fetchAll();
     }
+    
+    public function getValue($name)
+    {
+        return $this->getEntityManager()
+        ->getConnection()
+        ->executeQuery('SELECT c.*, cc.title FROM config as c LEFT JOIN config_category as cc ON c.category_id = cc.id WHERE cc.name = :name AND c.status = 1 ORDER BY c.level DESC', [
+            'name' => $name
+        ])
+        ->fetchColumn(2);
+    }
 }
