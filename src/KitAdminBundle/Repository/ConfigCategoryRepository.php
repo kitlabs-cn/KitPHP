@@ -10,4 +10,10 @@ namespace KitAdminBundle\Repository;
  */
 class ConfigCategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getPageQuery()
+    {
+        return $this->createQueryBuilder('c')
+        ->orderBy('c.id', 'DESC')
+        ->getQuery();
+    }
 }
